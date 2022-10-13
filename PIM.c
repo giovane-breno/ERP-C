@@ -10,24 +10,25 @@ void es()
     char text[20];
     char email[20];
     printf("Digite seu email: ");
-    scanf("%s",email);
+    scanf("%s", email);
     FILE *arq = fopen("LOGINS.txt", "a");
-    while((c = fgetc(arq)) != EOF){
+    while ((c = fgetc(arq)) != EOF)
+    {
         printf("1");
         strncat(text, &c, 1);
-        if(strcmp(text, email) == 0 ){
+        if (strcmp(text, email) == 0)
+        {
             printf("achou!");
             break;
         }
     }
-
-
 }
 
-void call_pont(char filename[25], char content[25], int skip_line )
+void call_pont(char filename[25], char content[25], int skip_line)
 {
-    FILE *pont_arq = fopen(filename, "a+");;
-    if(pont_arq == NULL)
+    FILE *pont_arq = fopen(filename, "a+");
+    ;
+    if (pont_arq == NULL)
     {
         printf("Erro na abertura do arquivo!");
     }
@@ -43,15 +44,11 @@ void call_pont(char filename[25], char content[25], int skip_line )
             fprintf(pont_arq, "%s;", content);
             fclose(pont_arq);
         }
-
     }
-
-
 }
 
 void Registro()
 {
-
 
     char email[20];
     char senha[20];
@@ -59,31 +56,30 @@ void Registro()
     printf("|-----------------------------------------------------------|\n");
     printf("|                        (CADASTRO)                         |\n");
     printf("|-----------------------------------------------------------|\n");
-    printf("OBS:\n* SENHA DEVE TER NO MÁXIMO 20 CARACTÉRES. \n");
+    printf("OBS:\n* SENHA DEVE TER NO Mï¿½XIMO 20 CARACTï¿½RES. \n");
     printf("Email: ");
-    scanf("%s",&email);
+    scanf("%s", &email);
     system("cls");
     printf("|-----------------------------------------------------------|\n");
     printf("|                        (CADASTRO)                         |\n");
     printf("|-----------------------------------------------------------|\n");
-    printf("OBS:\n* SENHA DEVE TER NO MÁXIMO 20 CARACTÉRES.\n");
+    printf("OBS:\n* SENHA DEVE TER NO Mï¿½XIMO 20 CARACTï¿½RES.\n");
     printf("Email: %s\n", email);
     printf("Senha: ");
     scanf("%s", &senha);
     printf("\nConfirma senha: ");
     scanf("%s", &csenha);
-    //Função para comparar as strings!
+    // Funï¿½ï¿½o para comparar as strings!
     if (strcmp(senha, csenha) == 0)
     {
         call_pont("LOGINS.txt", email, 0);
-        call_pont("LOGINS.txt", senha,  1);
+        call_pont("LOGINS.txt", senha, 1);
         printf("Cadastro feito!");
     }
     else
     {
         printf("Senha incorreta!");
     }
-
 }
 void Login()
 {
@@ -94,7 +90,7 @@ void Login()
     printf("|                        (LOGIN)                            |\n");
     printf("|-----------------------------------------------------------|\n");
     printf("Email: ");
-    scanf("%s",&email);
+    scanf("%s", &email);
     system("cls");
     printf("|-----------------------------------------------------------|\n");
     printf("|                        (LOGIN)                            |\n");
@@ -107,16 +103,12 @@ void Login()
 main()
 {
     /*
-    * INICIALIZAÇÃO DO PONTEIRO / ARQUIVO
-    */
-
-
-
-
+     * INICIALIZAï¿½ï¿½O DO PONTEIRO / ARQUIVO
+     */
 
     setlocale(LC_ALL, "");
     int login = 0, x = 0;
-    while(x==0)
+    while (x == 0)
     {
         printf("|-----------------------------------------------------------|\n");
         printf("|                        (LOGIN)                            |\n");
@@ -130,7 +122,7 @@ main()
         scanf("%i", &login);
         system("cls");
 
-        switch(login)
+        switch (login)
         {
         case 1:
             Login();
@@ -144,15 +136,12 @@ main()
         case 3:
             es();
             x = 1;
-            //system("cls");
+            // system("cls");
             break;
         default:
-            printf("Não há essa opção!");
+            printf("Nï¿½o hï¿½ essa opï¿½ï¿½o!");
             break;
         }
-
     }
     return 0;
-
 }
-
