@@ -19,7 +19,5 @@ int login_account(char email[256], char password[256]){
     strcat(email, ";");
     strcat(user_account, email);
     fflush(stdin);
-    read_file("LOGINS.txt", user_account);
-    
-    return 1;
+    return read_file("LOGINS.txt", user_account);
 }
