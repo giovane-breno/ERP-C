@@ -3,21 +3,35 @@
 
 void create_file(char filename[25], char content[25])
 {
-     /*
-     * INICIALIZAÇÃ DO PONTEIRO / ARQUIVO
-     */
-    FILE *pont_arq = fopen(filename, "a+");
-    if (pont_arq == NULL)
+    FILE *fp = fopen(filename, "a");
+    if (!fp)
     {
         printf("Erro na abertura do arquivo!");
     }
-    else
-    {
-        fprintf(pont_arq, "%s;\n", content);
-        fclose(pont_arq);
-    }
+    fprintf(fp, "%s;\n", content);
+    fclose(fp);
 }
 
-void verify_file(char filename[25], char content[256]){
-    
+int read_file(char filename[25], char content[256])
+{
+    int status = 0;
+    FILE *fp = fopen(filename, "r");
+    char c[100];
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+
+    while (fgets(c, sizeof(c), fp))
+    {
+        if (strstr(c, content))
+        {
+            status = 1;
+            break;
+        }
+    }
+
+    fclose(fp);
+
+    return status;
 }

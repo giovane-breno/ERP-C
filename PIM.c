@@ -29,6 +29,7 @@ int main()
         case 2:
             register_form();
             system("cls");
+            return_text(1);
             break;
         default:
             system("cls");

@@ -6,9 +6,10 @@
 #include "authentication.h"
 #include "text_handler.h"
 
+
 void register_form()
 {
-    char email[20];
+    char email[256];
     char senha[20];
     char csenha[20];
 
@@ -43,11 +44,18 @@ void register_form()
 
 void login_form()
 {
-    char email[20];
+    char email[256];
     char senha[20];
+
+    return_text(3);
 
     printf("Email: ");
     scanf("%s", email);
-    printf("\nSenha: ");
+    printf("Senha: ");
     scanf("%s", senha);
+
+    login_account(email, senha) ? puts("\nUsuario autenticado com sucesso!") : puts ("\nUsuario nao encontrado!");
+    puts("Pressione qualquer tecla para continuar...");
+    getch();
+
 }
