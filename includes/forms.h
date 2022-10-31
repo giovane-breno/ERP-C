@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <conio.h>
 
 #include "authentication.h"
 #include "text_handler.h"
+#include "others.h"
 
 
 void register_form()
@@ -13,7 +15,7 @@ void register_form()
     char senha[20];
     char csenha[20];
 
-    return_text(2);
+    authentication_text(2);
 
     printf("\nEmail: ");
     scanf("%s", email);
@@ -36,26 +38,26 @@ void register_form()
         {
             printf("\n Senha incorreta!");
             system("cls");
-            return_text(2);
+            authentication_text(2);
             printf("* CONFIRMACAO INCORRETA, DIGITE A SENHA NOVAMENTE.\n\n");
         }
     }
 }
 
-void login_form()
+int login_form()
 {
     char email[256];
     char senha[20];
+    int status = 0;
 
-    return_text(3);
+    authentication_text(3);
 
     printf("Email: ");
     scanf("%s", email);
     printf("Senha: ");
     scanf("%s", senha);
 
-    login_account(email, senha) ? puts("\nUsuario autenticado com sucesso!") : puts ("\nUsuario nao encontrado!");
-    puts("Pressione qualquer tecla para continuar...");
-    getch();
+    status = login_account(email, senha) ? 1 : 0;
 
+    return status;
 }
