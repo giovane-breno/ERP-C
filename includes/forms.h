@@ -8,7 +8,6 @@
 #include "text_handler.h"
 #include "others.h"
 
-
 void register_form()
 {
     char email[256];
@@ -60,4 +59,13 @@ int login_form()
     status = login_account(email, senha) ? 1 : 0;
 
     return status;
+}
+
+void query_users(char filename[128])
+{
+    printf("USUARIO | SENHA\n\n");
+    query_users_files(filename);
+    wait_for_input("\nLista de usuarios impressa com sucesso!\n");
+    system("cls");
+    main_menu_text(3); /* RETORNA AO MENU APÓS CLIQUE */
 }

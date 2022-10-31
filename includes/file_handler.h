@@ -37,7 +37,7 @@ int read_file(char filename[25], char content[256])
     return status;
 }
 
-void query_users(char filename[25])
+void query_users_files(char filename[25])
 {
     FILE *fp = fopen(filename, "r");
     char c;
@@ -47,32 +47,25 @@ void query_users(char filename[25])
     }
 
     bool password = false;
-    bool first = true;
 
     while ((c = getc(fp)) != EOF)
     {
-        if (first)
-        {
-            printf("\n\nUSUARIO: ");
-            first = false;
-        }
 
-        if ((c == 124) || (c == 59)) /* |  e ; */
+        if ((c == '|') || (c == ';')) /* |  e ; */
         {
-            if (c != 59) /* ; */
+            if (c != ';') /* ; */
             {
-                printf("\nSENHA: ");
+                printf(" | ");
                 password = true;
             }
-            else if (c == 59) /* ; */
+            else if (c == ';') /* ; */
             {
-                printf("\nUSUARIO: ");
                 password = false;
             }
         }
 
-        if (c != 59 && c != 10 && c != 124)
-            (password == false) ? printf("%c", c) : printf("%c", c);
+        if (c != ';' && c != '|')
+            (password == false) ? printf("%c", c) : printf("*");
     }
 
     fclose(fp);
