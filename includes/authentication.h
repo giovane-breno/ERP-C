@@ -3,21 +3,16 @@
 int register_account(char email[256], char password[256])
 {
     char user_account[256] = "";
-    strcat(email, "|");
-    strcat(email, password);
-    strcat(user_account, email);
+    sprintf(user_account, "%s|%s", email, password);
     fflush(stdin);
-    create_file("LOGINS.txt", user_account);
+    create_file("files\\logins.txt", user_account);
 
     return 1;
 }
 
 int login_account(char email[256], char password[256]){
     char user_account[256] = "";
-    strcat(email, "|");
-    strcat(email, password);
-    strcat(email, ";");
-    strcat(user_account, email);
+    sprintf(user_account, "%s|%s", email, password);
     fflush(stdin);
-    return read_file("LOGINS.txt", user_account);
+    return read_file("files\\logins.txt", user_account);
 }

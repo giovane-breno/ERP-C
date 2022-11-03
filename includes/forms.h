@@ -69,3 +69,131 @@ void query_users(char filename[128])
     system("cls");
     main_menu_text(3); /* RETORNA AO MENU APÓS CLIQUE */
 }
+
+void register_work_form()
+{
+    char name[256];
+    char job[256];
+    float payment;
+    int correct_data;
+    int status;
+    char worker_data[256];
+
+    while (true)
+    {
+        system("cls");
+        fflush(stdin);
+        register_work_text(1);
+        printf("\nNome: ");
+        gets(name);
+
+        system("cls");
+        register_work_text(1);
+        printf("\nCargo: ");
+        gets(job);
+
+        system("cls");
+        register_work_text(1);
+        printf("\nSalario: ");
+        scanf("%f", &payment);
+
+        fflush(stdin);
+
+        system("cls");
+        register_work_text(1);
+        puts("\nConfirme se os dados abaixo estao corretos:");
+        printf("\nNome: %s", name);
+        printf("\nCargo: %s", job);
+        printf("\nSalario: R$%.2f", payment);
+        puts("\n\nCorretos?\n[1] - Sim\n[2] - Nao\n");
+        scanf("%d", &correct_data);
+
+        if (correct_data == 1)
+            break;
+    }
+
+    sprintf(worker_data, "%s|%s|%.2f", name, job, payment);
+    system("cls");
+    status = create_file("files\\workers.txt", worker_data);
+
+    if (status)
+    {
+        wait_for_input("\nFuncionario cadastrado com sucesso!\n");
+    }
+    else
+    {
+        wait_for_input("\n");
+    }
+
+    register_screen();
+}
+
+void register_customer_form()
+{
+    char name[256];
+    char cpf[256];
+    int age = 0;
+    int active = 0;
+    int status = 0;
+    int correct_data;
+
+        char customer_data[256];
+
+    while (true)
+    {
+        system("cls");
+        fflush(stdin);
+        register_customer_text(1);
+        printf("\nNome: ");
+        gets(name);
+
+        system("cls");
+        fflush(stdin);
+        register_customer_text(1);
+        printf("\nIdade: ");
+        scanf("%d", &age);
+
+        system("cls");
+        fflush(stdin);
+        register_customer_text(1);
+        printf("\nCPF (APENAS NUMEROS): ");
+        gets(cpf);
+
+        system("cls");
+        fflush(stdin);
+        register_customer_text(1);
+        puts("\nCliente Ativo? ");
+        puts("[1] - Sim\n[2] - Nao");
+        scanf("%d", &active);
+        fflush(stdin);
+
+        system("cls");
+        register_work_text(1);
+        puts("\nConfirme se os dados abaixo estao corretos:");
+        printf("\nNome: %s", name);
+        printf("\nIdade: %d", age);
+        printf("\nCPF: %s", cpf);
+        (active == 1) ? printf("\nAtivo: Sim") : printf("\nAtivo: Nao");
+
+        puts("\n\nCorretos?\n[1] - Sim\n[2] - Nao\n");
+        scanf("%d", &correct_data);
+
+        if (correct_data == 1)
+            break;
+    }
+
+    sprintf(customer_data, "%s|%d|%s|%d", name, age, cpf, active);
+    system("cls");
+    status = create_file("files\\customers.txt", customer_data);
+
+    if (status)
+    {
+        wait_for_input("\nCliente cadastrado com sucesso!\n");
+    }
+    else
+    {
+        wait_for_input("\n");
+    }
+
+    register_screen();
+}

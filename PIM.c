@@ -26,6 +26,7 @@ int main()
 {
 
     setlocale(LC_ALL, "Portuguese");
+    config_file();
     login();
 
     return 0;
@@ -99,6 +100,8 @@ void main_menu()
             end_loop = 1;
             break;
         case 3: /* TELA GERENCIAMENTO */
+            management_screen();
+            end_loop = 1;
             break;
         case 4: /* VOLTAR*/
             wait_for_input("Voce escolheu sair. Ate logo!\n");
@@ -112,11 +115,12 @@ void main_menu()
     }
 }
 
-void register_screen()
+void register_screen() /* [2] CADASTRAR */
 {
     int option = 0;
     int end_loop = 0;
 
+    system("cls");
     main_menu_text(2);
     while (!end_loop)
     {
@@ -124,8 +128,12 @@ void register_screen()
         switch (option)
         {
         case 1: /* CADASTRAR CLIENTE */
+            system("cls");
+            register_customer_form();
             break;
         case 2: /* CADASTRAR FUNCIONARIO*/
+            system("cls");
+            register_work_form();
             break;
         case 3: /* CADASTRAR PERFIL */
             break;
@@ -141,8 +149,9 @@ void register_screen()
     }
 }
 
-void query_screen()
+void query_screen() /* [1] CONSULTAR */
 {
+    system("cls");
     main_menu_text(3);
 
     int option = 0;
@@ -161,14 +170,124 @@ void query_screen()
             break;
         case 4: /* CONSULTAR USUARIOS */
             system("cls");
-            query_users("LOGINS.txt");
+            query_users("files\\logins.txt");
             break;
         case 5:
             main_menu(); /* RETORNA AO MENU PRINCIPAL */
             break;
         default:
             system("cls");
-            main_menu_text(2);
+            main_menu_text(3);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void management_screen() /* [3] GERENCIAMENTO */
+{
+    system("cls");
+    main_menu_text(4);
+
+    int option = 0;
+    int end_loop = 0;
+
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* GERENCIAR DADOS */
+            system("cls");
+            edit_data_screen();
+            break;
+        case 2: /* VISUALIZAR RELATORIOS */
+            system("cls");
+            break;
+        case 3: /* CONFIG ADMINISTRATIVAS */
+            system("cls");
+            break;
+        case 4: /* OUTROS */
+            system("cls");
+            break;
+        case 5:
+            main_menu(); /* RETORNA AO MENU PRINCIPAL */
+            break;
+        default:
+            system("cls");
+            main_menu_text(4);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void edit_data_screen() /* [1] EDITAR DADOS */
+{
+
+    system("cls");
+    edit_data_text(1);
+
+    int option = 0;
+    int end_loop = 0;
+
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* FUNCIONARIOS */
+            system("cls");
+            break;
+        case 2: /* CLIENTES */
+            system("cls");
+
+            break;
+        case 3: /* PERFIS DE USUARIOS */
+            system("cls");
+
+            break;
+        case 4: /* RETORNA AO MENU PRINCIPAL */
+            management_screen();
+            break;
+        default:
+            system("cls");
+            edit_data_text(1);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void admin_config_screen(){
+    system("cls");
+    admin_config_text(1);
+
+    int option = 0;
+    int end_loop = 0;
+
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* ATIVAR / DESATIVAR REGISTRO */
+            system("cls");
+            break;
+        case 2: /* CLIENTES */
+            system("cls");
+
+            break;
+        case 3: /* PERFIS DE USUARIOS */
+            system("cls");
+
+            break;
+        case 4: /* RETORNA AO MENU PRINCIPAL */
+            management_screen();
+            break;
+        default:
+            system("cls");
+            admin_config_text(1);
             printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
             break;
         }

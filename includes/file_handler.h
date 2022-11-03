@@ -1,16 +1,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
-void create_file(char filename[25], char content[25])
+int config_file()
 {
+    int first_init = 0;
+    char c[100];
+    FILE *fp = fopen("files\\config.txt", "a");
+    while (fgets(c, sizeof(c), fp))
+    {
+        if (strstr(c, "build"))
+        {
+            first_init = 1;
+            break;
+        }
+    }
+
+    if (first_init != 1)
+    {
+        time_t timestamp = time(NULL);
+        fprintf(fp, "file build: %s;\n", ctime(&timestamp));
+        fprintf(fp, "register: 1;");
+    }
+}
+
+int create_file(char filename[25], char content[256])
+{
+    int status = 0;
     FILE *fp = fopen(filename, "a");
     if (!fp)
     {
         printf("Erro na abertura do arquivo!");
     }
-    fprintf(fp, "%s;\n", content);
+    else
+    {
+        fprintf(fp, "%s;\n", content);
+        status = 1;
+    }
     fclose(fp);
+
+    return status;
 }
 
 int read_file(char filename[25], char content[256])
@@ -21,14 +51,17 @@ int read_file(char filename[25], char content[256])
     if (!fp)
     {
         printf("Erro na abertura do arquivo!");
+        exit(1);
     }
-
-    while (fgets(c, sizeof(c), fp))
+    else
     {
-        if (strstr(c, content))
+        while (fgets(c, sizeof(c), fp))
         {
-            status = 1;
-            break;
+            if (strstr(c, content))
+            {
+                status = 1;
+                break;
+            }
         }
     }
 
