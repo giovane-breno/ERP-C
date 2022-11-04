@@ -8,27 +8,47 @@
 #include "text_handler.h"
 #include "others.h"
 
-void register_form()
+struct Users
 {
     char email[256];
-    char senha[20];
-    char csenha[20];
+    char password[20];
+};
+
+struct Workers
+{
+    char name[256];
+    char role[256];
+    float payment;
+};
+
+struct Customers
+{
+    char name[256];
+    char cpf[256];
+    int age;
+    int active;
+};
+
+void register_form()
+{
+    struct Users user;
+    char cpass[256]; /* CONFIRM PASSWORD */
 
     authentication_text(2);
 
     printf("\nEmail: ");
-    scanf("%s", email);
+    scanf("%s", user.email);
     while (1)
     {
         printf("Senha: ");
-        scanf("%s", senha);
+        scanf("%s", user.password);
         printf("Confirmar senha: ");
-        scanf("%s", csenha);
+        scanf("%s", cpass);
 
         /* Funcao para comparar as strings! */
-        if (strcmp(senha, csenha) == 0)
+        if (strcmp(cpass, user.password) == 0)
         {
-            register_account(email, senha) ? puts("\nCadastro feito com sucesso!") : puts("\nHouve um erro no cadastro!");
+            register_account(user.email, user.password) ? puts("\nCadastro feito com sucesso!") : puts("\nHouve um erro no cadastro!");
             puts("Pressione qualquer tecla para continuar...");
             getch();
             break;
@@ -45,18 +65,17 @@ void register_form()
 
 int login_form()
 {
-    char email[256];
-    char senha[20];
+    struct Users user;
     int status = 0;
 
     authentication_text(3);
 
     printf("Email: ");
-    scanf("%s", email);
+    scanf("%s", user.email);
     printf("Senha: ");
-    scanf("%s", senha);
+    scanf("%s", user.password);
 
-    status = login_account(email, senha) ? 1 : 0;
+    status = login_account(user.email, user.password) ? 1 : 0;
 
     return status;
 }
@@ -72,12 +91,11 @@ void query_users(char filename[128])
 
 void register_work_form()
 {
-    char name[256];
-    char job[256];
-    float payment;
+    struct Workers worker;
+    char worker_data[256];
+
     int correct_data;
     int status;
-    char worker_data[256];
 
     while (true)
     {
@@ -85,26 +103,26 @@ void register_work_form()
         fflush(stdin);
         register_work_text(1);
         printf("\nNome: ");
-        gets(name);
+        gets(worker.name);
 
         system("cls");
         register_work_text(1);
         printf("\nCargo: ");
-        gets(job);
+        gets(worker.role);
 
         system("cls");
         register_work_text(1);
         printf("\nSalario: ");
-        scanf("%f", &payment);
+        scanf("%f", &worker.payment);
 
         fflush(stdin);
 
         system("cls");
         register_work_text(1);
         puts("\nConfirme se os dados abaixo estao corretos:");
-        printf("\nNome: %s", name);
-        printf("\nCargo: %s", job);
-        printf("\nSalario: R$%.2f", payment);
+        printf("\nNome: %s", worker.name);
+        printf("\nCargo: %s", worker.role);
+        printf("\nSalario: R$%.2f", worker.payment);
         puts("\n\nCorretos?\n[1] - Sim\n[2] - Nao\n");
         scanf("%d", &correct_data);
 
@@ -112,7 +130,7 @@ void register_work_form()
             break;
     }
 
-    sprintf(worker_data, "%s|%s|%.2f", name, job, payment);
+    sprintf(worker_data, "%s|%s|%.2f", worker.name, worker.role, worker.payment);
     system("cls");
     status = create_file("files\\workers.txt", worker_data);
 
@@ -130,14 +148,11 @@ void register_work_form()
 
 void register_customer_form()
 {
-    char name[256];
-    char cpf[256];
-    int age = 0;
-    int active = 0;
+    struct Customers customer;
+    char customer_data[256];
+
     int status = 0;
     int correct_data;
-
-        char customer_data[256];
 
     while (true)
     {
@@ -145,35 +160,35 @@ void register_customer_form()
         fflush(stdin);
         register_customer_text(1);
         printf("\nNome: ");
-        gets(name);
+        gets(customer.name);
 
         system("cls");
         fflush(stdin);
         register_customer_text(1);
         printf("\nIdade: ");
-        scanf("%d", &age);
+        scanf("%d", &customer.age);
 
         system("cls");
         fflush(stdin);
         register_customer_text(1);
         printf("\nCPF (APENAS NUMEROS): ");
-        gets(cpf);
+        gets(customer.cpf);
 
         system("cls");
         fflush(stdin);
         register_customer_text(1);
         puts("\nCliente Ativo? ");
         puts("[1] - Sim\n[2] - Nao");
-        scanf("%d", &active);
+        scanf("%d", &customer.active);
         fflush(stdin);
 
         system("cls");
         register_work_text(1);
         puts("\nConfirme se os dados abaixo estao corretos:");
-        printf("\nNome: %s", name);
-        printf("\nIdade: %d", age);
-        printf("\nCPF: %s", cpf);
-        (active == 1) ? printf("\nAtivo: Sim") : printf("\nAtivo: Nao");
+        printf("\nNome: %s", customer.name);
+        printf("\nIdade: %d", customer.age);
+        printf("\nCPF: %s", customer.cpf);
+        (customer.active == 1) ? printf("\nAtivo: Sim") : printf("\nAtivo: Nao");
 
         puts("\n\nCorretos?\n[1] - Sim\n[2] - Nao\n");
         scanf("%d", &correct_data);
@@ -182,7 +197,7 @@ void register_customer_form()
             break;
     }
 
-    sprintf(customer_data, "%s|%d|%s|%d", name, age, cpf, active);
+    sprintf(customer_data, "%s|%d|%s|%d", customer.name, customer.age, customer.cpf, customer.active);
     system("cls");
     status = create_file("files\\customers.txt", customer_data);
 

@@ -1,3 +1,4 @@
 Joao Pedro Neves|Programador PHP (Senior)|53000,80;
 Teste|33|30,43;
 a|a|4,00;
+Pedro|Presidente|32311,33;
