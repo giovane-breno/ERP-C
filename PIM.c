@@ -4,9 +4,9 @@
  *
  * Autores do Projeto: Giovane Breno Pereira Barbosa
  *                     Levi Custódio Kodaria Leão
- *                     Matheus
- *                     Allan
- *                     Giovana
+ *                     Matheus Felix Barbosa
+ *                     Allan Pereira Lopes
+ *                     Giovana Chiquinni Primon
  * Turma: DS2R48
  * PROJETO INTEGRADO INTERDISCIPLINAR
  * Observação: <colocar se houver>
