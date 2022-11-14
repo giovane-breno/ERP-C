@@ -63,7 +63,7 @@ void main_menu_text(int type)
         printf("|-----------------------------------------------------------|\n");
         printf("|                                                           |\n");
         printf("|                [1] - Consultar Clientes                   |\n");
-        printf("|                [2] - Cadastrar Funcionarios               |\n");
+        printf("|                [2] - Consultar Funcionarios               |\n");
         printf("|                [3] - Consultar Perfis                     |\n");
         printf("|                [4] - Consultar Usuarios                   |\n");
         printf("|                [5] - Voltar                               |\n");

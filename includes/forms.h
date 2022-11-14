@@ -82,8 +82,15 @@ int login_form()
 
 void query_users(char filename[128])
 {
-    printf("USUARIO | SENHA\n\n");
     query_users_files(filename);
+    wait_for_input("\nLista de usuarios impressa com sucesso!\n");
+    system("cls");
+    main_menu_text(3); /* RETORNA AO MENU APÓS CLIQUE */
+}
+
+void query_customers(char filename[128])
+{
+    query_c_files(filename);
     wait_for_input("\nLista de usuarios impressa com sucesso!\n");
     system("cls");
     main_menu_text(3); /* RETORNA AO MENU APÓS CLIQUE */
@@ -104,11 +111,13 @@ void register_work_form()
         register_work_text(1);
         printf("\nNome: ");
         gets(worker.name);
+        remove_whitespace(worker.name);
 
         system("cls");
         register_work_text(1);
         printf("\nCargo: ");
         gets(worker.role);
+        remove_whitespace(worker.role);
 
         system("cls");
         register_work_text(1);
@@ -130,7 +139,7 @@ void register_work_form()
             break;
     }
 
-    sprintf(worker_data, "%s|%s|%.2f", worker.name, worker.role, worker.payment);
+    sprintf(worker_data, "%s %s %.2f", worker.name, worker.role, worker.payment);
     system("cls");
     status = create_file("files\\workers.txt", worker_data);
 
@@ -161,6 +170,7 @@ void register_customer_form()
         register_customer_text(1);
         printf("\nNome: ");
         gets(customer.name);
+        remove_whitespace(customer.name);
 
         system("cls");
         fflush(stdin);
@@ -173,6 +183,7 @@ void register_customer_form()
         register_customer_text(1);
         printf("\nCPF (APENAS NUMEROS): ");
         gets(customer.cpf);
+        encrypt(customer.cpf);
 
         system("cls");
         fflush(stdin);
@@ -197,7 +208,7 @@ void register_customer_form()
             break;
     }
 
-    sprintf(customer_data, "%s|%d|%s|%d", customer.name, customer.age, customer.cpf, customer.active);
+    sprintf(customer_data, "%s %d %s %d", customer.name, customer.age, customer.cpf, customer.active);
     system("cls");
     status = create_file("files\\customers.txt", customer_data);
 

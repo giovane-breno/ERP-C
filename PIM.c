@@ -163,6 +163,8 @@ void query_screen() /* [1] CONSULTAR */
         switch (option)
         {
         case 1: /* CONSULTAR CLIENTES*/
+            system("cls");
+            query_customers("files\\customers.txt");
             break;
         case 2: /* CONSULTAR FUNCIONARIOS*/
             break;
@@ -259,7 +261,8 @@ void edit_data_screen() /* [1] EDITAR DADOS */
     }
 }
 
-void admin_config_screen(){
+void admin_config_screen()
+{
     system("cls");
     admin_config_text(1);
 

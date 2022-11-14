@@ -35,7 +35,7 @@ int create_file(char filename[25], char content[256])
     }
     else
     {
-        fprintf(fp, "%s;\n", content);
+        fprintf(fp, "%s\n", content);
         status = 1;
     }
     fclose(fp);
@@ -70,8 +70,14 @@ int read_file(char filename[25], char content[256])
     return status;
 }
 
-void query_users_files(char filename[25])
+void query_c_files(char filename[25])
 {
+    char name[256];
+    int age;
+    char cpf[60];
+    int active;
+    int counter = 1;
+
     FILE *fp = fopen(filename, "r");
     char c;
     if (!fp)
@@ -81,24 +87,35 @@ void query_users_files(char filename[25])
 
     bool password = false;
 
-    while ((c = getc(fp)) != EOF)
+    while (fscanf(fp, "%s %d %s %d", name, &age, decrypt(cpf), &active) == 4)
     {
-
-        if ((c == '|') || (c == ';')) /* |  e ; */
         {
-            if (c != ';') /* ; */
-            {
-                printf(" | ");
-                password = true;
-            }
-            else if (c == ';') /* ; */
-            {
-                password = false;
-            }
+            printf("Consulta: %d\n\n", counter);
+            printf("Nome: %s\n", name);
+            printf("Idade: %d anos\n", age);
+            printf("CPF: %s\n", cpf);
+            (active == 1) ? printf("Ativo? Sim\n") : printf("Ativo? Nao\n");
+            puts("-----------------------------------------------------------");
         }
+        counter++;
+    }
+    fclose(fp);
+}
 
-        if (c != ';' && c != '|')
-            (password == false) ? printf("%c", c) : printf("*");
+void query_users_files(char filename[25])
+{
+    FILE *fp = fopen(filename, "r");
+    char name[256];
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+
+    while (fscanf(fp, "%s %*s", name) == 1)
+    {
+        {
+            printf("Usuario: %s\n", name);
+        }
     }
 
     fclose(fp);
