@@ -26,9 +26,7 @@ int main()
 {
 
     setlocale(LC_ALL, "Portuguese");
-    config_file();
     login();
-
     return 0;
 }
 
@@ -62,10 +60,9 @@ void login()
                 system("cls");
                 authentication_text(1);
             }
-
             break;
         case 2:
-            register_form();
+            (config_file()) ? register_form() : wait_for_input("O registro de novas contas foi desativado por um administrador.\n");
             system("cls");
             authentication_text(1);
             break;
@@ -208,6 +205,7 @@ void management_screen() /* [3] GERENCIAMENTO */
             break;
         case 3: /* CONFIG ADMINISTRATIVAS */
             system("cls");
+            admin_config_screen();
             break;
         case 4: /* OUTROS */
             system("cls");
@@ -276,6 +274,8 @@ void admin_config_screen()
         {
         case 1: /* ATIVAR / DESATIVAR REGISTRO */
             system("cls");
+            check_register_status();
+            admin_config_text(1);
             break;
         case 2: /* CLIENTES */
             system("cls");

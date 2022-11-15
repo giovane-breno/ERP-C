@@ -3,26 +3,67 @@
 #include <string.h>
 #include <time.h>
 
+int file_exist()
+{
+
+    FILE *fp = fopen("files\\config.txt", "r");
+    int status = 0;
+    if (!fp)
+    {
+        fclose(fp);
+        status = 1;
+    }
+    return status;
+
+}
+
 int config_file()
 {
-    int first_init = 0;
-    char c[100];
-    FILE *fp = fopen("files\\config.txt", "a");
-    while (fgets(c, sizeof(c), fp))
+    int status = 1;
+    if (file_exist())
     {
-        if (strstr(c, "build"))
+        FILE *fp = fopen("files\\config.txt", "a");
+        fprintf(fp, "register: 1");
+        fclose(fp);
+        status = 1; 
+    }else{
+        FILE *fp = fopen("files\\config.txt", "r");
+        char c;
+        while ((c = getc(fp)) != EOF)
         {
-            first_init = 1;
-            break;
+            if (c == '1')
+            {
+                status = 1; 
+            }else if (c == '0') {
+                status = 0; 
+            }
         }
     }
+    return status;
+}
 
-    if (first_init != 1)
+void check_register_status(){
+    FILE *fp = fopen("files\\config.txt", "r");
+    char c;
+    while ((c = getc(fp)) != EOF)
     {
-        time_t timestamp = time(NULL);
-        fprintf(fp, "file build: %s;\n", ctime(&timestamp));
-        fprintf(fp, "register: 1;");
+        if (c == '1')
+        {
+            fclose(fp);
+            FILE *fp = fopen("files\\config.txt", "w+");
+            fprintf(fp, "register: 0");
+            puts("Desativado!");
+            fclose(fp);
+        }else if (c == '0') {
+            fclose(fp);
+            FILE *fp = fopen("files\\config.txt", "w+");
+            fprintf(fp, "register: 1");   
+            puts("Ativado!");
+            fclose(fp);
+        }
     }
+    getch();
+    system("cls");
 }
 
 int create_file(char filename[25], char content[256])
@@ -87,7 +128,7 @@ void query_c_files(char filename[25])
 
     bool password = false;
 
-    while (fscanf(fp, "%s %d %s %d", name, &age, decrypt(cpf), &active) == 4)
+    while (fscanf(fp, "%s %d %s %d", name, &age, cpf, &active) == 4)
     {
         {
             printf("Consulta: %d\n\n", counter);
