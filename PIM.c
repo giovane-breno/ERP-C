@@ -202,6 +202,7 @@ void management_screen() /* [3] GERENCIAMENTO */
             break;
         case 2: /* VISUALIZAR RELATORIOS */
             system("cls");
+            relatories_screen();
             break;
         case 3: /* CONFIG ADMINISTRATIVAS */
             system("cls");
@@ -291,6 +292,46 @@ void admin_config_screen()
         default:
             system("cls");
             admin_config_text(1);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void relatories_screen()
+{
+    system("cls");
+    relatories_text(1);
+
+    int option = 0;
+    int end_loop = 0;
+
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* Relatório CAPEX */
+            system("cls");
+            relatory_capex();
+
+            break;
+        case 2: /* Relatório OPEX  */
+            system("cls");
+            relatory_opex();
+            
+            break;
+        case 3: /* Relatório CAPEX & OPEX */
+            system("cls");
+            relatory_capex_opex();
+        
+            break;
+        case 4: /* Voltar */
+            management_screen();
+            break;
+        default:
+            system("cls");
+            relatories_text(1);
             printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
             break;
         }

@@ -223,3 +223,136 @@ void register_customer_form()
 
     register_screen();
 }
+
+void relatory_capex()
+{
+    int resposta;
+    // Variáveis globais (Capex)
+    float valor_pc = 30000;
+    float valor_monitores = 3493.90;
+    float valor_mesas = 2500.00;
+    float valor_cadeiras = 2500.00;
+    float valor_outros = 2500.00;
+    float total_CAPEX = valor_pc + valor_monitores + valor_mesas + valor_cadeiras + valor_outros;
+
+    relatories_text(2);
+
+    printf("|Computadores\n");
+    printf("|R$ %2.0f \n\n", valor_pc);
+    printf("|Monitores\n");
+    printf("|R$ %0.2f \n\n", valor_monitores);
+    printf("|Mesas\n");
+    printf("|R$ %2.0f \n\n", valor_mesas);
+    printf("|Cadeiras\n");
+    printf("|R$ %2.0f \n\n", valor_cadeiras);
+    printf("|Outros\n");
+    printf("|R$ %2.0f \n\n", valor_outros);
+
+    printf("|TOTAL CAPEX -> R$ %0.2f|\n\n", total_CAPEX);
+    printf("Deseja exportar o relatorio com mais informacoes? \n");
+    // printf("Digite 1 para Sim, ou 2 para Nï¿½o <1/2> \n");
+
+    printf("[1] - SIM\n");
+    printf("[2] - NAO\n\n");
+
+    scanf("%d", &resposta);
+
+    if (resposta == 1)
+    {
+        system("cls");
+        file_capex(valor_pc, valor_monitores, valor_mesas, valor_cadeiras, valor_outros, total_CAPEX);
+    }
+
+    relatories_screen();
+}
+
+void relatory_opex(){
+    int resposta = 0;
+//Variáveis
+    float aluguel = 1400.63;
+    float agua = 230.02;
+    float energia = 674.98;
+    float limpeza = 337.45;
+    float internet = 545.01;
+    float total_servicos =  agua + energia + limpeza + internet;
+    float impostos = 753.00;
+    float salario_adm = 9984.60;
+    float salario_com = 8619.69;
+    float salario_ope = 11294.71;
+    float total_salarios = salario_adm + salario_com + salario_ope;
+    float total_OPEX = aluguel + total_servicos + total_salarios + impostos;
+
+    relatories_text(3);
+
+    printf("|Salários\n");
+	printf("|R$ %2.0f \n\n", total_salarios);
+	
+	//impostos
+	printf("|Impostos\n");
+	printf("|R$ %2.0f \n\n", impostos);
+	
+	//serviços terceirizados
+	printf("|Serviços\n");
+	printf("|R$ %2.0f \n\n", total_servicos);
+	
+	//Aluguel
+	printf("|Aluguel\n");
+	printf("|R$ %2.0f \n\n", aluguel);
+	
+	//total OPEX
+	printf("|TOTAL OPEX -> R$ %0.2f|\n\n", total_OPEX);
+
+    printf("Deseja exportar o relatorio com mais informacoes? \n");
+    // printf("Digite 1 para Sim, ou 2 para Nï¿½o <1/2> \n");
+
+    printf("[1] - SIM\n");
+    printf("[2] - NAO\n\n");
+
+    scanf("%d", &resposta);
+
+    if (resposta == 1)
+    {
+        system("cls");
+        file_opex(aluguel ,agua ,energia ,limpeza ,internet ,total_servicos,impostos,salario_adm, salario_com,salario_ope, total_salarios, total_OPEX);
+    }
+    relatories_screen();
+}
+
+void relatory_capex_opex(){
+//capex
+    float valor_pc = 30000;
+    float valor_monitores = 3493.90;
+    float valor_mesas = 2500.00;
+    float valor_cadeiras = 2500.00;
+    float valor_outros = 2500.00;
+    float total_CAPEX = valor_pc + valor_monitores + valor_mesas + valor_cadeiras + valor_outros;
+
+//Opex
+    float aluguel = 1400.63;
+    float agua = 230.02;
+    float energia = 674.98;
+    float limpeza = 337.45;
+    float internet = 545.01;
+    float total_servicos =  agua + energia + limpeza + internet;
+    float impostos = 753.00;
+    float salario_adm = 9984.60;
+    float salario_com = 8619.69;
+    float salario_ope = 11294.71;
+    float total_salarios = salario_adm + salario_com + salario_ope;
+    float total_OPEX = aluguel + total_servicos + total_salarios + impostos;
+
+    relatories_text(4);
+
+    printf("|CAPEX \n");
+	printf("|TOTAL CAPEX -> R$ %0.2f\n\n", total_CAPEX);
+
+	printf("|OPEX  \n");
+	printf("|TOTAL OPEX -> R$ %0.2f\n\n", total_OPEX);
+	wait_for_input("");
+
+    relatories_screen();
+
+}
+
+
+ 

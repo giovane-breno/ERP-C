@@ -1,0 +1,35 @@
+|------------------------------------------------------|
+|                 RELATÓRIO CAPEX                      |
+|------------------------------------------------------|
+
+|Computadores
+  -Marca: DELL
+  -Modelo: Inspiron 15 3000 i5-1135G7 
+  -Quantidade: 5
+  -Fornecedor: Dell Computadores do Brasil Ltda
+  -Valor: R$ 30000 
+
+|Monitores
+  -Marca: LG
+  -Modelo: Monitor LG 19.5' LED HD 
+  -Quantidade: 5
+  -Fornecedor: Amazon.com, Inc.
+  -Valor: R$ 3493,90 
+
+|Mesas
+  -Quantidade: 5
+  -Dimensões: 2.5m x 1.20m 
+  -Fornecedor: MADEIRAMADEIRA COMERCIO ELETRONICO S/A 
+  -Valor: R$ 2500 
+
+|Cadeiras
+  -Quantidade: 5
+  -Fornecedor: LOJAS AMERICANAS S.A. 
+  -Valor: R$ 2500 
+
+|Outros
+  -Valor: R$ 2500 
+
+|TOTAL CAPEX
+   R$ 40993,90 
+

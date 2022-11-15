@@ -142,10 +142,6 @@ void edit_data_text(int type)
     }
 }
 
-void relatories_text(int type)
-{
-}
-
 void admin_config_text(int type)
 {
     switch (type)
@@ -161,6 +157,42 @@ void admin_config_text(int type)
         printf("|-----------------------------------------------------------|\n");
         break;
 
+    default:
+        break;
+    }
+}
+
+void relatories_text(int type)
+{
+    switch (type)
+    {
+    case 1:
+        printf("|------------------------------------------------------|\n");
+        printf("|                     [RELATORIOS]                     |\n");
+        printf("|------------------------------------------------------|\n");
+        printf("|                                                      |\n");
+        printf("|             [1] - Relatorio CAPEX                    |\n");
+        printf("|             [2] - Relatorio OPEX                     |\n");
+        printf("|             [3] - Relatorio CAPEX & OPEX             |\n");
+        printf("|             [4] - Voltar                             |\n");
+        printf("|                                                      |\n");
+        printf("|------------------------------------------------------|\n");
+        break;
+    case 2:
+        printf("|------------------------------------------------------|\n");
+        printf("|                  RELATORIO CAPEX                     |\n");
+        printf("|------------------------------------------------------|\n\n");
+        break;
+    case 3:
+        printf("|------------------------------------------------------|\n");
+        printf("|                  RELATORIO OPEX                      |\n");
+        printf("|------------------------------------------------------|\n\n");
+        break;
+    case 4:
+        printf("|------------------------------------------------------|\n");
+        printf("|              RELATORIO CAPEX & OPEX                  |\n");
+        printf("|------------------------------------------------------|\n\n");
+        break;
     default:
         break;
     }
