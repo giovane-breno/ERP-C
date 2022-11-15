@@ -29,6 +29,11 @@ struct Customers
     int active;
 };
 
+struct Profile
+{
+
+};
+
 void register_form()
 {
     struct Users user;
@@ -91,7 +96,15 @@ void query_users(char filename[128])
 void query_customers(char filename[128])
 {
     query_c_files(filename);
-    wait_for_input("\nLista de usuarios impressa com sucesso!\n");
+    wait_for_input("\nLista de clientes impressa com sucesso!\n");
+    system("cls");
+    main_menu_text(3); /* RETORNA AO MENU APÓS CLIQUE */
+}
+
+void query_workers(char filename[128])
+{
+    query_w_files(filename);
+    wait_for_input("\nLista de funcionarios impressa com sucesso!\n");
     system("cls");
     main_menu_text(3); /* RETORNA AO MENU APÓS CLIQUE */
 }

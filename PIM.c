@@ -164,6 +164,8 @@ void query_screen() /* [1] CONSULTAR */
             query_customers("files\\customers.txt");
             break;
         case 2: /* CONSULTAR FUNCIONARIOS*/
+            system("cls");
+            query_workers("files\\workers.txt");
             break;
         case 3: /* CONSULTAR PERFIS*/
             break;

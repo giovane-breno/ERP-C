@@ -136,14 +136,44 @@ void query_c_files(char filename[25])
 
     while (fscanf(fp, "%s %d %s %d", name, &age, cpf, &active) == 4)
     {
-        {
-            printf("Consulta: %d\n\n", counter);
-            printf("Nome: %s\n", name);
-            printf("Idade: %d anos\n", age);
-            printf("CPF: %s\n", cpf);
-            (active == 1) ? printf("Ativo? Sim\n") : printf("Ativo? Nao\n");
-            puts("-----------------------------------------------------------");
-        }
+
+        printf("Consulta: %d\n\n", counter);
+        printf("Nome: %s\n", name);
+        printf("Idade: %d anos\n", age);
+        printf("CPF: %s\n", cpf);
+        (active == 1) ? printf("Ativo? Sim\n") : printf("Ativo? Nao\n");
+        puts("-----------------------------------------------------------");
+
+        counter++;
+    }
+    fclose(fp);
+}
+
+void query_w_files(char filename[25])
+{
+    char name[256];
+    char role[256];
+    float payment;
+    int counter = 1;
+
+    FILE *fp = fopen(filename, "r");
+    char c;
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+
+    bool password = false;
+
+    while (fscanf(fp, "%s %s %f", name, role, &payment) == 3)
+    {
+
+        printf("Consulta: %d\n\n", counter);
+        printf("Nome: %s\n", name);
+        printf("Cargo: %s\n", role);
+        printf("Salario: %0.2f\n", payment);
+        puts("-----------------------------------------------------------");
+
         counter++;
     }
     fclose(fp);
