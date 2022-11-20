@@ -118,13 +118,14 @@ int read_file(char filename[25], char content[256])
     return status;
 }
 
-void query_c_files(char filename[25])
+void query_c_files(char filename[25], int minimized)
 {
     char name[256];
     int age;
     char cpf[60];
-    int active;
-    int counter = 1;
+    char cep[60];
+
+    int gender;
 
     FILE *fp = fopen(filename, "r");
     char c;
@@ -135,18 +136,36 @@ void query_c_files(char filename[25])
 
     bool password = false;
 
-    while (fscanf(fp, "%s %d %s %d", name, &age, cpf, &active) == 4)
+    if (minimized != 1)
     {
+        int counter = 1;
 
-        printf("Consulta: %d\n\n", counter);
-        printf("Nome: %s\n", name);
-        printf("Idade: %d anos\n", age);
-        printf("CPF: %s\n", cpf);
-        (active == 1) ? printf("Ativo? Sim\n") : printf("Ativo? Nao\n");
-        puts("-----------------------------------------------------------");
+        while (fscanf(fp, "%s %d %d %s %s", name, &age, &gender, cpf, cep) == 5)
+        {
 
-        counter++;
+            printf("Consulta: %d\n\n", counter);
+            printf("Nome: %s\n", name);
+            printf("Idade: %d anos\n", age);
+            printf("Sexo: ");
+            (gender == 1) ? printf("Masculino\n") : printf("Feminino\n");
+            printf("CPF: %s\n", cpf);
+            printf("CEP: %s\n", cep);
+            puts("-----------------------------------------------------------");
+
+            counter++;
+        }
     }
+    else
+    {
+        int counter = 0;
+        printf("* LISTA DE CLIENTES *\n");
+        while (fscanf(fp, "%s %*d %*d %*s %*s", name) == 1)
+        {
+            printf("ID: %d | %s\n", counter, name);
+            counter++;
+        }
+    }
+
     fclose(fp);
 }
 
@@ -235,13 +254,12 @@ void file_capex(float valor_pc, float valor_monitores, float valor_mesas, float 
     fprintf(fp, "  -Valor: R$ %2.0f \n\n", valor_outros);
     fprintf(fp, "|TOTAL CAPEX\n");
     fprintf(fp, "   R$ %0.02f \n\n", total_CAPEX);
-    
 
     fclose(fp);
     wait_for_input("O arquivo foi criado com sucesso!\n");
 }
 
-void file_opex(float aluguel,float agua,float energia,float limpeza,float internet,float total_servicos,float impostos,float salario_adm,float salario_com,float salario_ope,float total_salarios,float total_OPEX)
+void file_opex(float aluguel, float agua, float energia, float limpeza, float internet, float total_servicos, float impostos, float salario_adm, float salario_com, float salario_ope, float total_salarios, float total_OPEX)
 {
     FILE *fp = fopen("relatories\\RelatorioOPEX.txt", "w+");
     fprintf(fp, "|------------------------------------------------------|\n");
@@ -251,38 +269,38 @@ void file_opex(float aluguel,float agua,float energia,float limpeza,float intern
     fprintf(fp, "|Aluguel\n");
     fprintf(fp, "  Endereço: R. dos Pardais - Vila Tatetuba, São J. Campos - 12220-600\n");
     fprintf(fp, "  Valor: R$ %0.02f \n\n", aluguel);
-// Serviços  
+    // Serviços
     fprintf(fp, "|Água e Saneamento\n");
     fprintf(fp, "  Distribuidora: CIA. DE SANEAMENTO BÁSICO DO ESTADO DE SÃO PAULO – SABESP\n");
     fprintf(fp, "  Valor: R$ %0.02f \n\n", agua);
-// Serviço de distruibição de Energia
+    // Serviço de distruibição de Energia
     fprintf(fp, "|Distribuição de Energia\n");
-	fprintf(fp, "  Distribuidora:  EDP ENERGIAS DO BRASIL S.A\n");
+    fprintf(fp, "  Distribuidora:  EDP ENERGIAS DO BRASIL S.A\n");
     fprintf(fp, "  Valor: R$ %0.02f \n\n", energia);
-    
-//Serviço dfp, e limpeza
-	fprintf(fp, "|Serviço de Limpeza\n");
-	fprintf(fp, "  Distribuidora: Milclean Comércio e Serviços \n");
+
+    // Serviço dfp, e limpeza
+    fprintf(fp, "|Serviço de Limpeza\n");
+    fprintf(fp, "  Distribuidora: Milclean Comércio e Serviços \n");
     fprintf(fp, "  Valor: R$ %0.02f \n\n", limpeza);
 
-//Sefrviço dfp, e Internet
-	fprintf(fp, "|Serviço de Internet\n");
-	fprintf(fp, "  Distribuidora:  Telefônica Brasil S/A VIVO\n");
+    // Sefrviço dfp, e Internet
+    fprintf(fp, "|Serviço de Internet\n");
+    fprintf(fp, "  Distribuidora:  Telefônica Brasil S/A VIVO\n");
     fprintf(fp, "  Valor: R$ %0.02f \n\n", internet);
-    fprintf(fp, "*|Total Valor de Serviços: R$ %0.02f|* \n\n",total_servicos);
-    
-// salarios fp, 
-	fprintf(fp, "|Salários\n");
-	fprintf(fp, "  Administrativo: R$ %0.02f \n",salario_adm);
+    fprintf(fp, "*|Total Valor de Serviços: R$ %0.02f|* \n\n", total_servicos);
+
+    // salarios fp,
+    fprintf(fp, "|Salários\n");
+    fprintf(fp, "  Administrativo: R$ %0.02f \n", salario_adm);
     fprintf(fp, "  Comercial R$ %0.02f \n", salario_com);
     fprintf(fp, "  Operacional: R$ %0.02f \n", salario_ope);
-	fprintf(fp, "|Total: R$ %0.02f| \n\n", total_salarios);
-// impostos 
-	fprintf(fp, "|Impostos\n");
-	fprintf(fp, "  Valor: R$ %0.02f| \n\n", impostos);
+    fprintf(fp, "|Total: R$ %0.02f| \n\n", total_salarios);
+    // impostos
+    fprintf(fp, "|Impostos\n");
+    fprintf(fp, "  Valor: R$ %0.02f| \n\n", impostos);
 
-	fprintf(fp, "|TOTAL OPEX\n");
- 	fprintf(fp, "   R$ %0.02f \n\n", total_OPEX);
+    fprintf(fp, "|TOTAL OPEX\n");
+    fprintf(fp, "   R$ %0.02f \n\n", total_OPEX);
 
     fclose(fp);
     wait_for_input("O arquivo foi criado com sucesso!\n");

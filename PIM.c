@@ -133,6 +133,8 @@ void register_screen() /* [2] CADASTRAR */
             register_work_form();
             break;
         case 3: /* CADASTRAR PERFIL */
+            system("cls");
+            register_profile_form();
             break;
         case 4:
             main_menu(); /* RETORNA AO MENU PRINCIPAL */
@@ -262,7 +264,7 @@ void edit_data_screen() /* [1] EDITAR DADOS */
     }
 }
 
-void admin_config_screen()
+void admin_config_screen() /* CONFIGURAÇÕES ADMINISTRATIVAS */
 {
     system("cls");
     admin_config_text(1);
@@ -279,14 +281,6 @@ void admin_config_screen()
             system("cls");
             check_register_status();
             admin_config_text(1);
-            break;
-        case 2: /* CLIENTES */
-            system("cls");
-
-            break;
-        case 3: /* PERFIS DE USUARIOS */
-            system("cls");
-
             break;
         case 4: /* RETORNA AO MENU PRINCIPAL */
             management_screen();

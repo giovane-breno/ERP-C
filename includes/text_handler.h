@@ -120,6 +120,22 @@ void register_customer_text(int type)
     }
 }
 
+void register_profile_text(int type)
+{
+    switch (type)
+    {
+    case 1:
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                   [CADASTRO DE PERFIL]                    |\n");
+        printf("|-----------------------------------------------------------|\n");
+        printf("OBS:\n* DADOS REFERENTES A 01 PERFIL DE CLIENTE! \n");
+        break;
+
+    default:
+        break;
+    }
+}
+
 void edit_data_text(int type)
 {
     switch (type)
