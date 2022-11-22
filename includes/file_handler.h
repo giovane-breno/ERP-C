@@ -231,8 +231,7 @@ char *query_infra_files(char filename[25])
     else
     {
         fscanf(fp, "%s %f\n%s %f\n%s %f\n%s %f\n%s %f\n%f\n%f", infrastructure.rent_adress, &infrastructure.rent_price, infrastructure.water_sender, &infrastructure.water_value, infrastructure.energy_sender, &infrastructure.energy_value, infrastructure.cleaning_sender, &infrastructure.cleaning_value, infrastructure.net_sender, &infrastructure.net_value, &infrastructure.tax, &infrastructure.total_value);
-        
-        
+
         puts("\n* ALUGUEL");
         printf("Endereco: %s", infrastructure.rent_adress);
         printf("\nValor: R$%0.2f", infrastructure.rent_price);
@@ -300,49 +299,81 @@ void file_capex(float valor_pc, float valor_monitores, float valor_mesas, float 
     wait_for_input("O arquivo foi criado com sucesso!\n");
 }
 
-void file_opex(float aluguel, float agua, float energia, float limpeza, float internet, float total_servicos, float impostos, float salario_adm, float salario_com, float salario_ope, float total_salarios, float total_OPEX)
+float sum_payment()
 {
-    FILE *fp = fopen("relatories\\RelatorioOPEX.txt", "w+");
-    fprintf(fp, "|------------------------------------------------------|\n");
-    fprintf(fp, "|                 RELATÓRIO OPEX                       |\n");
-    fprintf(fp, "|------------------------------------------------------|\n\n");
+    float result = 0;
+    float payment;
+    FILE *fp = fopen("files\\workers.txt", "r");
 
-    fprintf(fp, "|Aluguel\n");
-    fprintf(fp, "  Endereco: R. dos Pardais - Vila Tatetuba, São J. Campos - 12220-600\n");
-    fprintf(fp, "  Valor: R$ %0.02f \n\n", aluguel);
-    // Serviços
-    fprintf(fp, "|Água e Saneamento\n");
-    fprintf(fp, "  Distribuidora: CIA. DE SANEAMENTO BÁSICO DO ESTADO DE SÃO PAULO – SABESP\n");
-    fprintf(fp, "  Valor: R$ %0.02f \n\n", agua);
-    // Serviço de distruibição de Energia
-    fprintf(fp, "|Distribuição de Energia\n");
-    fprintf(fp, "  Distribuidora:  EDP ENERGIAS DO BRASIL S.A\n");
-    fprintf(fp, "  Valor: R$ %0.02f \n\n", energia);
-
-    // Serviço dfp, e limpeza
-    fprintf(fp, "|Serviço de Limpeza\n");
-    fprintf(fp, "  Distribuidora: Milclean Comércio e Serviços \n");
-    fprintf(fp, "  Valor: R$ %0.02f \n\n", limpeza);
-
-    // Sefrviço dfp, e Internet
-    fprintf(fp, "|Serviço de Internet\n");
-    fprintf(fp, "  Distribuidora:  Telefônica Brasil S/A VIVO\n");
-    fprintf(fp, "  Valor: R$ %0.02f \n\n", internet);
-    fprintf(fp, "*|Total Valor de Serviços: R$ %0.02f|* \n\n", total_servicos);
-
-    // salarios fp,
-    fprintf(fp, "|Salários\n");
-    fprintf(fp, "  Administrativo: R$ %0.02f \n", salario_adm);
-    fprintf(fp, "  Comercial R$ %0.02f \n", salario_com);
-    fprintf(fp, "  Operacional: R$ %0.02f \n", salario_ope);
-    fprintf(fp, "|Total: R$ %0.02f| \n\n", total_salarios);
-    // impostos
-    fprintf(fp, "|Impostos\n");
-    fprintf(fp, "  Valor: R$ %0.02f| \n\n", impostos);
-
-    fprintf(fp, "|TOTAL OPEX\n");
-    fprintf(fp, "   R$ %0.02f \n\n", total_OPEX);
-
+    while (fscanf(fp, "%*s %*s %f", &payment) == 1)
+    {
+        result += payment;
+    }
     fclose(fp);
-    wait_for_input("O arquivo foi criado com sucesso!\n");
+    return payment;
+}
+
+void file_opex()
+{
+    struct Infrastructure infrastructure;
+    float payment = sum_payment();
+
+    FILE *fp1 = fopen("files\\infrastructure.txt", "r");
+    char name[256];
+    if (!fp1)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+    else
+    {
+        fscanf(fp1, "%s %f\n%s %f\n%s %f\n%s %f\n%s %f\n%f\n%f", infrastructure.rent_adress, &infrastructure.rent_price, infrastructure.water_sender, &infrastructure.water_value, infrastructure.energy_sender, &infrastructure.energy_value, infrastructure.cleaning_sender, &infrastructure.cleaning_value, infrastructure.net_sender, &infrastructure.net_value, &infrastructure.tax, &infrastructure.total_value);
+        add_whitespace(infrastructure.rent_adress);
+        add_whitespace(infrastructure.water_sender);
+        add_whitespace(infrastructure.energy_sender);
+        add_whitespace(infrastructure.cleaning_sender);
+        add_whitespace(infrastructure.net_sender);
+
+        FILE *fp = fopen("relatories\\RelatorioOPEX.txt", "w+");
+        fprintf(fp, "|------------------------------------------------------|\n");
+        fprintf(fp, "|                 RELATÓRIO OPEX                       |\n");
+        fprintf(fp, "|------------------------------------------------------|\n\n");
+
+        fprintf(fp, "|Aluguel\n");
+        fprintf(fp, "  Endereco: %s\n", infrastructure.rent_adress);
+        fprintf(fp, "  Valor: R$ %0.02f \n\n", infrastructure.rent_price);
+        // Serviços
+        fprintf(fp, "|Água e Saneamento\n");
+        fprintf(fp, "  Distribuidora: %s\n", infrastructure.water_sender);
+        fprintf(fp, "  Valor: R$ %0.02f \n\n", infrastructure.water_value);
+
+        // Serviço de distruibição de Energia
+        fprintf(fp, "|Distribuição de Energia\n");
+        fprintf(fp, "  Distribuidora:  %s\n", infrastructure.energy_sender);
+        fprintf(fp, "  Valor: R$ %0.02f \n\n", infrastructure.energy_value);
+
+        // Serviço dfp, e limpeza
+        fprintf(fp, "|Servico de Limpeza\n");
+        fprintf(fp, "  Distribuidora: %s\n", infrastructure.cleaning_sender);
+        fprintf(fp, "  Valor: R$ %0.02f \n\n", infrastructure.cleaning_value);
+
+        // Sefrviço dfp, e Internet
+        fprintf(fp, "|Servico de Internet\n");
+        fprintf(fp, "  Distribuidora:  %s\n", infrastructure.net_sender);
+        fprintf(fp, "  Valor: R$ %0.02f \n\n", infrastructure.net_value);
+        fprintf(fp, "*|Total Valor de Serviços: R$ %0.02f|* \n\n", infrastructure.total_value);
+
+        // salarios fp,
+        fprintf(fp, "|Salários\n");
+        fprintf(fp, "  Funcionarios: R$ %0.02f \n", payment);
+
+        // impostos
+        fprintf(fp, "\n|Impostos\n");
+        fprintf(fp, "  Valor: R$ %0.02f| \n\n", infrastructure.tax);
+
+        fprintf(fp, "|TOTAL OPEX\n");
+        fprintf(fp, "   R$ %0.02f \n\n", infrastructure.total_value + payment);
+
+        fclose(fp);
+        wait_for_input("O arquivo foi criado com sucesso!\n");
+    }
 }

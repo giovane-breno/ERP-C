@@ -636,7 +636,7 @@ void relatory_opex()
     if (resposta == 1)
     {
         system("cls");
-        file_opex(aluguel, agua, energia, limpeza, internet, total_servicos, impostos, salario_adm, salario_com, salario_ope, total_salarios, total_OPEX);
+        file_opex();
     }
     relatories_screen();
 }

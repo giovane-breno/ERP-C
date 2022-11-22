@@ -1,7 +1,7 @@
-a 3,00
-a 2,00
-a 1,00
-s 3,00
-f 4,00
-123,00
-122
+R._dos_Pardais_-_Vila_Tatetuba,_SÆo_J._Campos_-_12220-600 1400,63
+CIA._DE_SANEAMENTO_BµSICO_DO_ESTADO_DE_SÇO_PAULO_-_SABESP 230,02
+EDP_ENERGIAS_DO_BRASIL_S.A 674,98
+Milclean_Com‚rcio_e_Servi‡os 337,45
+Telef“nica_Brasil_S/A_VIVO 545,01
+753,00
+3941,09
