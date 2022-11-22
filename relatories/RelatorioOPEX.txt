@@ -3,7 +3,7 @@
 |------------------------------------------------------|
 
 |Aluguel
-  Endereço: R. dos Pardais - Vila Tatetuba, São J. Campos - 12220-600
+  Endereco: R. dos Pardais - Vila Tatetuba, São J. Campos - 12220-600
   Valor: R$ 1400,63 
 
 |Água e Saneamento

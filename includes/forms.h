@@ -3,10 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <conio.h>
-
-#include "authentication.h"
-#include "text_handler.h"
-#include "others.h"
+#include <locale.h>
 
 struct Users
 {
@@ -39,6 +36,31 @@ struct Profiles
     char point_of_relevancy[256]; /* PONTO DE RELEVANCIA PARA ENCOMENDA, CARACTERISCAS PARA COMPRAR*/
     int active;                   /* USUARIO ATIVO OU NAO */
 };
+
+struct Infrastructure
+{
+    char rent_adress[256];
+    float rent_price;
+
+    char water_sender[256];
+    float water_value;
+
+    char energy_sender[256];
+    float energy_value;
+
+    char cleaning_sender[256];
+    float cleaning_value;
+
+    char net_sender[256];
+    float net_value;
+
+    float tax;
+    float total_value;
+};
+
+#include "authentication.h"
+#include "text_handler.h"
+#include "others.h"
 
 void register_profile_form()
 {
@@ -137,7 +159,7 @@ void register_profile_form()
 
     sprintf(profile_data, "%d %d %d %s %d", profile.customer_id, profile.domestic_or_commercial, profile.pickup_or_delivery, profile.reason_of_buying, profile.active);
     system("cls");
-    status = create_file("files\\profiles.txt", profile_data);
+    status = create_file("files\\profiles.txt", profile_data, 'a');
 
     if (status)
     {
@@ -271,7 +293,7 @@ void register_work_form()
 
     sprintf(worker_data, "%s %s %.2f", worker.name, worker.role, worker.payment);
     system("cls");
-    status = create_file("files\\workers.txt", worker_data);
+    status = create_file("files\\workers.txt", worker_data, 'a');
 
     if (status)
     {
@@ -283,6 +305,152 @@ void register_work_form()
     }
 
     register_screen();
+}
+
+void register_infra_form()
+{
+    struct Infrastructure infrastructure;
+    char infra_data[256];
+
+    int status = 0;
+    int correct_data;
+
+    while (true)
+    {
+        system("cls");
+        fflush(stdin);
+        infra_text(1);
+        puts("\n* ALUGUEL ");
+        printf("Endereco: ");
+        gets(infrastructure.rent_adress);
+        remove_whitespace(infrastructure.rent_adress);
+        printf("Valor: R$ ");
+        scanf("%f", &infrastructure.rent_price);
+
+        system("cls");
+        fflush(stdin);
+        infra_text(1);
+        puts("\n* AGUA E SANEAMENTO ");
+        printf("Distribuidora: ");
+        gets(infrastructure.water_sender);
+        remove_whitespace(infrastructure.water_sender);
+        printf("Valor: R$ ");
+        scanf("%f", &infrastructure.water_value);
+
+        system("cls");
+        fflush(stdin);
+        infra_text(1);
+        puts("\n* DISTRIBUICAO DE ENERGIA ");
+        printf("Distribuidora: ");
+        gets(infrastructure.energy_sender);
+        remove_whitespace(infrastructure.energy_sender);
+        printf("Valor: R$ ");
+        scanf("%f", &infrastructure.energy_value);
+
+        system("cls");
+        fflush(stdin);
+        infra_text(1);
+        puts("\n* SERVICO DE LIMPEZA ");
+        printf("Distribuidora: ");
+        gets(infrastructure.cleaning_sender);
+        remove_whitespace(infrastructure.cleaning_sender);
+        printf("Valor: R$ ");
+        scanf("%f", &infrastructure.cleaning_value);
+
+        system("cls");
+        fflush(stdin);
+        infra_text(1);
+        puts("\n* SERVICO DE INTERNET ");
+        printf("Distribuidora: ");
+        gets(infrastructure.net_sender);
+        remove_whitespace(infrastructure.net_sender);
+        printf("Valor: R$ ");
+        scanf("%f", &infrastructure.net_value);
+
+        system("cls");
+        fflush(stdin);
+        infra_text(1);
+        puts("\n* TAXAS ");
+        printf("Imposto: ");
+        scanf("%f", &infrastructure.tax);
+
+        infrastructure.total_value = infrastructure.rent_price + infrastructure.water_value + infrastructure.energy_value + infrastructure.cleaning_value + infrastructure.net_value + infrastructure.tax;
+        add_whitespace(infrastructure.rent_adress);
+        add_whitespace(infrastructure.water_sender);
+        add_whitespace(infrastructure.energy_sender);
+        add_whitespace(infrastructure.cleaning_sender);
+        add_whitespace(infrastructure.net_sender);
+
+        do
+        {
+            system("cls");
+            infra_text(1);
+            puts("\nConfirme se os dados abaixo estao corretos:");
+            puts("\n* ALUGUEL");
+            printf("Endereco: %s", infrastructure.rent_adress);
+            printf("\nValor: R$%0.2f", infrastructure.rent_price);
+
+            puts("\n\n* AGUA E SANEAMENTO");
+            printf("Distribuidora: %s", infrastructure.water_sender);
+            printf("\nValor: R$%0.2f", infrastructure.water_value);
+
+            puts("\n\n* DISTRIBUICAO DE ENERGIA");
+            printf("Distribuidora: %s", infrastructure.energy_sender);
+            printf("\nValor: R$%0.2f", infrastructure.energy_value);
+
+            puts("\n\n* SERVICO DE LIMPEZA");
+            printf("Distribuidora: %s", infrastructure.cleaning_sender);
+            printf("\nValor: R$%0.2f", infrastructure.cleaning_value);
+
+            puts("\n\n* SERVICO DE INTERNET");
+            printf("Distribuidora: %s", infrastructure.net_sender);
+            printf("\nValor: R$%0.2f", infrastructure.net_value);
+
+            puts("\n\n* TAXAS");
+            printf("Imposto: %0.2f\n", infrastructure.tax);
+            printf("Valor Total: %0.2f", infrastructure.total_value);
+
+            puts("\n\nCorretos?\n[1] - Sim\n[2] - Nao\n");
+            scanf("%d", &correct_data);
+
+            if (correct_data == 1 || correct_data == 2)
+                break;
+        } while (true);
+
+        if (correct_data == 1)
+            break;
+    }
+
+    remove_whitespace(infrastructure.rent_adress);
+    remove_whitespace(infrastructure.water_sender);
+    remove_whitespace(infrastructure.energy_sender);
+    remove_whitespace(infrastructure.cleaning_sender);
+    remove_whitespace(infrastructure.net_sender);
+
+    sprintf(infra_data, "%s %0.2f\n%s %0.2f\n%s %0.2f\n%s %0.2f\n%s %0.2f\n%0.2f\n%0.2f", infrastructure.rent_adress, infrastructure.rent_price, infrastructure.water_sender, infrastructure.water_value, infrastructure.energy_sender, infrastructure.energy_value, infrastructure.cleaning_sender, infrastructure.cleaning_value, infrastructure.net_sender, infrastructure.net_value, infrastructure.tax, infrastructure.total_value);
+    system("cls");
+    status = create_file("files\\infrastructure.txt", infra_data, "w+");
+
+    if (status)
+    {
+        wait_for_input("\nInfraestrutura cadastrada com sucesso!\n");
+    }
+    else
+    {
+        wait_for_input("\n");
+    }
+
+    infra_screen();
+}
+
+void show_infra_form()
+{
+
+    infra_text(2);
+    query_infra_files("files\\infrastructure.txt");
+
+    wait_for_input("\nDados de Infraestrutura impressos com sucesso!\n");
+    infra_screen();
 }
 
 void register_customer_form()
@@ -364,7 +532,7 @@ void register_customer_form()
 
     sprintf(customer_data, "%s %d %d %s %s", customer.name, customer.age, customer.gender, customer.cpf, customer.cep);
     system("cls");
-    status = create_file("files\\customers.txt", customer_data);
+    status = create_file("files\\customers.txt", customer_data, 'a');
 
     if (status)
     {

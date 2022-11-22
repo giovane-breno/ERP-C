@@ -73,10 +73,10 @@ void check_register_status()
     system("cls");
 }
 
-int create_file(char filename[25], char content[256])
+int create_file(char filename[25], char content[256], char method[2])
 {
     int status = 0;
-    FILE *fp = fopen(filename, "a");
+    FILE *fp = fopen(filename, method);
     if (!fp)
     {
         printf("Erro na abertura do arquivo!");
@@ -218,6 +218,47 @@ void query_users_files(char filename[25])
     fclose(fp);
 }
 
+char *query_infra_files(char filename[25])
+{
+    struct Infrastructure infrastructure;
+
+    FILE *fp = fopen(filename, "r");
+    char name[256];
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+    else
+    {
+        fscanf(fp, "%s %f\n%s %f\n%s %f\n%s %f\n%s %f\n%f\n%f", infrastructure.rent_adress, &infrastructure.rent_price, infrastructure.water_sender, &infrastructure.water_value, infrastructure.energy_sender, &infrastructure.energy_value, infrastructure.cleaning_sender, &infrastructure.cleaning_value, infrastructure.net_sender, &infrastructure.net_value, &infrastructure.tax, &infrastructure.total_value);
+        
+        
+        puts("\n* ALUGUEL");
+        printf("Endereco: %s", infrastructure.rent_adress);
+        printf("\nValor: R$%0.2f", infrastructure.rent_price);
+
+        puts("\n\n* AGUA E SANEAMENTO");
+        printf("Distribuidora: %s", infrastructure.water_sender);
+        printf("\nValor: R$%0.2f", infrastructure.water_value);
+
+        puts("\n\n* DISTRIBUICAO DE ENERGIA");
+        printf("Distribuidora: %s", infrastructure.energy_sender);
+        printf("\nValor: R$%0.2f", infrastructure.energy_value);
+
+        puts("\n\n* SERVICO DE LIMPEZA");
+        printf("Distribuidora: %s", infrastructure.cleaning_sender);
+        printf("\nValor: R$%0.2f", infrastructure.cleaning_value);
+
+        puts("\n\n* SERVICO DE INTERNET");
+        printf("Distribuidora: %s", infrastructure.net_sender);
+        printf("\nValor: R$%0.2f", infrastructure.net_value);
+
+        puts("\n\n* TAXAS");
+        printf("Imposto: R$%0.2f", infrastructure.tax);
+        printf("\nValor Total: R$%0.2f\n", infrastructure.total_value);
+    }
+}
+
 void file_capex(float valor_pc, float valor_monitores, float valor_mesas, float valor_cadeiras, float valor_outros, float total_CAPEX)
 {
     FILE *fp = fopen("relatories\\RelatorioCapex.txt", "w+");
@@ -267,7 +308,7 @@ void file_opex(float aluguel, float agua, float energia, float limpeza, float in
     fprintf(fp, "|------------------------------------------------------|\n\n");
 
     fprintf(fp, "|Aluguel\n");
-    fprintf(fp, "  Endereço: R. dos Pardais - Vila Tatetuba, São J. Campos - 12220-600\n");
+    fprintf(fp, "  Endereco: R. dos Pardais - Vila Tatetuba, São J. Campos - 12220-600\n");
     fprintf(fp, "  Valor: R$ %0.02f \n\n", aluguel);
     // Serviços
     fprintf(fp, "|Água e Saneamento\n");

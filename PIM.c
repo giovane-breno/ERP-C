@@ -2,13 +2,13 @@
  * Universidade Paulista (UNIP)
  * Análise e Desevolvimento de Sistemas - Data de Entrega:
  *
- * Autores do Projeto: Giovane Breno Pereira Barbosa
+ * Autores do Projeto: Giovane Breno Pereira Barbosa [N8713B-5]
  *                     Levi Custódio Kodaria Leão
  *                     Matheus Felix Barbosa
  *                     Allan Pereira Lopes
  *                     Giovana Chiquinni Primon
  * Turma: DS2R48
- * PROJETO INTEGRADO INTERDISCIPLINAR
+ * PROJETO INTEGRADO MULTIDISCIPLINAR
  * Observação: <colocar se houver>
  *
  * PIM.c
@@ -24,7 +24,6 @@
 
 int main()
 {
-
     setlocale(LC_ALL, "Portuguese");
     login();
     return 0;
@@ -112,13 +111,80 @@ void main_menu()
     }
 }
 
-void register_screen() /* [2] CADASTRAR */
+void register_screen() /* [2] CADASTROS */
 {
     int option = 0;
     int end_loop = 0;
 
     system("cls");
     main_menu_text(2);
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* ESTOQUE */
+            system("cls");
+            break;
+        case 2: /* INFRAESTRUTURA */
+            infra_screen();
+            system("cls");
+            break;
+        case 3: /* RECURSOS HUMANOS */
+            human_register_screen();
+            system("cls");
+            break;
+        case 4:
+            main_menu(); /* RETORNA AO MENU PRINCIPAL */
+            break;
+        default:
+            system("cls");
+            main_menu_text(2);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void infra_screen()
+{
+    int option = 0;
+    int end_loop = 0;
+
+    system("cls");
+    register_options_text(1);
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* CADASTRAR INFORMACOES */
+            system("cls");
+            register_infra_form();
+            break;
+        case 2: /* VISUALIZAR INFORMACOES*/
+            system("cls");
+            show_infra_form();
+            break;
+        case 3:                /* VOLTAR */
+            register_screen(); /* RETORNA AO MENU PRINCIPAL */
+            break;
+        default:
+            system("cls");
+            main_menu_text(2);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void human_register_screen() /* [2] RECURSOS HUMANOS */
+{
+    int option = 0;
+    int end_loop = 0;
+
+    system("cls");
+    main_menu_text(5);
     while (!end_loop)
     {
         scanf("%i", &option);
@@ -137,7 +203,7 @@ void register_screen() /* [2] CADASTRAR */
             register_profile_form();
             break;
         case 4:
-            main_menu(); /* RETORNA AO MENU PRINCIPAL */
+            register_screen(); /* RETORNA AO MENU PRINCIPAL */
             break;
         default:
             system("cls");
@@ -315,12 +381,12 @@ void relatories_screen()
         case 2: /* Relatório OPEX  */
             system("cls");
             relatory_opex();
-            
+
             break;
         case 3: /* Relatório CAPEX & OPEX */
             system("cls");
             relatory_capex_opex();
-        
+
             break;
         case 4: /* Voltar */
             management_screen();

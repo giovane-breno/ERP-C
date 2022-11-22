@@ -19,3 +19,13 @@ void remove_whitespace(char var[256]){
         ptr++;
     }
 }
+
+void add_whitespace(char var[256]){
+    char *ptr = var;
+    while (*ptr)
+    {
+        if (*ptr == '_')
+            *ptr = ' ';
+        ptr++;
+    }
+}
