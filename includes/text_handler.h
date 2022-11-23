@@ -62,11 +62,10 @@ void main_menu_text(int type)
         printf("|                     [CONSULTAS]                           |\n");
         printf("|-----------------------------------------------------------|\n");
         printf("|                                                           |\n");
-        printf("|                [1] - Consultar Clientes                   |\n");
-        printf("|                [2] - Consultar Funcionarios               |\n");
-        printf("|                [3] - Consultar Perfis                     |\n");
-        printf("|                [4] - Consultar Usuarios                   |\n");
-        printf("|                [5] - Voltar                               |\n");
+        printf("|                [1] - Estoque                              |\n");
+        printf("|                [2] - Infraestrutura                       |\n");
+        printf("|                [3] - Recursos Humanos                     |\n");
+        printf("|                [4] - Voltar                               |\n");
         printf("|                                                           |\n");
         printf("|-----------------------------------------------------------|\n");
         break;
@@ -84,17 +83,52 @@ void main_menu_text(int type)
         printf("|-----------------------------------------------------------|\n");
         break;
     case 5:
+
+        break;
+    default:
+        break;
+    }
+}
+
+void query_human_text(int type)
+{
+    switch (type)
+    {
+    case 1:
         printf("|-----------------------------------------------------------|\n");
-        printf("|             [CADASTROS - RECURSOS HUMANOS]                |\n");
+        printf("|               [CONSULTAS - RECURSOS HUMANOS]              |\n");
         printf("|-----------------------------------------------------------|\n");
         printf("|                                                           |\n");
-        printf("|                [1] - Cadastrar Cliente                    |\n");
-        printf("|                [2] - Cadastrar Funcionario                |\n");
-        printf("|                [3] - Cadastrar Perfil                     |\n");
-        printf("|                [4] - Voltar                               |\n");
+        printf("|                [1] - Consultar Clientes                   |\n");
+        printf("|                [2] - Consultar Funcionarios               |\n");
+        printf("|                [3] - Consultar Perfis                     |\n");
+        printf("|                [4] - Consultar Usuarios                   |\n");
+        printf("|                [5] - Voltar                               |\n");
         printf("|                                                           |\n");
         printf("|-----------------------------------------------------------|\n");
         break;
+
+    case 2:
+        printf("|-----------------------------------------------------------|\n");
+        printf("|              [CONSULTAS - INFRAESTRUTURA]                 |\n");
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                                                           |\n");
+        printf("|                [1] - Visualizar Informacoes               |\n");
+        printf("|                [2] - Voltar                               |\n");
+        printf("|                                                           |\n");
+        printf("|-----------------------------------------------------------|\n");
+        break;
+    case 3:
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                  [CONSULTAS - ESTOQUE]                    |\n");
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                                                           |\n");
+        printf("|                [1] - Visualizar Estoque                   |\n");
+        printf("|                [2] - Voltar                               |\n");
+        printf("|                                                           |\n");
+        printf("|-----------------------------------------------------------|\n");
+        break;
+
     default:
         break;
     }
@@ -110,7 +144,29 @@ void register_options_text(int type)
         printf("|-----------------------------------------------------------|\n");
         printf("|                                                           |\n");
         printf("|                [1] - Cadastrar Informacoes                |\n");
-        printf("|                [2] - Visualizar Informacoes               |\n");
+        printf("|                [2] - Voltar                               |\n");
+        printf("|                                                           |\n");
+        printf("|-----------------------------------------------------------|\n");
+        break;
+    case 2:
+        printf("|-----------------------------------------------------------|\n");
+        printf("|             [CADASTROS - RECURSOS HUMANOS]                |\n");
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                                                           |\n");
+        printf("|                [1] - Cadastrar Cliente                    |\n");
+        printf("|                [2] - Cadastrar Funcionario                |\n");
+        printf("|                [3] - Cadastrar Perfil                     |\n");
+        printf("|                [4] - Voltar                               |\n");
+        printf("|                                                           |\n");
+        printf("|-----------------------------------------------------------|\n");
+        break;
+    case 3:
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                  [CADASTROS - ESTOQUE]                    |\n");
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                                                           |\n");
+        printf("|                [1] - Cadastrar Categoria                  |\n");
+        printf("|                [2] - Cadastrar Item                       |\n");
         printf("|                [3] - Voltar                               |\n");
         printf("|                                                           |\n");
         printf("|-----------------------------------------------------------|\n");
@@ -136,6 +192,32 @@ void infra_text(int type)
         printf("|-----------------------------------------------------------|\n");
         break;
 
+    default:
+        break;
+    }
+}
+
+void category_text(int type)
+{
+    switch (type)
+    {
+    case 1:
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                 [CADASTRO DE CATEGORIA]                   |\n");
+        printf("|-----------------------------------------------------------|\n");
+        printf("OBS:\n* DADOS REFERENTES A 01 CATEGORIA! \n");
+        break;
+    case 2:
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                  [CADASTRO DE ESTOQUE]                    |\n");
+        printf("|-----------------------------------------------------------|\n");
+        printf("OBS:\n* DADOS REFERENTES A 01 ITEM! \n");
+        break;
+    case 3:
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                   [VISUALIZAR ESTOQUE]                    |\n");
+        printf("|-----------------------------------------------------------|\n");
+        break;
     default:
         break;
     }

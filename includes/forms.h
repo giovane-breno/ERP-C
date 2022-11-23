@@ -58,6 +58,17 @@ struct Infrastructure
     float total_value;
 };
 
+struct Storage
+{
+    int category;
+    char brand[256];
+    char model[256];
+    char supplier[256];
+
+    int amount;
+    float price;
+};
+
 #include "relatories.h"
 #include "authentication.h"
 #include "text_handler.h"
@@ -230,7 +241,7 @@ void query_users(char filename[128])
     query_users_files(filename);
     wait_for_input("\nLista de usuarios impressa com sucesso!\n");
     system("cls");
-    main_menu_text(3); /* RETORNA AO MENU APÓS CLIQUE */
+    main_menu_text(2); /* RETORNA AO MENU APÓS CLIQUE */
 }
 
 void query_customers(char filename[128])
@@ -238,7 +249,7 @@ void query_customers(char filename[128])
     query_c_files(filename, 0);
     wait_for_input("\nLista de clientes impressa com sucesso!\n");
     system("cls");
-    main_menu_text(3); /* RETORNA AO MENU APÓS CLIQUE */
+    main_menu_text(2); /* RETORNA AO MENU APÓS CLIQUE */
 }
 
 void query_workers(char filename[128])
@@ -246,7 +257,7 @@ void query_workers(char filename[128])
     query_w_files(filename);
     wait_for_input("\nLista de funcionarios impressa com sucesso!\n");
     system("cls");
-    main_menu_text(3); /* RETORNA AO MENU APÓS CLIQUE */
+    main_menu_text(2); /* RETORNA AO MENU APÓS CLIQUE */
 }
 
 void register_work_form()
@@ -451,7 +462,7 @@ void show_infra_form()
     query_infra_files("files\\infrastructure.txt");
 
     wait_for_input("\nDados de Infraestrutura impressos com sucesso!\n");
-    infra_screen();
+    query_infra_screen();
 }
 
 void register_customer_form()
@@ -533,7 +544,7 @@ void register_customer_form()
 
     sprintf(customer_data, "%s %d %d %s %s", customer.name, customer.age, customer.gender, customer.cpf, customer.cep);
     system("cls");
-    status = create_file("files\\customers.txt", customer_data, 'a');
+    status = create_file("files\\customers.txt", customer_data, "a");
 
     if (status)
     {
@@ -547,31 +558,173 @@ void register_customer_form()
     register_screen();
 }
 
+void register_category_form()
+{
+    char category[256];
+    int correct_data = 0;
+    int status = 0;
+    while (true)
+    {
+        system("cls");
+        fflush(stdin);
+        category_text(1);
+        printf("\nCategoria: ");
+        gets(category);
+        remove_whitespace(category);
+
+        do
+        {
+            system("cls");
+            category_text(1);
+            puts("\nConfirme se os dados abaixo estao corretos:");
+            printf("\nCategoria: %s", category);
+
+            puts("\n\nCorretos?\n[1] - Sim\n[2] - Nao\n");
+            scanf("%d", &correct_data);
+
+            if (correct_data == 1 || correct_data == 2)
+                break;
+        } while (true);
+
+        if (correct_data == 1)
+            break;
+    }
+    system("cls");
+    status = create_file("files\\categories.txt", category, "a");
+
+    if (status)
+    {
+        wait_for_input("\nCategoria cadastrada com sucesso!\n");
+    }
+    else
+    {
+        wait_for_input("\n");
+    }
+
+    storage_screen();
+}
+
+void register_item_form()
+{
+    struct Storage item;
+
+    char item_data[256];
+    int correct_data = 0;
+    int status = 0;
+    int answer = 0;
+
+    system("cls");
+    fflush(stdin);
+    register_profile_text(1);
+    puts("\nImprimir lista de categorias?\n [1] - Sim | [2] - Nao");
+    scanf("%d", &answer);
+
+    if (answer == 1)
+    {
+        system("cls");
+        query_cat_files("files\\categories.txt", 0);
+
+        wait_for_input("\nCategorias impressa com sucesso!\n");
+    }
+
+    while (true)
+    {
+        system("cls");
+        fflush(stdin);
+        category_text(2);
+        printf("\nID da Categoria: ");
+        scanf("%d", &item.category);
+
+        system("cls");
+        fflush(stdin);
+        category_text(2);
+        printf("\nFornecedor: ");
+        gets(item.supplier);
+        remove_whitespace(item.supplier);
+
+        system("cls");
+        fflush(stdin);
+        category_text(2);
+        printf("\nMarca: ");
+        gets(item.brand);
+        remove_whitespace(item.brand);
+
+        system("cls");
+        fflush(stdin);
+        category_text(2);
+        printf("\nModelo: ");
+        gets(item.model);
+        remove_whitespace(item.model);
+
+        system("cls");
+        fflush(stdin);
+        category_text(2);
+        printf("\nQuantidade: ");
+        scanf("%d", &item.amount);
+
+        system("cls");
+        fflush(stdin);
+        category_text(2);
+        printf("\nValor Unitario: ");
+        scanf("%f", &item.price);
+
+        do
+        {
+            system("cls");
+            category_text(2);
+            puts("\nConfirme se os dados abaixo estao corretos:");
+            printf("\nCategoria: %s", getCategory(item.category));
+            printf("\nFornecedor: %s", item.supplier);
+            printf("\nMarca:  %s", item.brand);
+            printf("\nModelo:  %s", item.model);
+            printf("\nQuantidade:  %d", item.amount);
+            printf("\nValor Unitario: R$ %0.2f", item.price);
+
+            puts("\n\nCorretos?\n[1] - Sim\n[2] - Nao\n");
+            scanf("%d", &correct_data);
+
+            if (correct_data == 1 || correct_data == 2)
+                break;
+        } while (true);
+
+        if (correct_data == 1)
+            break;
+    }
+    system("cls");
+
+    sprintf(item_data, "%d %s %s %s %d %0.2f", item.category, item.supplier, item.brand, item.model, item.amount, item.price);
+
+    status = create_file("files\\items.txt", item_data, "a");
+    if (status)
+    {
+        wait_for_input("\nCategoria cadastrada com sucesso!\n");
+    }
+    else
+    {
+        wait_for_input("\n");
+    }
+
+    storage_screen();
+}
+
+void show_storage_form()
+{
+    system("cls");
+    category_text(3);
+    query_storage_files("files\\items.txt", 0);
+
+    wait_for_input("\nDados de Estoque impressos com sucesso!\n");
+    query_storage_screen();
+}
+
 void relatory_capex()
 {
     int resposta;
-    // Variáveis globais (Capex)
-    float valor_pc = 30000;
-    float valor_monitores = 3493.90;
-    float valor_mesas = 2500.00;
-    float valor_cadeiras = 2500.00;
-    float valor_outros = 2500.00;
-    float total_CAPEX = valor_pc + valor_monitores + valor_mesas + valor_cadeiras + valor_outros;
 
     relatories_text(2);
 
-    printf("|Computadores\n");
-    printf("|R$ %2.0f \n\n", valor_pc);
-    printf("|Monitores\n");
-    printf("|R$ %0.2f \n\n", valor_monitores);
-    printf("|Mesas\n");
-    printf("|R$ %2.0f \n\n", valor_mesas);
-    printf("|Cadeiras\n");
-    printf("|R$ %2.0f \n\n", valor_cadeiras);
-    printf("|Outros\n");
-    printf("|R$ %2.0f \n\n", valor_outros);
+    query_storage_files("files\\items.txt", 1);
 
-    printf("|TOTAL CAPEX -> R$ %0.2f|\n\n", total_CAPEX);
     printf("Deseja exportar o relatorio com mais informacoes? \n");
     // printf("Digite 1 para Sim, ou 2 para Nï¿½o <1/2> \n");
 
@@ -583,7 +736,7 @@ void relatory_capex()
     if (resposta == 1)
     {
         system("cls");
-        file_capex(valor_pc, valor_monitores, valor_mesas, valor_cadeiras, valor_outros, total_CAPEX);
+        file_capex();
     }
 
     relatories_screen();
@@ -612,7 +765,7 @@ void relatory_opex()
     printf("* ALUGUEL\n");
     printf("  R$ %0.2f \n\n", rent[0]);
 
-    // total OPEX
+    // Total OPEX
     printf("TOTAL OPEX -> R$ %0.2f\n\n", payment + rent[1] + services);
 
     printf("Deseja exportar o relatorio com mais informacoes? \n");
@@ -632,35 +785,15 @@ void relatory_opex()
 
 void relatory_capex_opex()
 {
-    // capex
-    float valor_pc = 30000;
-    float valor_monitores = 3493.90;
-    float valor_mesas = 2500.00;
-    float valor_cadeiras = 2500.00;
-    float valor_outros = 2500.00;
-    float total_CAPEX = valor_pc + valor_monitores + valor_mesas + valor_cadeiras + valor_outros;
-
-    // Opex
-    float aluguel = 1400.63;
-    float agua = 230.02;
-    float energia = 674.98;
-    float limpeza = 337.45;
-    float internet = 545.01;
-    float total_servicos = agua + energia + limpeza + internet;
-    float impostos = 753.00;
-    float salario_adm = 9984.60;
-    float salario_com = 8619.69;
-    float salario_ope = 11294.71;
-    float total_salarios = salario_adm + salario_com + salario_ope;
-    float total_OPEX = aluguel + total_servicos + total_salarios + impostos;
-
+    float total_CAPEX = sum_capex();
+    float total_OPEX = sum_opex();
     relatories_text(4);
 
-    printf("|CAPEX \n");
-    printf("|TOTAL CAPEX -> R$ %0.2f\n\n", total_CAPEX);
+    printf("* CAPEX \n");
+    printf("  TOTAL CAPEX -> R$ %0.2f\n\n", total_CAPEX);
 
-    printf("|OPEX  \n");
-    printf("|TOTAL OPEX -> R$ %0.2f\n\n", total_OPEX);
+    printf("* OPEX  \n");
+    printf("  TOTAL OPEX -> R$ %0.2f\n\n", total_OPEX);
     wait_for_input("");
 
     relatories_screen();

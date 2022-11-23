@@ -54,3 +54,27 @@ float *rent_and_tax()
     result[1] = tax;
     return result;
 }
+
+float sum_opex()
+{
+    struct Storage item;
+    float result = 0;
+
+    FILE *fp = fopen("files\\items.txt", "r");
+    while (fscanf(fp, "%*d %*s %*s %*s %d %f", &item.amount, &item.price) == 2)
+    {
+        result += (item.amount * item.price);
+    }
+    fclose(fp);
+    return result;
+}
+
+float sum_capex()
+{
+    float result;
+    FILE *fp = fopen("files\\infrastructure.txt", "r");
+
+    fscanf(fp, "%*s %*f\n%*s %*f\n%*s %*f\n%*s %*f\n%*s %*f\n%*f\n%f", &result);
+    fclose(fp);
+    return result;
+}

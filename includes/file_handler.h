@@ -199,6 +199,69 @@ void query_w_files(char filename[25])
     fclose(fp);
 }
 
+void query_cat_files(char filename[20], int minimized)
+{
+    char name[256];
+    char category[256];
+
+    FILE *fp = fopen(filename, "r");
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+
+    if (minimized != 1)
+    {
+        int counter = 1;
+
+        while (fscanf(fp, "%s", category) == 1)
+        {
+
+            printf("ID: %d | %s\n", counter, category);
+
+            counter++;
+        }
+    }
+    else
+    {
+        // int counter = 0;
+        // printf("* LISTA DE CLIENTES *\n");
+        // while (fscanf(fp, "%s %*d %*d %*s %*s", name) == 1)
+        // {
+        //     printf("ID: %d | %s\n", counter, name);
+        //     counter++;
+        // }
+    }
+
+    fclose(fp);
+}
+
+char *getCategory(int id)
+{
+    int counter = 1;
+    char *category = malloc(256);
+    char result[256];
+    FILE *fp = fopen("files\\categories.txt", "r");
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+    else
+    {
+        while (fscanf(fp, "%s", category) != EOF)
+        {
+            if (counter == id)
+            {
+                fclose(fp);
+                return category;
+            }
+            counter++;
+        }
+    }
+    fclose(fp);
+    return "Categoria nao encontrada!";
+}
+
 void query_users_files(char filename[25])
 {
     FILE *fp = fopen(filename, "r");
@@ -218,7 +281,7 @@ void query_users_files(char filename[25])
     fclose(fp);
 }
 
-char *query_infra_files(char filename[25])
+void query_infra_files(char filename[25])
 {
     struct Infrastructure infrastructure;
 
@@ -258,44 +321,97 @@ char *query_infra_files(char filename[25])
     }
 }
 
-void file_capex(float valor_pc, float valor_monitores, float valor_mesas, float valor_cadeiras, float valor_outros, float total_CAPEX)
+void query_storage_files(char filename[25], int minimalist)
 {
-    FILE *fp = fopen("relatories\\RelatorioCapex.txt", "w+");
-    fprintf(fp, "|------------------------------------------------------|\n");
-    fprintf(fp, "|                 RELATÓRIO CAPEX                      |\n");
-    fprintf(fp, "|------------------------------------------------------|\n\n");
 
-    fprintf(fp, "|Computadores\n");
-    fprintf(fp, "  -Marca: DELL\n");
-    fprintf(fp, "  -Modelo: Inspiron 15 3000 i5-1135G7 \n");
-    fprintf(fp, "  -Quantidade: 5\n");
-    fprintf(fp, "  -Fornecedor: Dell Computadores do Brasil Ltda\n");
-    fprintf(fp, "  -Valor: R$ %2.0f \n\n", valor_pc);
+    struct Storage item;
+    FILE *fp = fopen(filename, "r");
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+    else
+    {
+        if (minimalist == 0)
+        {
+            while (fscanf(fp, "%d %s %s %s %d %f", &item.category, item.supplier, item.brand, item.model, &item.amount, &item.price) == 6)
+            {
 
-    fprintf(fp, "|Monitores\n");
-    fprintf(fp, "  -Marca: LG\n");
-    fprintf(fp, "  -Modelo: Monitor LG 19.5' LED HD \n");
-    fprintf(fp, "  -Quantidade: 5\n");
-    fprintf(fp, "  -Fornecedor: Amazon.com, Inc.\n");
-    fprintf(fp, "  -Valor: R$ %0.2f \n\n", valor_monitores);
+                add_whitespace(item.supplier);
+                add_whitespace(item.brand);
+                add_whitespace(item.model);
 
-    fprintf(fp, "|Mesas\n");
-    fprintf(fp, "  -Quantidade: 5\n");
-    fprintf(fp, "  -Dimensões: 2.5m x 1.20m \n");
-    fprintf(fp, "  -Fornecedor: MADEIRAMADEIRA COMERCIO ELETRONICO S/A \n");
-    fprintf(fp, "  -Valor: R$ %2.0f \n\n", valor_mesas);
+                printf("* %s\n", getCategory(item.category));
+                printf("Fornecedor: %s\n", item.supplier);
+                printf("Marca: %s\n", item.brand);
+                printf("Modelo: %s\n", item.model);
+                printf("Quantidade: %d\n", item.amount);
+                printf("Valor Unitario: R$ %0.2f\n", item.price);
+                printf("Valor Total: R$ %0.2f\n", (item.amount * item.price));
+                printf("------------------------------------------------------\n");
+            }
+        }
+        else
+        {
+            float total;
+            float sum_total;
+            while (fscanf(fp, "%d %*s %*s %*s %d %f", &item.category, &item.amount, &item.price) == 3)
+            {
+                printf("* %s\n", getCategory(item.category));
+                printf("R$ %0.2f\n\n", (item.amount * item.price));
 
-    fprintf(fp, "|Cadeiras\n");
-    fprintf(fp, "  -Quantidade: 5\n");
-    fprintf(fp, "  -Fornecedor: LOJAS AMERICANAS S.A. \n");
-    fprintf(fp, "  -Valor: R$ %2.0f \n\n", valor_cadeiras);
+                total += (item.amount * item.price);
+            }
 
-    fprintf(fp, "|Outros\n");
-    fprintf(fp, "  -Valor: R$ %2.0f \n\n", valor_outros);
-    fprintf(fp, "|TOTAL CAPEX\n");
-    fprintf(fp, "   R$ %0.02f \n\n", total_CAPEX);
-
+            printf("TOTAL CAPEX -> R$ %0.2f\n\n", total);
+        }
+    }
     fclose(fp);
+}
+
+void file_capex()
+{
+    struct Storage item;
+    FILE *fp = fopen("files\\items.txt", "r");
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+    else
+    {
+        float total_capex = 0;;
+        FILE *fp1 = fopen("relatories\\RelatorioCapex.txt", "w+");
+        fprintf(fp1, "|------------------------------------------------------|\n");
+        fprintf(fp1, "|                 RELATÓRIO CAPEX                      |\n");
+        fprintf(fp1, "|------------------------------------------------------|\n\n");
+
+        while (fscanf(fp, "%d %s %s %s %d %f", &item.category, item.supplier, item.brand, item.model, &item.amount, &item.price) == 6)
+        {
+
+            add_whitespace(item.supplier);
+            add_whitespace(item.brand);
+            add_whitespace(item.model);
+
+            fprintf(fp1, "* %s\n", getCategory(item.category));
+            fprintf(fp1, "  Fornecedor: %s\n", item.supplier);
+            fprintf(fp1, "  Marca: %s\n", item.brand);
+            fprintf(fp1, "  Modelo: %s\n", item.model);
+            fprintf(fp1, "  Quantidade: %d\n", item.amount);
+            fprintf(fp1, "  Valor Unitario: R$ %0.2f\n", item.price);
+            fprintf(fp1, "  Valor Total: R$ %0.2f\n\n", (item.amount * item.price));
+            
+            total_capex += (item.amount * item.price);
+        }
+
+        fprintf(fp1, "* TOTAL CAPEX:\n");
+        fprintf(fp1, "  R$ %0.02f \n\n", total_capex);
+
+        fclose(fp);
+        fclose(fp1);
+    }
+
+    // fprintf(fp1, "   R$ %0.02f \n\n", total_CAPEX);
+
     wait_for_input("O arquivo foi criado com sucesso!\n");
 }
 

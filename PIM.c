@@ -124,6 +124,7 @@ void register_screen() /* [2] CADASTROS */
         switch (option)
         {
         case 1: /* ESTOQUE */
+            storage_screen();
             system("cls");
             break;
         case 2: /* INFRAESTRUTURA */
@@ -162,11 +163,7 @@ void infra_screen()
             system("cls");
             register_infra_form();
             break;
-        case 2: /* VISUALIZAR INFORMACOES*/
-            system("cls");
-            show_infra_form();
-            break;
-        case 3:                /* VOLTAR */
+        case 2:                /* VOLTAR */
             register_screen(); /* RETORNA AO MENU PRINCIPAL */
             break;
         default:
@@ -184,7 +181,7 @@ void human_register_screen() /* [2] RECURSOS HUMANOS */
     int end_loop = 0;
 
     system("cls");
-    main_menu_text(5);
+    register_options_text(2);
     while (!end_loop)
     {
         scanf("%i", &option);
@@ -214,10 +211,141 @@ void human_register_screen() /* [2] RECURSOS HUMANOS */
     }
 }
 
-void query_screen() /* [1] CONSULTAR */
+void storage_screen() /* [1] ESTOQUE */
+{
+    int option = 0;
+    int end_loop = 0;
+
+    system("cls");
+    register_options_text(3);
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* CADASTRAR CATEGORIA */
+            system("cls");
+            register_category_form();
+            break;
+        case 2: /* CADASTRAR ITEM*/
+            system("cls");
+            register_item_form();
+            break;
+        case 3:
+            register_screen(); /* RETORNA AO MENU PRINCIPAL */
+            break;
+        default:
+            system("cls");
+            main_menu_text(2);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void query_screen() /* [2] CONSULTAR */
 {
     system("cls");
     main_menu_text(3);
+
+    int option = 0;
+    int end_loop = 0;
+
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* ESTOQUE */
+            query_storage_screen();
+            system("cls");
+            break;
+        case 2: /* INFRAESTRUTURA */
+            query_infra_screen();
+            system("cls");
+
+            break;
+        case 3: /* RECURSOS HUMANOS */
+            query_human_screen();
+            system("cls");
+
+            break;
+        case 4:          /* VOLTAR */
+            main_menu(); /* RETORNA AO MENU PRINCIPAL */
+            break;
+        default:
+            system("cls");
+            main_menu_text(3);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void query_storage_screen()
+{
+    system("cls");
+    query_human_text(3);
+
+    int option = 0;
+    int end_loop = 0;
+
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* VISUALIZAR INFRAESTRUTURA */
+            show_storage_form();
+            system("cls");
+            break;
+        case 2: /* VOLTAR */
+            query_screen();
+            system("cls");
+            break;
+        default:
+            system("cls");
+            query_human_text(3);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void query_infra_screen()
+{
+    system("cls");
+    query_human_text(2);
+
+    int option = 0;
+    int end_loop = 0;
+
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* VISUALIZAR INFRAESTRUTURA */
+            system("cls");
+            show_infra_form();
+            break;
+        case 2: /* VOLTAR */
+            query_screen();
+            system("cls");
+            break;
+        default:
+            system("cls");
+            query_human_text(2);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void query_human_screen() /* [2] CONSULTAR */
+{
+    system("cls");
+    query_human_text(1);
 
     int option = 0;
     int end_loop = 0;
@@ -246,7 +374,7 @@ void query_screen() /* [1] CONSULTAR */
             break;
         default:
             system("cls");
-            main_menu_text(3);
+            query_human_text(1);
             printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
             break;
         }
