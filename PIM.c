@@ -20,14 +20,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "includes/forms.h"
-
 int main()
 {
     setlocale(LC_ALL, "Portuguese");
     login();
     return 0;
 }
+
+#include "includes/forms.h"
 
 void login()
 {

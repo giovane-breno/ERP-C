@@ -58,6 +58,7 @@ struct Infrastructure
     float total_value;
 };
 
+#include "relatories.h"
 #include "authentication.h"
 #include "text_handler.h"
 #include "others.h"
@@ -590,43 +591,31 @@ void relatory_capex()
 
 void relatory_opex()
 {
+    float payment = sum_payment();
+    float services = sum_services();
+    float *rent = rent_and_tax();
     int resposta = 0;
-    // Variáveis
-    float aluguel = 1400.63;
-    float agua = 230.02;
-    float energia = 674.98;
-    float limpeza = 337.45;
-    float internet = 545.01;
-    float total_servicos = agua + energia + limpeza + internet;
-    float impostos = 753.00;
-    float salario_adm = 9984.60;
-    float salario_com = 8619.69;
-    float salario_ope = 11294.71;
-    float total_salarios = salario_adm + salario_com + salario_ope;
-    float total_OPEX = aluguel + total_servicos + total_salarios + impostos;
-
     relatories_text(3);
 
-    printf("|Salários\n");
-    printf("|R$ %2.0f \n\n", total_salarios);
+    printf("* SALARIOS\n");
+    printf("  R$ %0.2f \n\n", payment);
 
     // impostos
-    printf("|Impostos\n");
-    printf("|R$ %2.0f \n\n", impostos);
+    printf("* IMPOSTOS\n");
+    printf("  R$ %0.2f \n\n", rent[1]);
 
     // serviços terceirizados
-    printf("|Serviços\n");
-    printf("|R$ %2.0f \n\n", total_servicos);
+    printf("* SERVICOS\n");
+    printf("  R$ %0.2f \n\n", services);
 
     // Aluguel
-    printf("|Aluguel\n");
-    printf("|R$ %2.0f \n\n", aluguel);
+    printf("* ALUGUEL\n");
+    printf("  R$ %0.2f \n\n", rent[0]);
 
     // total OPEX
-    printf("|TOTAL OPEX -> R$ %0.2f|\n\n", total_OPEX);
+    printf("TOTAL OPEX -> R$ %0.2f\n\n", payment + rent[1] + services);
 
     printf("Deseja exportar o relatorio com mais informacoes? \n");
-    // printf("Digite 1 para Sim, ou 2 para Nï¿½o <1/2> \n");
 
     printf("[1] - SIM\n");
     printf("[2] - NAO\n\n");

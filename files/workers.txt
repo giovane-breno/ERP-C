@@ -1,2 +1,4 @@
 
-Jonas_Golcavels Gerente_Executivo 300000,00
+Jonas_Golcavels Gerente_Executivo 30000,00
+Perino Senior 2500,00
+
