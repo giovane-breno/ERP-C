@@ -7,7 +7,7 @@
 /**
  * Verifica se o arquivo config.txt existe.
  *
- * @returns {Boolean}
+ * @returns True / False
  */
 bool file_exist()
 {
@@ -25,7 +25,7 @@ bool file_exist()
 /**
  * Verifica o valor de register, dentro do arquivo config.txt.
  *
- * @returns {Boolean}
+ * @returns True / False
  */
 bool config_file()
 {
@@ -92,7 +92,7 @@ void check_register_status()
  * @param filename deve ser um diretorio.
  * @param content deve ser um array de caracteres.
  * @param method deve ser um metodo de manipulação de arquivo.
- * @returns {Boolean}
+ * @returns True / False
  */
 bool create_file(char filename[25], char content[256], char method[2])
 {
@@ -117,7 +117,7 @@ bool create_file(char filename[25], char content[256], char method[2])
  *
  * @param filename deve ser um diretorio.
  * @param content deve ser um array de caracteres.
- * @returns {Boolean}
+ * @returns True / False
  */
 int read_file(char filename[25], char content[256])
 {
@@ -214,7 +214,7 @@ char *getName(int id)
  *
  * @param filename deve ser um diretorio.
  */
-void query_users_files(char filename[25])
+void query_users_file(char filename[25])
 {
     FILE *fp = fopen(filename, "r");
     char name[256];
@@ -453,7 +453,7 @@ void file_opex(char filename[25])
  * @param minimized deve ser true ou false.
  */
 
-void query_c_files(char filename[25], bool minimized)
+void query_customers_file(char filename[25], bool minimized)
 {
     char name[256];
     int age;
@@ -552,7 +552,7 @@ void query_p_files(char filename[25], int id)
  *
  * @param filename deve ser um diretorio.
  */
-void query_w_files(char filename[25])
+void query_workers_file(char filename[25])
 {
     char name[256];
     char role[256];

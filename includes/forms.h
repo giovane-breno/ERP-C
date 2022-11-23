@@ -73,6 +73,11 @@ struct Storage
 #include "authentication.h"
 #include "text_handler.h"
 
+/**
+ * Formulário de cadastro de perfil, utilizando um cliente cadastrado.
+ * 
+ * @return Impressão no console e criação de arquivo profiles.txt.
+ */
 void register_profile_form()
 {
     struct Profiles profile;
@@ -93,7 +98,7 @@ void register_profile_form()
         if (answer == 1)
         {
             system("cls");
-            query_c_files("files\\customers.txt", 1);
+            query_customers_file("files\\customers.txt", 1);
 
             wait_for_input("\nLista de clientes impressa com sucesso!\n");
         }
@@ -182,6 +187,11 @@ void register_profile_form()
     }
 }
 
+/**
+ * Formulário de cadastro de usuario do sistema.
+ * 
+ * @return Impressão no console.
+ */
 void register_form()
 {
     struct Users user;
@@ -216,10 +226,15 @@ void register_form()
     }
 }
 
-int login_form()
+/**
+ * Formulário de login.
+ *
+ * @returns True / False
+ */
+bool login_form()
 {
     struct Users user;
-    int status = 0;
+    int status = false;
 
     authentication_text(3);
 
@@ -228,35 +243,62 @@ int login_form()
     printf("Senha: ");
     scanf("%s", user.password);
 
-    status = login_account(user.email, user.password) ? 1 : 0;
+    status = login_account(user.email, user.password) ? true : false;
 
     return status;
 }
 
+/**
+ * Função para imprimir a lista de usuarios.
+ * Chama a função query_users_file().
+ * 
+ * @param filename deve ser um int
+ * @return Impressão de lista de usuarios no console.
+ */
 void query_users(char filename[128])
 {
-    query_users_files(filename);
+    query_users_file(filename);
     wait_for_input("\nLista de usuarios impressa com sucesso!\n");
     system("cls");
     main_menu_text(2); /* RETORNA AO MENU APÓS CLIQUE */
 }
 
+/**
+ * Função para imprimir a lista de clientes.
+ * Chama a função query_customers_file().
+ *
+ * @param filename deve ser um diretorio de arquivo.
+ * @return Impressão da lista de clientes no console.
+ */
 void query_customers(char filename[128])
 {
-    query_c_files(filename, false);
+    query_customers_file(filename, false);
     wait_for_input("\nLista de clientes impressa com sucesso!\n");
     system("cls");
     main_menu_text(2); /* RETORNA AO MENU APÓS CLIQUE */
 }
 
+/**
+ * Função para imprimir a lista de funcionarios.
+ * Chama a função query_workers_file().
+
+ * @param filename deve ser um diretorio de arquivo.
+ * @return Impressão da lista de clientes no console.
+ */
 void query_workers(char filename[128])
 {
-    query_w_files(filename);
+    query_workers_file(filename);
     wait_for_input("\nLista de funcionarios impressa com sucesso!\n");
     system("cls");
     main_menu_text(2); /* RETORNA AO MENU APÓS CLIQUE */
 }
 
+/**
+ * Função para imprimir a lista de clientes e pegar o perfil do cliente selecionado.
+ *
+ * @param filename deve ser um diretorio de arquivo.
+ * @return Impressão da lista de perfil de um cliente selecionado.
+ */
 void query_profile(char filename[128])
 {
     int id = 0;
@@ -271,7 +313,7 @@ void query_profile(char filename[128])
     if (answer == 1)
     {
         system("cls");
-        query_c_files("files\\customers.txt", 1);
+        query_customers_file("files\\customers.txt", 1);
 
         wait_for_input("\nLista de clientes impressa com sucesso!\n");
     }
@@ -290,6 +332,12 @@ void query_profile(char filename[128])
     system("cls");
     query_human_text(1);
 }
+
+/**
+ * Formulario para cadastrar 01 funcionario.
+ * 
+ * @return Impressão no console e criação do arquivo workers.txt.
+ */
 void register_work_form()
 {
     struct Workers worker;
@@ -347,6 +395,11 @@ void register_work_form()
     }
 }
 
+/**
+ * Formulario de registro dos dados de infraestrutura.
+ * 
+ * @return Impressão no console e criação do arquivo infrastructure.txt.
+ */
 void register_infra_form()
 {
     struct Infrastructure infrastructure;
@@ -481,15 +534,23 @@ void register_infra_form()
     }
 }
 
+/**
+ * Função para imprimir os dados da infraestrutura da empresa.
+ * É usado na chamada no main.
+ * 
+ * @return Impressão no console e criação do arquivo infrastructure.txt.
+
+ */
 void show_infra_form()
 {
-
     infra_text(2);
     query_infra_files("files\\infrastructure.txt");
-
     wait_for_input("\nDados de Infraestrutura impressos com sucesso!\n");
 }
 
+/**
+ * Formulário para cadastrar um cliente.
+ */
 void register_customer_form()
 {
     struct Customers customer;
@@ -581,6 +642,12 @@ void register_customer_form()
     }
 }
 
+/**
+ * Formulário para cadastrar uma categoria.
+ * 
+ * @return Impressão no console e criação do arquivo categories.txt.
+
+ */
 void register_category_form()
 {
     char category[256];
@@ -625,13 +692,19 @@ void register_category_form()
     }
 }
 
+/**
+ * Formulário para cadastrar um item.
+ * Realiza a pesquisa das categorias e dos itens referentes a tal.
+ * 
+ * @return Impressão no console e criação do arquivo categories.txt.
+ */
 void register_item_form()
 {
     struct Storage item;
 
     char item_data[256];
     int correct_data = 0;
-    int status = 0;
+    bool status = false;
     int answer = 0;
 
     system("cls");
@@ -716,7 +789,7 @@ void register_item_form()
     sprintf(item_data, "%d %s %s %s %d %0.2f", item.category, item.supplier, item.brand, item.model, item.amount, item.price);
 
     status = create_file("files\\items.txt", item_data, "a");
-    if (status)
+    if (status == true)
     {
         wait_for_input("\nCategoria cadastrada com sucesso!\n");
     }
@@ -726,6 +799,12 @@ void register_item_form()
     }
 }
 
+/**
+ * Função para imprimir os dados do estoque de itens cadastrados.
+ * É usado na chamada no main.
+ * 
+ * @return Impressão no console e criação do arquivo items.txt.
+ */
 void show_storage_form()
 {
     system("cls");
@@ -735,6 +814,12 @@ void show_storage_form()
     wait_for_input("\nDados de Estoque impressos com sucesso!\n");
 }
 
+/**
+ * Função para imprimir o relatório capex no console.
+ * É usado na chamada no main.
+ * 
+ * @return Impressão no console.
+ */
 void relatory_capex()
 {
     int resposta;
@@ -744,7 +829,6 @@ void relatory_capex()
     query_storage_files("files\\items.txt", 1);
 
     printf("Deseja exportar o relatorio com mais informacoes? \n");
-    // printf("Digite 1 para Sim, ou 2 para Nï¿½o <1/2> \n");
 
     printf("[1] - SIM\n");
     printf("[2] - NAO\n\n");
@@ -758,6 +842,12 @@ void relatory_capex()
     }
 }
 
+/**
+ * Função para imprimir o relatório opex no console.
+ * É usado na chamada no main.
+ * 
+ * @return Impressão no console e .
+ */
 void relatory_opex()
 {
     float payment = sum_payment();
@@ -798,6 +888,12 @@ void relatory_opex()
     }
 }
 
+/**
+ * Função para imprimir o total do relatorio capex e opex no console.
+ * É usado na chamada no main.
+ * 
+ * @return Impressão no console.
+ */
 void relatory_capex_opex()
 {
     float total_CAPEX = sum_capex();

@@ -18,6 +18,11 @@ float sum_payment()
     return result;
 }
 
+/**
+ * Função para somar os serviços de dentro do arquivo infrastructure.txt.
+ * 
+ * @return variavel result.
+ */
 float sum_services()
 {
     float result = 0;
@@ -40,6 +45,11 @@ float sum_services()
     return result;
 }
 
+/**
+ * Função para somar o aluguel e imposto de dentro do arquivo infrastructure.txt.
+ *  
+ * @return variavel result.
+ */
 float *rent_and_tax()
 {
     FILE *fp = fopen("files\\infrastructure.txt", "r");
@@ -55,6 +65,11 @@ float *rent_and_tax()
     return result;
 }
 
+/**
+ * Função para somar a quantidade dos itens e preços de dentro do arquivo items.txt.
+ * 
+ * @return variavel result.
+ */
 float sum_opex()
 {
     struct Storage item;
@@ -69,6 +84,12 @@ float sum_opex()
     return result;
 }
 
+
+/**
+ * Função para retornar o resultado que fica armazenado no arquivo infrastructure.txt.
+ * 
+ * @return variavel result.
+ */
 float sum_capex()
 {
     float result;
