@@ -4,28 +4,38 @@
 #include <time.h>
 #include <stdbool.h>
 
-int file_exist()
+/**
+ * Verifica se o arquivo config.txt existe.
+ *
+ * @returns {Boolean}
+ */
+bool file_exist()
 {
-
+    bool status = false;
     FILE *fp = fopen("files\\config.txt", "r");
-    int status = 0;
     if (!fp)
     {
         fclose(fp);
-        status = 1;
+        status = true;
     }
+
     return status;
 }
 
-int config_file()
+/**
+ * Verifica o valor de register, dentro do arquivo config.txt.
+ *
+ * @returns {Boolean}
+ */
+bool config_file()
 {
-    int status = 1;
-    if (file_exist())
+    bool status = false;
+    if (file_exist() == true)
     {
         FILE *fp = fopen("files\\config.txt", "a");
         fprintf(fp, "register: 1");
         fclose(fp);
-        status = 1;
+        status = true;
     }
     else
     {
@@ -35,17 +45,20 @@ int config_file()
         {
             if (c == '1')
             {
-                status = 1;
+                status = true;
             }
             else if (c == '0')
             {
-                status = 0;
+                status = false;
             }
         }
     }
     return status;
 }
 
+/**
+ * Altera o arquivo de configurações, de 0 para 1.
+ */
 void check_register_status()
 {
     FILE *fp = fopen("files\\config.txt", "r");
@@ -69,13 +82,21 @@ void check_register_status()
             fclose(fp);
         }
     }
-    getch();
-    system("cls");
+
+    wait_for_input("");
 }
 
-int create_file(char filename[25], char content[256], char method[2])
+/**
+ * Cria um arquivo, de acordo com os parametros.
+ *
+ * @param filename deve ser um diretorio.
+ * @param content deve ser um array de caracteres.
+ * @param method deve ser um metodo de manipulação de arquivo.
+ * @returns {Boolean}
+ */
+bool create_file(char filename[25], char content[256], char method[2])
 {
-    int status = 0;
+    bool status = false;
     FILE *fp = fopen(filename, method);
     if (!fp)
     {
@@ -84,13 +105,20 @@ int create_file(char filename[25], char content[256], char method[2])
     else
     {
         fprintf(fp, "%s\n", content);
-        status = 1;
+        status = true;
     }
     fclose(fp);
 
     return status;
 }
 
+/**
+ * Le um arquivo, de acordo com os parametros.
+ *
+ * @param filename deve ser um diretorio.
+ * @param content deve ser um array de caracteres.
+ * @returns {Boolean}
+ */
 int read_file(char filename[25], char content[256])
 {
     int status = 0;
@@ -118,129 +146,16 @@ int read_file(char filename[25], char content[256])
     return status;
 }
 
-void query_c_files(char filename[25], int minimized)
-{
-    char name[256];
-    int age;
-    char cpf[60];
-    char cep[60];
-
-    int gender;
-
-    FILE *fp = fopen(filename, "r");
-    char c;
-    if (!fp)
-    {
-        printf("Erro na abertura do arquivo!");
-    }
-
-    bool password = false;
-
-    if (minimized != 1)
-    {
-        int counter = 1;
-
-        while (fscanf(fp, "%s %d %d %s %s", name, &age, &gender, cpf, cep) == 5)
-        {
-
-            printf("Consulta: %d\n\n", counter);
-            printf("Nome: %s\n", name);
-            printf("Idade: %d anos\n", age);
-            printf("Sexo: ");
-            (gender == 1) ? printf("Masculino\n") : printf("Feminino\n");
-            printf("CPF: %s\n", cpf);
-            printf("CEP: %s\n", cep);
-            puts("-----------------------------------------------------------");
-
-            counter++;
-        }
-    }
-    else
-    {
-        int counter = 0;
-        printf("* LISTA DE CLIENTES *\n");
-        while (fscanf(fp, "%s %*d %*d %*s %*s", name) == 1)
-        {
-            printf("ID: %d | %s\n", counter, name);
-            counter++;
-        }
-    }
-
-    fclose(fp);
-}
-
-void query_w_files(char filename[25])
-{
-    char name[256];
-    char role[256];
-    float payment;
-    int counter = 1;
-
-    FILE *fp = fopen(filename, "r");
-    char c;
-    if (!fp)
-    {
-        printf("Erro na abertura do arquivo!");
-    }
-
-    bool password = false;
-
-    while (fscanf(fp, "%s %s %f", name, role, &payment) == 3)
-    {
-
-        printf("Consulta: %d\n\n", counter);
-        printf("Nome: %s\n", name);
-        printf("Cargo: %s\n", role);
-        printf("Salario: %0.2f\n", payment);
-        puts("-----------------------------------------------------------");
-
-        counter++;
-    }
-    fclose(fp);
-}
-
-void query_cat_files(char filename[20], int minimized)
-{
-    char name[256];
-    char category[256];
-
-    FILE *fp = fopen(filename, "r");
-    if (!fp)
-    {
-        printf("Erro na abertura do arquivo!");
-    }
-
-    if (minimized != 1)
-    {
-        int counter = 1;
-
-        while (fscanf(fp, "%s", category) == 1)
-        {
-
-            printf("ID: %d | %s\n", counter, category);
-
-            counter++;
-        }
-    }
-    else
-    {
-        // int counter = 0;
-        // printf("* LISTA DE CLIENTES *\n");
-        // while (fscanf(fp, "%s %*d %*d %*s %*s", name) == 1)
-        // {
-        //     printf("ID: %d | %s\n", counter, name);
-        //     counter++;
-        // }
-    }
-
-    fclose(fp);
-}
-
+/**
+ * Função para recuperar a categoria de um item.
+ *
+ * @param id deve ser um int
+ * @returns {Array}
+ */
 char *getCategory(int id)
 {
     int counter = 1;
     char *category = malloc(256);
-    char result[256];
     FILE *fp = fopen("files\\categories.txt", "r");
     if (!fp)
     {
@@ -262,6 +177,43 @@ char *getCategory(int id)
     return "Categoria nao encontrada!";
 }
 
+/**
+ * Função para recuperar a o nome de um cliente cadastrado.
+ *
+ * @param id deve ser um int
+ * @returns {Array}
+ */
+char *getName(int id)
+{
+    int counter = 1;
+    char *name = malloc(256);
+    FILE *fp = fopen("files\\customers.txt", "r");
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+    else
+    {
+        while (fscanf(fp, "%s %*d %*d %*s %*s", name) != EOF)
+        {
+
+            if (counter == id)
+            {
+                fclose(fp);
+                return name;
+            }
+            counter++;
+        }
+    }
+    fclose(fp);
+    return "Cliente nao encontrado!";
+}
+
+/**
+ * Pesquisar os usuarios cadastrados.
+ *
+ * @param filename deve ser um diretorio.
+ */
 void query_users_files(char filename[25])
 {
     FILE *fp = fopen(filename, "r");
@@ -281,12 +233,16 @@ void query_users_files(char filename[25])
     fclose(fp);
 }
 
+/**
+ * Imprime os dados da infraestrutura da empresa, previamente cadastrados no arquivo.
+ *
+ * @param filename deve ser um diretorio.
+ */
 void query_infra_files(char filename[25])
 {
     struct Infrastructure infrastructure;
 
     FILE *fp = fopen(filename, "r");
-    char name[256];
     if (!fp)
     {
         printf("Erro na abertura do arquivo!");
@@ -321,6 +277,11 @@ void query_infra_files(char filename[25])
     }
 }
 
+/**
+ * Imprime os dados da infraestrutura da empresa, previamente cadastrados no arquivo.
+ *
+ * @param filename deve ser um diretorio.
+ */
 void query_storage_files(char filename[25], int minimalist)
 {
 
@@ -353,8 +314,7 @@ void query_storage_files(char filename[25], int minimalist)
         }
         else
         {
-            float total;
-            float sum_total;
+            float total = 0;
             while (fscanf(fp, "%d %*s %*s %*s %d %f", &item.category, &item.amount, &item.price) == 3)
             {
                 printf("* %s\n", getCategory(item.category));
@@ -369,17 +329,23 @@ void query_storage_files(char filename[25], int minimalist)
     fclose(fp);
 }
 
-void file_capex()
+/**
+ * Imprime os dados do relatorio capex, é feito um loop dentro do arquivo de itens para recuperar os dados.
+ *
+ * @param filename deve ser um diretorio.
+ */
+void file_capex(char filename[25])
 {
     struct Storage item;
-    FILE *fp = fopen("files\\items.txt", "r");
+    FILE *fp = fopen(filename, "r");
     if (!fp)
     {
         printf("Erro na abertura do arquivo!");
     }
     else
     {
-        float total_capex = 0;;
+        float total_capex = 0;
+        ;
         FILE *fp1 = fopen("relatories\\RelatorioCapex.txt", "w+");
         fprintf(fp1, "|------------------------------------------------------|\n");
         fprintf(fp1, "|                 RELATÓRIO CAPEX                      |\n");
@@ -399,7 +365,7 @@ void file_capex()
             fprintf(fp1, "  Quantidade: %d\n", item.amount);
             fprintf(fp1, "  Valor Unitario: R$ %0.2f\n", item.price);
             fprintf(fp1, "  Valor Total: R$ %0.2f\n\n", (item.amount * item.price));
-            
+
             total_capex += (item.amount * item.price);
         }
 
@@ -410,19 +376,21 @@ void file_capex()
         fclose(fp1);
     }
 
-    // fprintf(fp1, "   R$ %0.02f \n\n", total_CAPEX);
-
     wait_for_input("O arquivo foi criado com sucesso!\n");
 }
 
-void file_opex()
+/**
+ * Imprime os dados do relatorio opex, eles são recuperados por meio de um unico comando.
+ *
+ * @param filename deve ser um diretorio.
+ */
+void file_opex(char filename[25])
 {
     struct Infrastructure infrastructure;
     float payment = sum_payment();
     float services = sum_services();
 
-    FILE *fp = fopen("files\\infrastructure.txt", "r");
-    char name[256];
+    FILE *fp = fopen(filename, "r");
     if (!fp)
     {
         printf("Erro na abertura do arquivo!");
@@ -476,4 +444,169 @@ void file_opex()
         fclose(fp);
         wait_for_input("O arquivo foi criado com sucesso!\n");
     }
+}
+
+/**
+ * Função para recuperar os dados do usuario e organizar do arquivo de armazenamento.
+ *
+ * @param filename deve ser um diretorio.
+ * @param minimized deve ser true ou false.
+ */
+
+void query_c_files(char filename[25], bool minimized)
+{
+    char name[256];
+    int age;
+    char cpf[60];
+    char cep[60];
+
+    int gender;
+
+    FILE *fp = fopen(filename, "r");
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+    else
+    {
+        if (minimized == false)
+        {
+            int counter = 1;
+
+            while (fscanf(fp, "%s %d %d %s %s", name, &age, &gender, cpf, cep) == 5)
+            {
+
+                printf("Consulta: %d\n\n", counter);
+                printf("Nome: %s\n", name);
+                printf("Idade: %d anos\n", age);
+                printf("Sexo: ");
+                (gender == 1) ? printf("Masculino\n") : printf("Feminino\n");
+                printf("CPF: %s\n", cpf);
+                printf("CEP: %s\n", cep);
+                puts("-----------------------------------------------------------");
+
+                counter++;
+            }
+        }
+        else
+        {
+            int counter = 1;
+            printf("* LISTA DE CLIENTES *\n");
+            while (fscanf(fp, "%s %*d %*d %*s %*s", name) == 1)
+            {
+                add_whitespace(name);
+                printf("ID: %d | %s\n", counter, name);
+                counter++;
+            }
+        }
+    }
+
+    fclose(fp);
+}
+
+/**
+ * Função para recuperar os dados do perfil de usuario do arquivo de armazenamento.
+ *
+ * @param filename deve ser um diretorio.
+ * @param id deve ser o id de um usuario.
+ */
+void query_p_files(char filename[25], int id)
+{
+    struct Profiles profile;
+    bool found = false;
+    FILE *fp = fopen(filename, "r");
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+    else
+    {
+        while (fscanf(fp, "%d %d %d %s %d", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
+        {
+            if (profile.customer_id == id)
+            {
+                add_whitespace(profile.reason_of_buying);
+
+                printf("\nID: %d | %s\n", id, getName(profile.customer_id));
+                printf("\nTipo de Encomenda: ");
+                (profile.domestic_or_commercial == 1) ? printf("Particular") : printf("Comercial");
+                printf("\nMetodo de Entrega: ");
+                (profile.pickup_or_delivery == 1) ? printf("Entregar") : printf("Retirar no Local");
+                printf("\nMotivo de Compra: %s", profile.reason_of_buying);
+                printf("\nCliente Ativo? ");
+                (profile.active == 1) ? printf("Sim\n") : printf("Nao\n");
+                found = true;
+            }
+        }
+
+        if (found == false)
+        {
+            printf("\nPerfil de cliente nao encontrado!\n");
+        }
+    }
+    fclose(fp);
+}
+
+/**
+ * Função para recuperar os dados dos funcionarios e organizar.
+ *
+ * @param filename deve ser um diretorio.
+ */
+void query_w_files(char filename[25])
+{
+    char name[256];
+    char role[256];
+    float payment;
+    int counter = 1;
+
+    FILE *fp = fopen(filename, "r");
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+
+    while (fscanf(fp, "%s %s %f", name, role, &payment) == 3)
+    {
+
+        printf("Consulta: %d\n\n", counter);
+        printf("Nome: %s\n", name);
+        printf("Cargo: %s\n", role);
+        printf("Salario: %0.2f\n", payment);
+        puts("-----------------------------------------------------------");
+
+        counter++;
+    }
+    fclose(fp);
+}
+
+/**
+ * Função para recuperar as categorias dos itens do arquivo de armazenamento.
+ *
+ * @param filename deve ser um diretorio.
+ * @param minimized deve ser true ou false.
+ */
+void query_cat_files(char filename[20], bool minimized)
+{
+    char category[256];
+
+    FILE *fp = fopen(filename, "r");
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+
+    if (minimized == false)
+    {
+        int counter = 1;
+
+        while (fscanf(fp, "%s", category) == 1)
+        {
+
+            printf("ID: %d | %s\n", counter, category);
+
+            counter++;
+        }
+    }
+
+    fclose(fp);
 }

@@ -29,12 +29,11 @@ struct Customers
 
 struct Profiles
 {
-    int customer_id;              /* ID DO CLIENTE */
-    int domestic_or_commercial;   /* PARA USO DOMÉSTICO[1] OU COMERCIAL[2] */
-    int pickup_or_delivery;       /* PARA RETIRAR NA LOJA[1] OU ENTREGA[2] */
-    char reason_of_buying[256];   /* MOTIVO DE COMPRA */
-    char point_of_relevancy[256]; /* PONTO DE RELEVANCIA PARA ENCOMENDA, CARACTERISCAS PARA COMPRAR*/
-    int active;                   /* USUARIO ATIVO OU NAO */
+    int customer_id;            /* ID DO CLIENTE */
+    int domestic_or_commercial; /* PARA USO DOMÉSTICO[1] OU COMERCIAL[2] */
+    int pickup_or_delivery;     /* PARA RETIRAR NA LOJA[1] OU ENTREGA[2] */
+    char reason_of_buying[256]; /* MOTIVO DE COMPRA */
+    int active;                 /* USUARIO ATIVO OU NAO */
 };
 
 struct Infrastructure
@@ -69,10 +68,10 @@ struct Storage
     float price;
 };
 
+#include "others.h"
 #include "relatories.h"
 #include "authentication.h"
 #include "text_handler.h"
-#include "others.h"
 
 void register_profile_form()
 {
@@ -171,7 +170,7 @@ void register_profile_form()
 
     sprintf(profile_data, "%d %d %d %s %d", profile.customer_id, profile.domestic_or_commercial, profile.pickup_or_delivery, profile.reason_of_buying, profile.active);
     system("cls");
-    status = create_file("files\\profiles.txt", profile_data, 'a');
+    status = create_file("files\\profiles.txt", profile_data, "a");
 
     if (status)
     {
@@ -181,8 +180,6 @@ void register_profile_form()
     {
         wait_for_input("\n");
     }
-
-    register_screen();
 }
 
 void register_form()
@@ -246,7 +243,7 @@ void query_users(char filename[128])
 
 void query_customers(char filename[128])
 {
-    query_c_files(filename, 0);
+    query_c_files(filename, false);
     wait_for_input("\nLista de clientes impressa com sucesso!\n");
     system("cls");
     main_menu_text(2); /* RETORNA AO MENU APÓS CLIQUE */
@@ -260,6 +257,39 @@ void query_workers(char filename[128])
     main_menu_text(2); /* RETORNA AO MENU APÓS CLIQUE */
 }
 
+void query_profile(char filename[128])
+{
+    int id = 0;
+    int answer = 0;
+
+    system("cls");
+    fflush(stdin);
+    register_profile_text(2);
+    puts("\nImprimir lista de clientes?\n [1] - Sim | [2] - Nao");
+    scanf("%d", &answer);
+
+    if (answer == 1)
+    {
+        system("cls");
+        query_c_files("files\\customers.txt", 1);
+
+        wait_for_input("\nLista de clientes impressa com sucesso!\n");
+    }
+
+    system("cls");
+    fflush(stdin);
+    register_profile_text(2);
+    printf("\nID do Cliente: ");
+    scanf("%d", &id);
+
+    system("cls");
+    register_profile_text(2);
+    query_p_files(filename, id);
+
+    wait_for_input("\nPerfil de cliente impresso com sucesso!\n");
+    system("cls");
+    query_human_text(1);
+}
 void register_work_form()
 {
     struct Workers worker;
@@ -305,7 +335,7 @@ void register_work_form()
 
     sprintf(worker_data, "%s %s %.2f", worker.name, worker.role, worker.payment);
     system("cls");
-    status = create_file("files\\workers.txt", worker_data, 'a');
+    status = create_file("files\\workers.txt", worker_data, "a");
 
     if (status)
     {
@@ -315,8 +345,6 @@ void register_work_form()
     {
         wait_for_input("\n");
     }
-
-    register_screen();
 }
 
 void register_infra_form()
@@ -451,8 +479,6 @@ void register_infra_form()
     {
         wait_for_input("\n");
     }
-
-    infra_screen();
 }
 
 void show_infra_form()
@@ -462,7 +488,6 @@ void show_infra_form()
     query_infra_files("files\\infrastructure.txt");
 
     wait_for_input("\nDados de Infraestrutura impressos com sucesso!\n");
-    query_infra_screen();
 }
 
 void register_customer_form()
@@ -554,8 +579,6 @@ void register_customer_form()
     {
         wait_for_input("\n");
     }
-
-    register_screen();
 }
 
 void register_category_form()
@@ -600,8 +623,6 @@ void register_category_form()
     {
         wait_for_input("\n");
     }
-
-    storage_screen();
 }
 
 void register_item_form()
@@ -622,7 +643,7 @@ void register_item_form()
     if (answer == 1)
     {
         system("cls");
-        query_cat_files("files\\categories.txt", 0);
+        query_cat_files("files\\categories.txt", false);
 
         wait_for_input("\nCategorias impressa com sucesso!\n");
     }
@@ -703,8 +724,6 @@ void register_item_form()
     {
         wait_for_input("\n");
     }
-
-    storage_screen();
 }
 
 void show_storage_form()
@@ -714,7 +733,6 @@ void show_storage_form()
     query_storage_files("files\\items.txt", 0);
 
     wait_for_input("\nDados de Estoque impressos com sucesso!\n");
-    query_storage_screen();
 }
 
 void relatory_capex()
@@ -736,10 +754,8 @@ void relatory_capex()
     if (resposta == 1)
     {
         system("cls");
-        file_capex();
+        file_capex("files\\items.txt");
     }
-
-    relatories_screen();
 }
 
 void relatory_opex()
@@ -778,9 +794,8 @@ void relatory_opex()
     if (resposta == 1)
     {
         system("cls");
-        file_opex();
+        file_opex("files\\infrastructure.txt");
     }
-    relatories_screen();
 }
 
 void relatory_capex_opex()
@@ -795,6 +810,4 @@ void relatory_capex_opex()
     printf("* OPEX  \n");
     printf("  TOTAL OPEX -> R$ %0.2f\n\n", total_OPEX);
     wait_for_input("");
-
-    relatories_screen();
 }

@@ -20,14 +20,34 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "includes/forms.h"
+
+/* DECLARAÇÃO PRÉVIA DAS FUNÇÕES VOID PARA EVITAR ERROS */
+void login();
+void main_menu();
+void register_screen();
+void query_screen();
+void management_screen();
+void storage_screen();
+void infra_screen();
+void human_register_screen();
+void query_storage_screen();
+void query_infra_screen();
+void query_human_screen();
+void query_storage_screen();
+void query_infra_screen();
+void query_human_screen();
+void edit_data_screen();
+void relatories_screen();
+void admin_config_screen();
+/* DECLARAÇÃO PRÉVIA DAS FUNÇÕES VOID PARA EVITAR ERROS */
+
 int main()
 {
     setlocale(LC_ALL, "Portuguese");
     login();
     return 0;
 }
-
-#include "includes/forms.h"
 
 void login()
 {
@@ -49,22 +69,19 @@ void login()
             if (login_form())
             {
                 wait_for_input("\nUsuario autenticado com sucesso!\n");
-                end_loop = 1;
                 main_menu();
             }
             else
             {
                 wait_for_input("\nUsuario nao encontrado!\n");
-
                 system("cls");
-                authentication_text(1);
             }
-            break;
+            login(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
         case 2:
             (config_file()) ? register_form() : wait_for_input("O registro de novas contas foi desativado por um administrador.\n");
             system("cls");
-            authentication_text(1);
-            break;
+
+            login(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
         default:
             system("cls");
             authentication_text(1);
@@ -74,7 +91,7 @@ void login()
     }
 }
 
-void main_menu()
+void main_menu() /* TELA INICIAL */
 {
     int option = 0;
     int end_loop = 0;
@@ -87,21 +104,21 @@ void main_menu()
         system("cls");
         switch (option)
         {
-        case 1: /* TELA CADASTROS */
-            register_screen();
-            end_loop = 1;
-            break;
-        case 2: /* TELA CONSULTAS */
-            query_screen();
-            end_loop = 1;
-            break;
-        case 3: /* TELA GERENCIAMENTO */
-            management_screen();
-            end_loop = 1;
-            break;
-        case 4: /* VOLTAR*/
+        case 1:
+            register_screen(); /* TELA CADASTROS */
+
+            main_menu(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:
+            query_screen(); /* TELA CONSULTAS */
+
+            main_menu(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 3:
+            management_screen(); /* TELA GERENCIAMENTO */
+
+            main_menu(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 4:
             wait_for_input("Voce escolheu sair. Ate logo!\n");
-            login();
+            login(); /* RETORNA AO LOGIN */
         default:
             system("cls");
             main_menu_text(1);
@@ -111,107 +128,7 @@ void main_menu()
     }
 }
 
-void register_screen() /* [2] CADASTROS */
-{
-    int option = 0;
-    int end_loop = 0;
-
-    system("cls");
-    main_menu_text(2);
-    while (!end_loop)
-    {
-        scanf("%i", &option);
-        switch (option)
-        {
-        case 1: /* ESTOQUE */
-            storage_screen();
-            system("cls");
-            break;
-        case 2: /* INFRAESTRUTURA */
-            infra_screen();
-            system("cls");
-            break;
-        case 3: /* RECURSOS HUMANOS */
-            human_register_screen();
-            system("cls");
-            break;
-        case 4:
-            main_menu(); /* RETORNA AO MENU PRINCIPAL */
-            break;
-        default:
-            system("cls");
-            main_menu_text(2);
-            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
-            break;
-        }
-    }
-}
-
-void infra_screen()
-{
-    int option = 0;
-    int end_loop = 0;
-
-    system("cls");
-    register_options_text(1);
-    while (!end_loop)
-    {
-        scanf("%i", &option);
-        switch (option)
-        {
-        case 1: /* CADASTRAR INFORMACOES */
-            system("cls");
-            register_infra_form();
-            break;
-        case 2:                /* VOLTAR */
-            register_screen(); /* RETORNA AO MENU PRINCIPAL */
-            break;
-        default:
-            system("cls");
-            main_menu_text(2);
-            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
-            break;
-        }
-    }
-}
-
-void human_register_screen() /* [2] RECURSOS HUMANOS */
-{
-    int option = 0;
-    int end_loop = 0;
-
-    system("cls");
-    register_options_text(2);
-    while (!end_loop)
-    {
-        scanf("%i", &option);
-        switch (option)
-        {
-        case 1: /* CADASTRAR CLIENTE */
-            system("cls");
-            register_customer_form();
-            break;
-        case 2: /* CADASTRAR FUNCIONARIO*/
-            system("cls");
-            register_work_form();
-            break;
-        case 3: /* CADASTRAR PERFIL */
-            system("cls");
-            register_profile_form();
-            break;
-        case 4:
-            register_screen(); /* RETORNA AO MENU PRINCIPAL */
-            break;
-        default:
-            system("cls");
-            main_menu_text(2);
-            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
-            break;
-        }
-    }
-}
-
-void storage_screen() /* [1] ESTOQUE */
+void storage_screen() /* TELA INICIAL - > [1] CADASTROS - > [1] ESTOQUE */
 {
     int option = 0;
     int end_loop = 0;
@@ -226,11 +143,13 @@ void storage_screen() /* [1] ESTOQUE */
         case 1: /* CADASTRAR CATEGORIA */
             system("cls");
             register_category_form();
-            break;
-        case 2: /* CADASTRAR ITEM*/
+
+            storage_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:
             system("cls");
-            register_item_form();
-            break;
+            register_item_form(); /* CADASTRAR ITEM*/
+
+            storage_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
         case 3:
             register_screen(); /* RETORNA AO MENU PRINCIPAL */
             break;
@@ -243,7 +162,114 @@ void storage_screen() /* [1] ESTOQUE */
     }
 }
 
-void query_screen() /* [2] CONSULTAR */
+void infra_screen() /* TELA INICIAL - > [1] CADASTROS - > [2] INFRAESTRUTURA */
+{
+    int option = 0;
+    int end_loop = 0;
+
+    system("cls");
+    register_options_text(1);
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1:
+            system("cls");
+            register_infra_form(); /* CADASTRAR INFORMACOES */
+
+            infra_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:
+            register_screen(); /* RETORNA A TELA DE CADASTRO */
+            break;
+        default:
+            system("cls");
+            register_options_text(1);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void human_register_screen() /* TELA INICIAL - > [1] CADASTROS - >  [3] RECURSOS HUMANOS */
+{
+    int option = 0;
+    int end_loop = 0;
+
+    system("cls");
+    register_options_text(2);
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1:
+            system("cls");
+            register_customer_form(); /* CADASTRAR CLIENTE */
+
+            human_register_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:                      /* CADASTRAR FUNCIONARIO*/
+            system("cls");
+            register_work_form();
+
+            human_register_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 3:                      /* CADASTRAR PERFIL */
+            system("cls");
+            register_profile_form();
+
+            human_register_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 4:
+            register_screen(); /* RETORNA A TELA DE CADASTROS */
+            break;
+        default:
+            system("cls");
+            register_options_text(2);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void register_screen() /* TELA INICIAL - > [1] CADASTROS */
+{
+    int option = 0;
+    int end_loop = 0;
+
+    system("cls");
+    main_menu_text(2);
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* ESTOQUE */
+            storage_screen();
+            system("cls");
+
+            register_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:
+            infra_screen(); /* INFRAESTRUTURA */
+            system("cls");
+
+            register_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 3:
+            human_register_screen(); /* RECURSOS HUMANOS */
+            system("cls");
+
+            register_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 4:
+            main_menu(); /* RETORNA AO MENU PRINCIPAL */
+            break;
+        default:
+            system("cls");
+            main_menu_text(2);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void query_screen() /* TELA INICIAL - > [2] CONSULTAR */
 {
     system("cls");
     main_menu_text(3);
@@ -259,18 +285,19 @@ void query_screen() /* [2] CONSULTAR */
         case 1: /* ESTOQUE */
             query_storage_screen();
             system("cls");
-            break;
-        case 2: /* INFRAESTRUTURA */
+
+            query_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:             /* INFRAESTRUTURA */
             query_infra_screen();
             system("cls");
 
-            break;
-        case 3: /* RECURSOS HUMANOS */
+            query_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 3:             /* RECURSOS HUMANOS */
             query_human_screen();
             system("cls");
 
-            break;
-        case 4:          /* VOLTAR */
+            query_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 4:
             main_menu(); /* RETORNA AO MENU PRINCIPAL */
             break;
         default:
@@ -282,7 +309,7 @@ void query_screen() /* [2] CONSULTAR */
     }
 }
 
-void query_storage_screen()
+void query_storage_screen() /* TELA INICIAL - > [2] CONSULTAR - >  [1] ESTOQUE */
 {
     system("cls");
     query_human_text(3);
@@ -296,12 +323,13 @@ void query_storage_screen()
         switch (option)
         {
         case 1: /* VISUALIZAR INFRAESTRUTURA */
+            system("cls");
             show_storage_form();
+
+            query_storage_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:
             system("cls");
-            break;
-        case 2: /* VOLTAR */
-            query_screen();
-            system("cls");
+            query_screen(); /* VOLTAR */
             break;
         default:
             system("cls");
@@ -312,7 +340,7 @@ void query_storage_screen()
     }
 }
 
-void query_infra_screen()
+void query_infra_screen() /* TELA INICIAL - > [2] CONSULTAR - >  [2] INFRAESTRUTURA */
 {
     system("cls");
     query_human_text(2);
@@ -328,10 +356,11 @@ void query_infra_screen()
         case 1: /* VISUALIZAR INFRAESTRUTURA */
             system("cls");
             show_infra_form();
-            break;
-        case 2: /* VOLTAR */
-            query_screen();
+
+            query_infra_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:
             system("cls");
+            query_screen(); /* VOLTAR */
             break;
         default:
             system("cls");
@@ -342,7 +371,7 @@ void query_infra_screen()
     }
 }
 
-void query_human_screen() /* [2] CONSULTAR */
+void query_human_screen() /* TELA INICIAL - > [2] CONSULTAR - >  [3] RECURSOS HUMANOS */
 {
     system("cls");
     query_human_text(1);
@@ -358,19 +387,24 @@ void query_human_screen() /* [2] CONSULTAR */
         case 1: /* CONSULTAR CLIENTES*/
             system("cls");
             query_customers("files\\customers.txt");
-            break;
-        case 2: /* CONSULTAR FUNCIONARIOS*/
+
+            query_human_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:                   /* CONSULTAR FUNCIONARIOS*/
             system("cls");
             query_workers("files\\workers.txt");
-            break;
-        case 3: /* CONSULTAR PERFIS*/
-            break;
-        case 4: /* CONSULTAR USUARIOS */
+
+            query_human_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 3:                   /* CONSULTAR PERFIS*/
+            query_profile("files\\profiles.txt");
+
+            query_human_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 4:                   /* CONSULTAR USUARIOS */
             system("cls");
             query_users("files\\logins.txt");
-            break;
+
+            query_human_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
         case 5:
-            main_menu(); /* RETORNA AO MENU PRINCIPAL */
+            query_screen(); /* RETORNA AO MENU PRINCIPAL */
             break;
         default:
             system("cls");
@@ -381,7 +415,7 @@ void query_human_screen() /* [2] CONSULTAR */
     }
 }
 
-void management_screen() /* [3] GERENCIAMENTO */
+void management_screen() /* TELA INICIAL - > [3] GERENCIAMENTO */
 {
     system("cls");
     main_menu_text(4);
@@ -397,19 +431,19 @@ void management_screen() /* [3] GERENCIAMENTO */
         case 1: /* GERENCIAR DADOS */
             system("cls");
             edit_data_screen();
-            break;
-        case 2: /* VISUALIZAR RELATORIOS */
+
+            management_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:                  /* VISUALIZAR RELATORIOS */
             system("cls");
             relatories_screen();
-            break;
-        case 3: /* CONFIG ADMINISTRATIVAS */
+
+            management_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 3:                  /* CONFIG ADMINISTRATIVAS */
             system("cls");
             admin_config_screen();
-            break;
-        case 4: /* OUTROS */
-            system("cls");
-            break;
-        case 5:
+
+            management_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 4:
             main_menu(); /* RETORNA AO MENU PRINCIPAL */
             break;
         default:
@@ -421,7 +455,7 @@ void management_screen() /* [3] GERENCIAMENTO */
     }
 }
 
-void edit_data_screen() /* [1] EDITAR DADOS */
+void edit_data_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [1] EDITAR DADOS */
 {
 
     system("cls");
@@ -446,8 +480,8 @@ void edit_data_screen() /* [1] EDITAR DADOS */
             system("cls");
 
             break;
-        case 4: /* RETORNA AO MENU PRINCIPAL */
-            management_screen();
+        case 4:
+            management_screen(); /* RETORNA A TELA DE GERENCIAMENTO */
             break;
         default:
             system("cls");
@@ -458,37 +492,7 @@ void edit_data_screen() /* [1] EDITAR DADOS */
     }
 }
 
-void admin_config_screen() /* CONFIGURAÇÕES ADMINISTRATIVAS */
-{
-    system("cls");
-    admin_config_text(1);
-
-    int option = 0;
-    int end_loop = 0;
-
-    while (!end_loop)
-    {
-        scanf("%i", &option);
-        switch (option)
-        {
-        case 1: /* ATIVAR / DESATIVAR REGISTRO */
-            system("cls");
-            check_register_status();
-            admin_config_text(1);
-            break;
-        case 4: /* RETORNA AO MENU PRINCIPAL */
-            management_screen();
-            break;
-        default:
-            system("cls");
-            admin_config_text(1);
-            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
-            break;
-        }
-    }
-}
-
-void relatories_screen()
+void relatories_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [2] VISUALIZAR RELATÓRIOS */
 {
     system("cls");
     relatories_text(1);
@@ -505,23 +509,53 @@ void relatories_screen()
             system("cls");
             relatory_capex();
 
-            break;
-        case 2: /* Relatório OPEX  */
+            relatories_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:                  /* Relatório OPEX  */
             system("cls");
             relatory_opex();
 
-            break;
-        case 3: /* Relatório CAPEX & OPEX */
+            relatories_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 3:                  /* Relatório CAPEX & OPEX */
             system("cls");
             relatory_capex_opex();
 
-            break;
-        case 4: /* Voltar */
-            management_screen();
+            relatories_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 4:
+            management_screen(); /* Voltar */
             break;
         default:
             system("cls");
             relatories_text(1);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void admin_config_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [3] CONFIGURAÇÕES ADMINISTRATIVAS */
+{
+    system("cls");
+    admin_config_text(1);
+
+    int option = 0;
+    int end_loop = 0;
+
+    while (!end_loop)
+    {
+        scanf("%i", &option);
+        switch (option)
+        {
+        case 1: /* ATIVAR / DESATIVAR REGISTRO */
+            system("cls");
+            check_register_status();
+
+            admin_config_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
+        case 2:
+            management_screen(); /* RETORNA AO MENU PRINCIPAL */
+            break;
+        default:
+            system("cls");
+            admin_config_text(1);
             printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
             break;
         }

@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "forms.h": "c",
+        "string.h": "c"
+    }
+}

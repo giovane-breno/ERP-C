@@ -77,8 +77,7 @@ void main_menu_text(int type)
         printf("|                [1] - Gerenciar Dados                      |\n");
         printf("|                [2] - Visualizar Relatorios                |\n");
         printf("|                [3] - Config. Administrativas              |\n");
-        printf("|                [4] - Outros                               |\n");
-        printf("|                [5] - Voltar                               |\n");
+        printf("|                [4] - Voltar                               |\n");
         printf("|                                                           |\n");
         printf("|-----------------------------------------------------------|\n");
         break;
@@ -266,6 +265,11 @@ void register_profile_text(int type)
         printf("OBS:\n* DADOS REFERENTES A 01 PERFIL DE CLIENTE! \n");
         break;
 
+    case 2:
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                   [CONSULTA DE PERFIL]                    |\n");
+        printf("|-----------------------------------------------------------|\n");
+        break;
     default:
         break;
     }
@@ -303,7 +307,7 @@ void admin_config_text(int type)
         printf("|-----------------------------------------------------------|\n");
         printf("|                                                           |\n");
         printf("|                [1] - Ativar/Desativar Registros           |\n");
-        printf("|                [4] - Voltar                               |\n");
+        printf("|                [2] - Voltar                               |\n");
         printf("|                                                           |\n");
         printf("|-----------------------------------------------------------|\n");
         break;
