@@ -37,7 +37,7 @@ void query_human_screen();
 void query_storage_screen();
 void query_infra_screen();
 void query_human_screen();
-void edit_data_screen();
+void delete_data_screen();
 void relatories_screen();
 void admin_config_screen();
 /* DECLARAÇÃO PRÉVIA DAS FUNÇÕES VOID PARA EVITAR ERROS */
@@ -429,7 +429,7 @@ void management_screen() /* TELA INICIAL - > [3] GERENCIAMENTO */
         {
         case 1: /* GERENCIAR DADOS */
             system("cls");
-            edit_data_screen();
+            delete_data_screen();
 
             management_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
         case 2:                  /* VISUALIZAR RELATORIOS */
@@ -454,7 +454,7 @@ void management_screen() /* TELA INICIAL - > [3] GERENCIAMENTO */
     }
 }
 
-void edit_data_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [1] EDITAR DADOS */
+void delete_data_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [1] EDITAR DADOS */
 {
 
     system("cls");
@@ -470,22 +470,26 @@ void edit_data_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [1] EDITAR DAD
         {
         case 1: /* FUNCIONARIOS */
             system("cls");
-            edit_workers_form();
-            edit_data_screen();
+            delete_workers_form();
+            
+            delete_data_screen();
             break;
         case 2: /* CLIENTES */
             system("cls");
-            edit_customer_form();
-            edit_data_screen();
+            delete_customer_form();
+
+            delete_data_screen();
         case 3: /* PERFIS DE USUARIOS */
             system("cls");
-            edit_profiles_form();
-            edit_data_screen();
+            delete_profiles_form();
+
+            delete_data_screen();
             break;
         case 4: /* USUARIOS */
             system("cls");
-            edit_users_form();
-            edit_data_screen();
+            delete_users_form();
+
+            delete_data_screen();
         case 5:
             management_screen(); /* RETORNA A TELA DE GERENCIAMENTO */
             break;

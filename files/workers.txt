@@ -1,6 +1,2 @@
-Pedro_Gomes 3211_a 1233,000000
-Pedro_Aquino 3 2,000000
 Joao_GOmesss Senior_Expriente 350004,000000
 Joao_Gomes Linux_Developer 322,000000
-Perino33 Senior_Dev 213123,218750
-GOmes_Lopes Senior 3221,00

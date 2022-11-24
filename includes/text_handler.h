@@ -281,7 +281,7 @@ void edit_data_text(int type)
     {
     case 1:
         printf("|-----------------------------------------------------------|\n");
-        printf("|                      [EDITAR DADOS]                       |\n");
+        printf("|                     [DELETAR DADOS]                       |\n");
         printf("|-----------------------------------------------------------|\n");
         printf("|                                                           |\n");
         printf("|                [1] - Funcionarios                         |\n");

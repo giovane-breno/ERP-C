@@ -651,7 +651,12 @@ void query_cat_files(char *filename, bool minimized)
     free(category);
 }
 
-bool edit_customer()
+/**
+ * Função para deletar o cliente pelo ID especificado.
+ *
+ * @return True / False
+ */
+bool delete_customer()
 {
     struct Customers customer;
 
@@ -671,13 +676,12 @@ bool edit_customer()
         counter++;
     }
     fclose(fp);
-    puts("Digite o id do user que voce quer substituir:\n");
+    printf("\nID a Deletar: ");
     scanf("%ld", &id);
     if (id >= counter || id <= 0)
-    {
         check = false;
-    }
-    fp = fopen("files\\customers.txt.txt", "r");
+
+    fp = fopen("files\\customers.txt", "r");
     while (fscanf(fp, "%s %hd %hd %s %s", customer.name, &customer.age, &customer.gender, customer.cpf, customer.cep) == 5)
     {
         if (i != id)
@@ -689,7 +693,7 @@ bool edit_customer()
 
     fclose(fp);
     fclose(fpnew);
-    remove("files\\customers.txt.txt");
+    remove("files\\customers.txt");
     rename("files\\temp.txt", "files\\customers.txt");
 
     free(customer.name);
@@ -699,7 +703,12 @@ bool edit_customer()
     return check;
 }
 
-bool edit_user()
+/**
+ * Função para deletar o usuario pelo ID especificado.
+ *
+ * @return True / False
+ */
+bool delete_user()
 {
     struct Users user;
     user.email = malloc(sizeof(char) * MAX_EMAIL_LENGHT);
@@ -707,6 +716,7 @@ bool edit_user()
 
     FILE *fp = fopen("files\\logins.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
+
     long int id;
     int i = 1;
     int counter = 1;
@@ -718,15 +728,16 @@ bool edit_user()
         counter++;
     }
     fclose(fp);
-    puts("Digite o id do user que voce quer substituir:\n");
+
+    printf("\nID a Deletar: ");
     scanf("%ld", &id);
     if (id >= counter || id <= 0)
-    {
         check = false;
-    }
+
     fp = fopen("files\\logins.txt", "r");
     while (fscanf(fp, "%s %s", user.email, user.password) == 2)
     {
+
         if (i != id)
         {
             fprintf(fpnew, "%s %s\n", user.email, user.password);
@@ -735,6 +746,7 @@ bool edit_user()
     }
     fclose(fp);
     fclose(fpnew);
+
     remove("files\\logins.txt");
     rename("files\\temp.txt", "files\\logins.txt");
 
@@ -744,7 +756,12 @@ bool edit_user()
     return check;
 }
 
-bool edit_profiles()
+/**
+ * Função para deletar os perfil de clientes pelo id especificado.
+ *
+ * @return True / False
+ */
+bool delete_profiles()
 {
     struct Profiles profile;
 
@@ -752,9 +769,11 @@ bool edit_profiles()
 
     FILE *fp = fopen("files\\profiles.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
+
     long int id;
     int i = 1;
     int counter = 1;
+
     bool check = true;
     while (fscanf(fp, "%ld %hd %hd %s %hd", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
     {
@@ -762,12 +781,12 @@ bool edit_profiles()
         counter++;
     }
     fclose(fp);
-    puts("Digite o id do usuario que voce quer substituir:\n");
+
+    printf("\nID a Deletar: ");
     scanf("%ld", &id);
     if (id >= counter || id <= 0)
-    {
         check = false;
-    }
+
     fp = fopen("files\\profiles.txt", "r");
     while (fscanf(fp, "%ld %hd %hd %s %hd", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
     {
@@ -782,10 +801,17 @@ bool edit_profiles()
     remove("files\\profiles.txt");
     rename("files\\temp.txt", "files\\profiles.txt");
 
+    free(profile.reason_of_buying);
+
     return check;
 }
 
-bool edit_workers()
+/**
+ * Função para deletar o funcionario especificado pelo id.
+ *
+ * @return True / False
+ */
+bool delete_workers()
 {
     struct Workers worker;
 
@@ -805,12 +831,12 @@ bool edit_workers()
         counter++;
     }
     fclose(fp);
-    puts("Digite o id do user que voce quer substituir:\n");
+
+    printf("\nID a Deletar: ");
     scanf("%ld", &id);
     if (id >= counter || id <= 0)
-    {
         check = false;
-    }
+
     fp = fopen("files\\workers.txt", "r");
     while (fscanf(fp, "%s %s %f", worker.name, worker.role, &worker.payment) == 3)
     {

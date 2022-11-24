@@ -955,34 +955,66 @@ void relatory_capex_opex()
     wait_for_input("");
 }
 
-void edit_customer_form()
+void delete_customer_form()
 { // EDITAR CLIENTES
-    if (edit_customer() == true)
+    if (delete_customer() == true)
     {
-        register_customer_form();
+        int res;
+        system("cls");
+        puts("Voce deseja cadastrar um novo cliente?");
+        puts("[1] - Sim | [2] - Nao\n");
+        scanf("%d", &res);
+        if (res == 1)
+        {
+            register_customer_form();
+        }
     }
 }
 
-void edit_users_form()
+void delete_users_form()
 { // EDITAR LOGINS
-    if (edit_user() == true)
+    if (delete_user() == true)
     {
-        register_form();
+        int res;
+        system("cls");
+        puts("Voce deseja cadastrar um novo usuario?");
+        puts("[1] - Sim | [2] - Nao\n");
+        scanf("%d", &res);
+        if (res == 1)
+        {
+            register_form();
+        }
     }
 }
 
-void edit_profiles_form()
+void delete_profiles_form()
 {
-    if (edit_profiles() == true)
+    if (delete_profiles() == true)
     {
-        register_profile_form();
+        int res;
+        system("cls");
+        puts("Voce deseja cadastrar um novo perfil de cliente?");
+        puts("[1] - Sim | [2] - Nao\n");
+        scanf("%d", &res);
+        if (res == 1)
+        {
+            register_profile_form();
+        }
     }
 }
 
-void edit_workers_form()
+void delete_workers_form()
 {
-    if (edit_workers() == true)
+    if (delete_workers() == true)
     {
-        register_work_form();
+        int res;
+        system("cls");
+        puts("\nVoce deseja cadastrar um novo funcionario?");
+        puts("[1] - Sim | [2] - Nao\n");
+        scanf("%d", &res);
+        if (res == 1)
+        {
+            register_work_form();
+        }
     }
 }
