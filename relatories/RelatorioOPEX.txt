@@ -3,33 +3,33 @@
 |------------------------------------------------------|
 
 * ALUGUEL
-  Endereco: R. dos Pardais - Vila Tatetuba, S�o J. Campos - 12220-600
-  Valor: R$ 1400,63 
+  Endereco: Rua das araras numero 500 234231-123 sim sim
+  Valor: R$ 1233,50 
 
 * AGUA E SANEAMENTO
-  Distribuidora: CIA. DE SANEAMENTO B�SICO DO ESTADO DE S�O PAULO - SABESP
-  Valor: R$ 230,02 
+  Distribuidora: SABESP EMPRESA DE SANEMANETO BASICO E AGUA LTDA
+  Valor: R$ 1233,00 
 
 * DISTRIBUICAO DE ENERGIA
-  Distribuidora:  EDP ENERGIAS DO BRASIL S.A
-  Valor: R$ 674,98 
+  Distribuidora:  EDP ELETRICAS DO VALE DO PARAIBA 123153-123
+  Valor: R$ 233,00 
 
 * SERVICO DE LIMPEZA
-  Distribuidora: Milclean Com�rcio e Servi�os
-  Valor: R$ 337,45 
+  Distribuidora: MIL CLEAN SERVICOS DE LIMPEZA TERCEIRIZADOS
+  Valor: R$ 123,00 
 
 * SERVICO DE INTERNET
-  Distribuidora:  Telef�nica Brasil S/A VIVO
-  Valor: R$ 545,01 
+  Distribuidora:  NET VIVO PROCON AAAAA
+  Valor: R$ 12,00 
 
-* TOTAL DOS SERVICOS: R$ 1787,46 
+* TOTAL DOS SERVICOS: R$ 1601,00 
 
 * SALARIOS
-  Funcionarios: R$ 32500,00 
+  Funcionarios: R$ 384084,00 
 
 * IMPOSTOS
-  Valor: R$ 753,00| 
+  Valor: R$ 333,00| 
 
 * TOTAL OPEX:
-  R$ 36441,09 
+  R$ 387251,50 
 

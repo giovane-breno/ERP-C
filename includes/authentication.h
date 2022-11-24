@@ -19,6 +19,9 @@ bool register_account(char *email, char *password)
     }
     else
     {
+        remove_whitespace(email);
+        remove_whitespace(password);
+
         fprintf(fp, "%s %s\n", email, encrypt(password));
         status = true;
     }
@@ -37,8 +40,8 @@ bool register_account(char *email, char *password)
  */
 bool login_account(char *email, char *password)
 {
-    char *temp_email = malloc(strlen(email) + 1);
-    char *temp_password = malloc(strlen(password) + 1);
+    char *temp_email = malloc(sizeof(char) * MAX_EMAIL_LENGHT);
+    char *temp_password = malloc(sizeof(char) * MAX_PASSWORD_LENGHT);
 
     FILE *fp = fopen("files\\logins.txt", "r");
 
@@ -48,10 +51,13 @@ bool login_account(char *email, char *password)
     }
     else
     {
+
         while (fscanf(fp, "%s %s", temp_email, temp_password) == 2)
         {
-            if ((strcmp(temp_email, email) == 0) && (strcmp(temp_password, encrypt(password)) == 0))
+            if ((strcmp(temp_email, email) == 0) && (strcmp(temp_password, password) == 0))
             {
+                free(temp_email);
+                free(temp_password);
                 return true;
             }
         }

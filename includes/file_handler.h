@@ -160,8 +160,9 @@ char *getCategory(long int id)
 char *getName(long int id)
 {
     int counter = 1;
-    char *name = malloc(256);
-    FILE *fp = fopen("files\\customers.txt", "r");
+    FILE *fp = fopen("files\\customers.txt", "r+");
+    char *name = malloc(sizeof(char) * MAX_CUSTOMER_NAME);
+
     if (!fp)
     {
         printf("Erro na abertura do arquivo!");
@@ -170,7 +171,6 @@ char *getName(long int id)
     {
         while (fscanf(fp, "%s %*d %*d %*s %*s", name) != EOF)
         {
-
             if (counter == id)
             {
                 fclose(fp);
@@ -180,6 +180,7 @@ char *getName(long int id)
         }
     }
     fclose(fp);
+    free(name);
     return "Cliente nao encontrado!";
 }
 
@@ -190,18 +191,22 @@ char *getName(long int id)
  */
 void query_users_file(char *filename)
 {
+    struct Users user;
     FILE *fp = fopen(filename, "r");
-    char name[256];
+    user.email = malloc(sizeof(char) * MAX_EMAIL_LENGHT);
+    int count = 1;
+
     if (!fp)
     {
         printf("Erro na abertura do arquivo!");
     }
 
-    while (fscanf(fp, "%s %*s", name) == 1)
+    while (fscanf(fp, "%s %*s", user.email) == 1)
     {
-        add_whitespace(name);
+        add_whitespace(user.email);
 
-        printf("Usuario: %s\n", name);
+        printf("Usuario [%d]: %s\n", count, user.email);
+        count++;
     }
 
     fclose(fp);
@@ -215,6 +220,12 @@ void query_users_file(char *filename)
 void query_infra_files(char *filename)
 {
     struct Infrastructure infrastructure;
+
+    infrastructure.rent_adress = malloc(sizeof(char) * MAX_INFRASTRUCTURE_RENT);
+    infrastructure.water_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_WATER);
+    infrastructure.energy_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_ENERGY);
+    infrastructure.cleaning_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_CLEANING);
+    infrastructure.net_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_NET);
 
     FILE *fp = fopen(filename, "r");
     if (!fp)
@@ -255,6 +266,12 @@ void query_infra_files(char *filename)
         printf("Imposto: R$%0.2f", infrastructure.tax);
         printf("\nValor Total: R$%0.2f\n", infrastructure.total_value);
     }
+
+    free(infrastructure.rent_adress);
+    free(infrastructure.water_sender);
+    free(infrastructure.energy_sender);
+    free(infrastructure.cleaning_sender);
+    free(infrastructure.net_sender);
 }
 
 /**
@@ -264,8 +281,11 @@ void query_infra_files(char *filename)
  */
 void query_storage_files(char *filename, bool minimalist)
 {
-
     struct Storage item;
+    item.supplier = malloc(sizeof(char) * MAX_STORAGE_SUPPLIER);
+    item.brand = malloc(sizeof(char) * MAX_STORAGE_BRAND);
+    item.model = malloc(sizeof(char) * MAX_STORAGE_MODEL);
+
     FILE *fp = fopen(filename, "r");
     if (!fp)
     {
@@ -307,6 +327,10 @@ void query_storage_files(char *filename, bool minimalist)
         }
     }
     fclose(fp);
+
+    free(item.supplier);
+    free(item.brand);
+    free(item.model);
 }
 
 /**
@@ -317,6 +341,10 @@ void query_storage_files(char *filename, bool minimalist)
 void file_capex(char *filename)
 {
     struct Storage item;
+    item.supplier = malloc(sizeof(char) * MAX_STORAGE_SUPPLIER);
+    item.brand = malloc(sizeof(char) * MAX_STORAGE_BRAND);
+    item.model = malloc(sizeof(char) * MAX_STORAGE_MODEL);
+
     FILE *fp = fopen(filename, "r");
     if (!fp)
     {
@@ -356,6 +384,9 @@ void file_capex(char *filename)
         fclose(fp1);
     }
 
+    free(item.supplier);
+    free(item.brand);
+    free(item.model);
     wait_for_input("O arquivo foi criado com sucesso!\n");
 }
 
@@ -367,6 +398,13 @@ void file_capex(char *filename)
 void file_opex(char *filename)
 {
     struct Infrastructure infrastructure;
+
+    infrastructure.rent_adress = malloc(sizeof(char) * MAX_INFRASTRUCTURE_RENT);
+    infrastructure.water_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_WATER);
+    infrastructure.energy_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_ENERGY);
+    infrastructure.cleaning_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_CLEANING);
+    infrastructure.net_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_NET);
+
     float payment = sum_payment();
     float services = sum_services();
 
@@ -424,6 +462,12 @@ void file_opex(char *filename)
         fclose(fp);
         wait_for_input("O arquivo foi criado com sucesso!\n");
     }
+
+    free(infrastructure.rent_adress);
+    free(infrastructure.water_sender);
+    free(infrastructure.energy_sender);
+    free(infrastructure.cleaning_sender);
+    free(infrastructure.net_sender);
 }
 
 /**
@@ -435,12 +479,11 @@ void file_opex(char *filename)
 
 void query_customers_file(char *filename, bool minimized)
 {
-    char name[256];
-    short int age;
-    char cpf[60];
-    char cep[60];
+    struct Customers customer;
 
-    short int gender;
+    customer.name = malloc(sizeof(char) * MAX_CUSTOMER_NAME);
+    customer.cpf = malloc(sizeof(char) * MAX_CUSTOMER_CPF);
+    customer.cep = malloc(sizeof(char) * MAX_CUSTOMER_CEP);
 
     FILE *fp = fopen(filename, "r");
     if (!fp)
@@ -453,19 +496,19 @@ void query_customers_file(char *filename, bool minimized)
         {
             int counter = 1;
 
-            while (fscanf(fp, "%s %hd %hd %s %s", name, &age, &gender, cpf, cep) == 5)
+            while (fscanf(fp, "%s %hd %hd %s %s", customer.name, &customer.age, &customer.gender, customer.cpf, customer.cep) == 5)
             {
-                add_whitespace(name);
-                add_whitespace(cpf);
-                add_whitespace(cep);
+                add_whitespace(customer.name);
+                add_whitespace(customer.cpf);
+                add_whitespace(customer.cep);
 
                 printf("Consulta: %d\n\n", counter);
-                printf("Nome: %s\n", name);
-                printf("Idade: %d anos\n", age);
+                printf("Nome: %s\n", customer.name);
+                printf("Idade: %d anos\n", customer.age);
                 printf("Sexo: ");
-                (gender == 1) ? printf("Masculino\n") : printf("Feminino\n");
-                printf("CPF: %s\n", cpf);
-                printf("CEP: %s\n", cep);
+                (customer.gender == 1) ? printf("Masculino\n") : printf("Feminino\n");
+                printf("CPF: %s\n", customer.cpf);
+                printf("CEP: %s\n", customer.cep);
                 puts("-----------------------------------------------------------");
 
                 counter++;
@@ -475,16 +518,20 @@ void query_customers_file(char *filename, bool minimized)
         {
             int counter = 1;
             printf("* LISTA DE CLIENTES *\n");
-            while (fscanf(fp, "%s %*d %*d %*s %*s", name) == 1)
+            while (fscanf(fp, "%s %*d %*d %*s %*s", customer.name) == 1)
             {
-                add_whitespace(name);
-                printf("ID: %d | %s\n", counter, name);
+                add_whitespace(customer.name);
+                printf("ID: %d | %s\n", counter, customer.name);
                 counter++;
             }
         }
     }
 
     fclose(fp);
+
+    free(customer.name);
+    free(customer.cpf);
+    free(customer.cep);
 }
 
 /**
@@ -496,6 +543,8 @@ void query_customers_file(char *filename, bool minimized)
 void query_p_files(char *filename, long int id)
 {
     struct Profiles profile;
+    profile.reason_of_buying = malloc(sizeof(char) * MAX_PROFILE_REASON);
+
     bool found = false;
     FILE *fp = fopen(filename, "r");
     if (!fp)
@@ -528,6 +577,7 @@ void query_p_files(char *filename, long int id)
         }
     }
     fclose(fp);
+    free(profile.reason_of_buying);
 }
 
 /**
@@ -537,9 +587,10 @@ void query_p_files(char *filename, long int id)
  */
 void query_workers_file(char *filename)
 {
-    char name[256];
-    char role[256];
-    float payment;
+    struct Workers worker;
+    worker.name = malloc(sizeof(char) * MAX_WORKER_NAME);
+    worker.role = malloc(sizeof(char) * MAX_WORKER_ROLE);
+
     int counter = 1;
 
     FILE *fp = fopen(filename, "r");
@@ -548,20 +599,23 @@ void query_workers_file(char *filename)
         printf("Erro na abertura do arquivo!");
     }
 
-    while (fscanf(fp, "%s %s %f", name, role, &payment) == 3)
+    while (fscanf(fp, "%s %s %f", worker.name, worker.role, &worker.payment) == 3)
     {
-        add_whitespace(name);
-        add_whitespace(role);
+        add_whitespace(worker.name);
+        add_whitespace(worker.role);
 
         printf("Consulta: %d\n\n", counter);
-        printf("Nome: %s\n", name);
-        printf("Cargo: %s\n", role);
-        printf("Salario: %0.2f\n", payment);
+        printf("Nome: %s\n", worker.name);
+        printf("Cargo: %s\n", worker.role);
+        printf("Salario: %0.2f\n", worker.payment);
         puts("-----------------------------------------------------------");
 
         counter++;
     }
     fclose(fp);
+
+    free(worker.name);
+    free(worker.role);
 }
 
 /**
@@ -572,7 +626,7 @@ void query_workers_file(char *filename)
  */
 void query_cat_files(char *filename, bool minimized)
 {
-    char category[256];
+    char *category = malloc(sizeof(char) * MAX_CATEGORY_NAME);
 
     FILE *fp = fopen(filename, "r");
     if (!fp)
@@ -594,11 +648,16 @@ void query_cat_files(char *filename, bool minimized)
     }
 
     fclose(fp);
+    free(category);
 }
 
 bool edit_customer()
 {
     struct Customers customer;
+
+    customer.name = malloc(sizeof(char) * MAX_CUSTOMER_NAME);
+    customer.cpf = malloc(sizeof(char) * MAX_CUSTOMER_CPF);
+    customer.cep = malloc(sizeof(char) * MAX_CUSTOMER_CEP);
 
     FILE *fp = fopen("files\\customers.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
@@ -632,12 +691,19 @@ bool edit_customer()
     fclose(fpnew);
     remove("files\\customers.txt.txt");
     rename("files\\temp.txt", "files\\customers.txt");
+
+    free(customer.name);
+    free(customer.cpf);
+    free(customer.cep);
+
     return check;
 }
 
 bool edit_user()
 {
     struct Users user;
+    user.email = malloc(sizeof(char) * MAX_EMAIL_LENGHT);
+    user.password = malloc(sizeof(char) * MAX_PASSWORD_LENGHT);
 
     FILE *fp = fopen("files\\logins.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
@@ -667,17 +733,22 @@ bool edit_user()
         }
         i++;
     }
-
     fclose(fp);
     fclose(fpnew);
     remove("files\\logins.txt");
     rename("files\\temp.txt", "files\\logins.txt");
+
+    free(user.email);
+    free(user.password);
+
     return check;
 }
 
 bool edit_profiles()
 {
     struct Profiles profile;
+
+    profile.reason_of_buying = malloc(sizeof(char) * MAX_PROFILE_REASON);
 
     FILE *fp = fopen("files\\profiles.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
@@ -691,7 +762,7 @@ bool edit_profiles()
         counter++;
     }
     fclose(fp);
-    puts("Digite o id do user que voce quer substituir:\n");
+    puts("Digite o id do usuario que voce quer substituir:\n");
     scanf("%ld", &id);
     if (id >= counter || id <= 0)
     {
@@ -710,12 +781,16 @@ bool edit_profiles()
     fclose(fpnew);
     remove("files\\profiles.txt");
     rename("files\\temp.txt", "files\\profiles.txt");
+
     return check;
 }
 
 bool edit_workers()
 {
     struct Workers worker;
+
+    worker.name = malloc(sizeof(char) * MAX_WORKER_NAME);
+    worker.role = malloc(sizeof(char) * MAX_WORKER_ROLE);
 
     FILE *fp = fopen("files\\workers.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
@@ -750,5 +825,8 @@ bool edit_workers()
     fclose(fpnew);
     remove("files\\workers.txt");
     rename("files\\temp.txt", "files\\workers.txt");
+
+    free(worker.name);
+    free(worker.role);
     return check;
 }

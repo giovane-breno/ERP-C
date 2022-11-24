@@ -5,6 +5,12 @@
 #include <conio.h>
 #include <locale.h>
 
+/* DEFININDO O TAMANHO MAXIMO DAS VARIAVEIS TIPO CHAR */
+#define MAX_EMAIL_LENGHT 80
+#define MAX_PASSWORD_LENGHT 20
+
+#define MAX_PROFILE_REASON 256
+
 #define MAX_WORKER_ROLE 60
 #define MAX_WORKER_NAME 80
 
@@ -17,6 +23,13 @@
 #define MAX_CUSTOMER_NAME 80
 #define MAX_CUSTOMER_CPF 12
 #define MAX_CUSTOMER_CEP 9
+
+#define MAX_STORAGE_BRAND 256
+#define MAX_STORAGE_MODEL 256
+#define MAX_STORAGE_SUPPLIER 256
+
+#define MAX_CATEGORY_NAME 80
+/* DEFININDO O TAMANHO MAXIMO DAS VARIAVEIS TIPO CHAR */
 
 struct Users
 {
@@ -46,7 +59,7 @@ struct Profiles
     short int domestic_or_commercial; /* PARA USO DOMÉSTICO[1] OU COMERCIAL[2] */
     short int pickup_or_delivery;     /* PARA RETIRAR NA LOJA[1] OU ENTREGA[2] */
     short int active;                 /* USUARIO ATIVO OU NAO */
-    char reason_of_buying[256];       /* MOTIVO DE COMPRA */
+    char *reason_of_buying;           /* MOTIVO DE COMPRA */
 };
 
 struct Infrastructure
@@ -73,12 +86,11 @@ struct Infrastructure
 struct Storage
 {
     short int category;
-    char brand[256];
-    char model[256];
-    char supplier[256];
-
     int amount;
     float price;
+    char *brand;
+    char *model;
+    char *supplier;
 };
 
 #include "others.h"
@@ -94,7 +106,9 @@ struct Storage
 void register_profile_form()
 {
     struct Profiles profile;
-    char profile_data[468];
+    profile.reason_of_buying = malloc(sizeof(char) * MAX_PROFILE_REASON);
+
+    char *profile_data;
     short int answer;
     bool status = false;
     short int correct_data;
@@ -148,7 +162,7 @@ void register_profile_form()
         fflush(stdin);
         register_profile_text(1);
         puts("\nO Cliente tem algum motivo especifico para comprar na empresa?");
-        gets(profile.reason_of_buying);
+        fgets(profile.reason_of_buying, MAX_PROFILE_REASON, stdin);
 
         do
         {
@@ -186,19 +200,16 @@ void register_profile_form()
     }
 
     remove_whitespace(profile.reason_of_buying);
+    profile_data = malloc(strlen(profile.reason_of_buying) + 1 + (sizeof(long int) * (profile.customer_id)) + (sizeof(short int) * (profile.domestic_or_commercial)) + (sizeof(short int) * profile.pickup_or_delivery));
 
     sprintf(profile_data, "%ld %hd %hd %s %hd", profile.customer_id, profile.domestic_or_commercial, profile.pickup_or_delivery, profile.reason_of_buying, profile.active);
     system("cls");
     status = create_file("files\\profiles.txt", profile_data, "a");
 
-    if (status)
-    {
-        wait_for_input("\nPerfil de Cliente cadastrado com sucesso!\n");
-    }
-    else
-    {
-        wait_for_input("\n");
-    }
+    free(profile.reason_of_buying);
+    free(profile_data);
+
+    (status) ? wait_for_input("\nPerfil de Cliente cadastrado com sucesso!\n") : wait_for_input("\n");
 }
 
 /**
@@ -210,20 +221,21 @@ void register_form()
 {
     struct Users user;
 
-    user.email = malloc(256);
-    user.password = malloc(21);
-    char *cpass = malloc(sizeof(user.password)); /* CONFIRM PASSWORD */
+    user.email = malloc(sizeof(char) * MAX_EMAIL_LENGHT);
+    user.password = malloc(sizeof(char) * MAX_PASSWORD_LENGHT);
+    char *cpass = malloc(sizeof(char) * MAX_PASSWORD_LENGHT); /* CONFIRM PASSWORD */
 
+    system("cls");
     authentication_text(2);
-
+    fflush(stdin);
     printf("\nEmail: ");
-    scanf("%255s", user.email);
-    while (1)
+    fgets(user.email, MAX_EMAIL_LENGHT, stdin);
+    while (true)
     {
         printf("Senha: ");
-        scanf("%20s", user.password);
+        fgets(user.password, MAX_PASSWORD_LENGHT, stdin);
         printf("Confirmar senha: ");
-        scanf("%20s", cpass);
+        fgets(cpass, MAX_PASSWORD_LENGHT, stdin);
 
         /* Funcao para comparar as strings! */
         if (strcmp(cpass, user.password) == 0)
@@ -232,6 +244,8 @@ void register_form()
             wait_for_input("");
             free(user.email);
             free(user.password);
+            free(cpass);
+
             break;
         }
         else
@@ -254,19 +268,24 @@ bool login_form()
     struct Users user;
     bool status = false;
 
-    user.email = malloc(256);
-    user.password = malloc(21);
+    user.email = malloc(sizeof(char) * MAX_EMAIL_LENGHT);
+    user.password = malloc(sizeof(char) * MAX_PASSWORD_LENGHT);
 
     authentication_text(3);
     fflush(stdin);
     printf("Email: ");
-    scanf("%255s", user.email);
+    fgets(user.email, MAX_EMAIL_LENGHT, stdin);
     printf("Senha: ");
-    scanf("%20s", user.password);
-    status = login_account(user.email, user.password) ? true : false;
+    fgets(user.password, MAX_PASSWORD_LENGHT, stdin);
+
+    remove_whitespace(user.email);
+    remove_whitespace(user.password);
+
+    status = login_account(user.email, encrypt(user.password)) ? true : false;
 
     free(user.email);
     free(user.password);
+
     return status;
 }
 
@@ -381,12 +400,12 @@ void register_work_form()
 
         system("cls");
         register_work_text(1);
-        printf("\nCargo: ");
+        printf("Cargo: ");
         fgets(worker.role, MAX_WORKER_ROLE, stdin);
 
         system("cls");
         register_work_text(1);
-        printf("\nSalario: ");
+        printf("Salario: ");
         scanf("%f", &worker.payment);
 
         fflush(stdin);
@@ -395,8 +414,8 @@ void register_work_form()
         register_work_text(1);
         puts("\nConfirme se os dados abaixo estao corretos:");
         printf("\nNome: %s", worker.name);
-        printf("\nCargo: %s", worker.role);
-        printf("\nSalario: R$%.2f", worker.payment);
+        printf("Cargo: %s", worker.role);
+        printf("Salario: R$%.2f", worker.payment);
         puts("\n\nCorretos?\n[1] - Sim\n[2] - Nao\n");
         scanf("%hd", &correct_data);
 
@@ -413,18 +432,11 @@ void register_work_form()
     system("cls");
     status = create_file("files\\workers.txt", worker_data, "a");
 
-    if (status == true)
-    {
-        wait_for_input("\nFuncionario cadastrado com sucesso!\n");
-    }
-    else
-    {
-        wait_for_input("\n");
-    }
-
     free(worker_data);
     free(worker.name);
     free(worker.role);
+
+    (status == true) ? wait_for_input("\nFuncionario cadastrado com sucesso!\n") : wait_for_input("\n");
 }
 
 /**
@@ -435,16 +447,15 @@ void register_work_form()
 void register_infra_form()
 {
     struct Infrastructure infrastructure;
-    char *infra_data;
-
-    bool status = false;
-    short int correct_data;
-
     infrastructure.rent_adress = malloc(sizeof(char) * MAX_INFRASTRUCTURE_RENT);
     infrastructure.water_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_WATER);
     infrastructure.energy_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_ENERGY);
     infrastructure.cleaning_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_CLEANING);
     infrastructure.net_sender = malloc(sizeof(char) * MAX_INFRASTRUCTURE_NET);
+
+    char *infra_data;
+    bool status = false;
+    short int correct_data;
 
     while (true)
     {
@@ -555,16 +566,14 @@ void register_infra_form()
     system("cls");
     status = create_file("files\\infrastructure.txt", infra_data, "w+");
 
-    if (status == true)
-    {
-        wait_for_input("\nInfraestrutura cadastrada com sucesso!\n");
-    }
-    else
-    {
-        wait_for_input("\n");
-    }
-
     free(infra_data);
+    free(infrastructure.rent_adress);
+    free(infrastructure.water_sender);
+    free(infrastructure.energy_sender);
+    free(infrastructure.cleaning_sender);
+    free(infrastructure.net_sender);
+
+    (status == true) ? wait_for_input("\nInfraestrutura cadastrada com sucesso!\n") : wait_for_input("\n");
 }
 
 /**
@@ -588,7 +597,6 @@ void register_customer_form()
 {
     struct Customers customer;
     char *customer_data;
-
     customer.name = malloc(sizeof(char) * MAX_CUSTOMER_NAME);
     customer.cpf = malloc(sizeof(char) * MAX_CUSTOMER_CPF);
     customer.cep = malloc(sizeof(char) * MAX_CUSTOMER_CEP);
@@ -647,7 +655,7 @@ void register_customer_form()
             register_customer_text(1);
             puts("\nConfirme se os dados abaixo estao corretos:");
             printf("\nNome: %s", customer.name);
-            printf("\nIdade: %hd", customer.age);
+            printf("Idade: %hd", customer.age);
             printf("\nSexo: ");
             (customer.gender == 1) ? printf("Masculino") : printf("Feminino");
             printf("\nCPF: %.11s", customer.cpf);
@@ -676,16 +684,11 @@ void register_customer_form()
     system("cls");
     status = create_file("files\\customers.txt", customer_data, "a");
 
-    if (status == true)
-    {
-        wait_for_input("\nCliente cadastrado com sucesso!\n");
-    }
-    else
-    {
-        wait_for_input("\n");
-    }
-
     free(customer_data);
+    free(customer.name);
+    free(customer.cpf);
+    free(customer.cep);
+    (status == true) ? wait_for_input("\nCliente cadastrado com sucesso!\n") : wait_for_input("\n");
 }
 
 /**
@@ -696,8 +699,9 @@ void register_customer_form()
  */
 void register_category_form()
 {
-    char category[256];
-    short int correct_data = 0;
+    char *category = malloc(sizeof(char) * MAX_CATEGORY_NAME);
+    short int correct_data;
+
     bool status = false;
     while (true)
     {
@@ -705,7 +709,7 @@ void register_category_form()
         fflush(stdin);
         category_text(1);
         printf("\nCategoria: ");
-        gets(category);
+        fgets(category, MAX_CATEGORY_NAME, stdin);
 
         do
         {
@@ -713,7 +717,6 @@ void register_category_form()
             category_text(1);
             puts("\nConfirme se os dados abaixo estao corretos:");
             printf("\nCategoria: %s", category);
-
             puts("\n\nCorretos?\n[1] - Sim\n[2] - Nao\n");
             scanf("%hd", &correct_data);
 
@@ -729,14 +732,8 @@ void register_category_form()
     status = create_file("files\\categories.txt", category, "a");
     system("cls");
 
-    if (status == true)
-    {
-        wait_for_input("\nCategoria cadastrada com sucesso!\n");
-    }
-    else
-    {
-        wait_for_input("\n");
-    }
+    free(category);
+    (status == true) ? wait_for_input("\nCategoria cadastrada com sucesso!\n") : wait_for_input("\n");
 }
 
 /**
@@ -748,8 +745,11 @@ void register_category_form()
 void register_item_form()
 {
     struct Storage item;
+    item.supplier = malloc(sizeof(char) * MAX_STORAGE_SUPPLIER);
+    item.brand = malloc(sizeof(char) * MAX_STORAGE_BRAND);
+    item.model = malloc(sizeof(char) * MAX_STORAGE_MODEL);
 
-    char item_data[256];
+    char *item_data;
     short int correct_data = 0;
     short int answer = 0;
     bool status = false;
@@ -828,22 +828,22 @@ void register_item_form()
         if (correct_data == 1)
             break;
     }
+
     remove_whitespace(item.supplier);
     remove_whitespace(item.brand);
     remove_whitespace(item.model);
 
+    item_data = malloc(strlen(item.supplier) + 1 + strlen(item.brand) + 1 + strlen(item.model) + 1 + sizeof(item.amount) + sizeof(item.category));
+
     sprintf(item_data, "%hd %s %s %s %d %0.2f", item.category, item.supplier, item.brand, item.model, item.amount, item.price);
     system("cls");
-
     status = create_file("files\\items.txt", item_data, "a");
-    if (status == true)
-    {
-        wait_for_input("\nCategoria cadastrada com sucesso!\n");
-    }
-    else
-    {
-        wait_for_input("\n");
-    }
+
+    free(item_data);
+    free(item.supplier);
+    free(item.brand);
+    free(item.model);
+    (status == true) ? wait_for_input("\nCategoria cadastrada com sucesso!\n") : wait_for_input("\n");
 }
 
 /**
@@ -856,7 +856,7 @@ void show_storage_form()
 {
     system("cls");
     category_text(3);
-    query_storage_files("files\\items.txt", true);
+    query_storage_files("files\\items.txt", false);
 
     wait_for_input("\nDados de Estoque impressos com sucesso!\n");
 }
@@ -869,7 +869,7 @@ void show_storage_form()
  */
 void relatory_capex()
 {
-    int resposta;
+    short int resposta;
 
     relatories_text(2);
 
@@ -880,7 +880,7 @@ void relatory_capex()
     printf("[1] - SIM\n");
     printf("[2] - NAO\n\n");
 
-    scanf("%d", &resposta);
+    scanf("%hd", &resposta);
 
     if (resposta == 1)
     {
@@ -900,7 +900,7 @@ void relatory_opex()
     float payment = sum_payment();
     float services = sum_services();
     float *rent = rent_and_tax();
-    short int resposta = 0;
+    short int resposta;
     relatories_text(3);
 
     printf("* SALARIOS\n");

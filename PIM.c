@@ -1,6 +1,6 @@
 /* *******************************************************************
  * Universidade Paulista (UNIP)
- * Análise e Desevolvimento de Sistemas - Data de Entrega:
+ * Análise e Desenvolvimento de Sistemas - Data de Entrega: 25/11/2022
  *
  * Autores do Projeto: Giovane Breno Pereira Barbosa [N8713B-5]
  *                     Levi Custódio Kodaria Leão
@@ -9,7 +9,7 @@
  *                     Giovana Chiquinni Primon
  * Turma: DS2R48
  * PROJETO INTEGRADO MULTIDISCIPLINAR
- * Observação: <colocar se houver>
+ * Observação: 
  *
  * PIM.c
  * ******************************************************************/
