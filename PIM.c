@@ -471,19 +471,26 @@ void edit_data_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [1] EDITAR DAD
         {
         case 1: /* FUNCIONARIOS */
             system("cls");
+            edit_workers_form();
+            edit_data_screen();
             break;
         case 2: /* CLIENTES */
             system("cls");
-
-            break;
+            edit_customer_form();
+            edit_data_screen();
         case 3: /* PERFIS DE USUARIOS */
             system("cls");
-
+            edit_profiles_form();
+            edit_data_screen();
             break;
-        case 4:
+        case 4: /* USUARIOS */
+            system("cls");
+            edit_users_form();
+            edit_data_screen();
+        case 5:
             management_screen(); /* RETORNA A TELA DE GERENCIAMENTO */
             break;
-        default:
+        default: 
             system("cls");
             edit_data_text(1);
             printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");

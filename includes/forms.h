@@ -907,3 +907,27 @@ void relatory_capex_opex()
     printf("  TOTAL OPEX -> R$ %0.2f\n\n", total_OPEX);
     wait_for_input("");
 }
+
+void edit_customer_form(){ //EDITAR CLIENTES
+    if(edit_customer() == true){
+        register_customer_form();
+    }
+}
+
+void edit_users_form(){ //EDITAR LOGINS
+    if(edit_user() == true){
+        register_form();
+    }
+}
+
+void edit_profiles_form(){
+    if(edit_profiles() == true){
+        register_profile_form();
+    }
+}
+
+void edit_workers_form(){
+    if(edit_workers() == true){
+        register_work_form();
+    }
+}

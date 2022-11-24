@@ -287,7 +287,8 @@ void edit_data_text(int type)
         printf("|                [1] - Funcionarios                         |\n");
         printf("|                [2] - Clientes                             |\n");
         printf("|                [3] - Perfis de Usuarios                   |\n");
-        printf("|                [4] - Voltar                               |\n");
+        printf("|                [4] - Logins                               |\n");
+        printf("|                [5] - Voltar                               |\n");
         printf("|                                                           |\n");
         printf("|-----------------------------------------------------------|\n");
         break;

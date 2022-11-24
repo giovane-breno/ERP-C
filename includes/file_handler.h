@@ -610,3 +610,153 @@ void query_cat_files(char filename[20], bool minimized)
 
     fclose(fp);
 }
+
+bool edit_customer()
+{
+    struct Customers customer;
+    
+    FILE *fp = fopen("files\\customers.txt", "r");
+    FILE *fpnew = fopen("files\\temp.txt", "w+");
+    int id;
+    int i = 1;
+    int counter = 1;
+    bool check = true;
+    while (fscanf(fp, "%s %d %d %s %s", customer.name, &customer.age, &customer.gender, customer.cpf, customer.cep) == 5)
+    {
+        printf("ID: %d | %s\n", counter, customer.name);
+        counter++;
+    }
+    fclose(fp);
+    puts("Digite o id do user que voce quer substituir:\n");
+    scanf("%d", &id);
+    if (id >= counter || id <= 0){
+        check = false;
+    }
+    fp = fopen("files\\customers.txt.txt", "r");
+    while (fscanf(fp, "%s %d %d %s %s", customer.name, &customer.age, &customer.gender, customer.cpf, customer.cep) == 5)
+    {
+        if (i != id)
+        {
+            fprintf(fpnew, "%s %d %d %s %s\n", customer.name, customer.age, customer.gender, customer.cpf, customer.cep);
+        }
+        i++;
+    }
+
+    fclose(fp);
+    fclose(fpnew);
+    remove("files\\customers.txt.txt");
+    rename("files\\temp.txt", "files\\customers.txt");
+    return check;
+}
+
+bool edit_user(){
+    struct Users user;
+    
+    FILE *fp = fopen("files\\logins.txt", "r");
+    FILE *fpnew = fopen("files\\temp.txt", "w+");
+    int id;
+    int i = 1;
+    int counter = 1;
+    bool check = true;
+
+    while (fscanf(fp, "%s %s", user.email, user.password) == 2)
+    {
+        printf("ID: %d | %s\n", counter, user.email);
+        counter++;
+    }
+    fclose(fp);
+    puts("Digite o id do user que voce quer substituir:\n");
+    scanf("%d", &id);
+    if (id >= counter || id <= 0){
+        check = false;
+    }
+    fp = fopen("files\\logins.txt", "r");
+    while (fscanf(fp, "%s %s", user.email, user.password) == 2)
+    {
+        if (i != id)
+        {
+            fprintf(fpnew, "%s %s\n", user.email, user.password);
+        }
+        i++;
+    }
+
+    fclose(fp);
+    fclose(fpnew);
+    remove("files\\logins.txt");
+    rename("files\\temp.txt", "files\\logins.txt");
+    return check;
+}
+
+bool edit_profiles(){
+    struct Profiles profile;
+    
+    FILE *fp = fopen("files\\profiles.txt", "r");
+    FILE *fpnew = fopen("files\\temp.txt", "w+");
+    int id;
+    int i = 1;
+    int counter = 1;
+    bool check = true;
+    while (fscanf(fp, "%d %d %d %s %d", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
+    {
+        printf("ID: %d | %s\n", counter, getName(profile.customer_id));
+        counter++;
+    }
+    fclose(fp);
+    puts("Digite o id do user que voce quer substituir:\n");
+    scanf("%d", &id);
+    if (id >= counter || id <= 0){
+        check = false;
+    }
+    fp = fopen("files\\profiles.txt", "r");
+    while (fscanf(fp, "%d %d %d %s %d", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
+    {
+        if (i != id)
+        {
+            fprintf(fpnew, "%d %d %d %s %d", profile.customer_id, profile.domestic_or_commercial, profile.pickup_or_delivery, profile.reason_of_buying, profile.active);
+        }
+        i++;
+    }
+    fclose(fp);
+    fclose(fpnew);
+    remove("files\\profiles.txt");
+    rename("files\\temp.txt", "files\\profiles.txt");
+    return check;
+}
+
+bool edit_workers(){
+    struct Workers worker;
+    
+    FILE *fp = fopen("files\\workers.txt", "r");
+    FILE *fpnew = fopen("files\\temp.txt", "w+");
+    int id;
+    int i = 1;
+    int counter = 1;
+    bool check = true;
+
+    while (fscanf(fp, "%s %s %f", worker.name, worker.role, &worker.payment) == 3)
+    {
+        printf("ID: %d | %s\n", counter, worker.name);
+        counter++;
+    }
+    fclose(fp);
+    puts("Digite o id do user que voce quer substituir:\n");
+    scanf("%d", &id);
+    if (id >= counter || id <= 0){
+        check = false;
+    }
+    fp = fopen("files\\workers.txt", "r");
+    while (fscanf(fp, "%s %s %f", worker.name, worker.role, &worker.payment) == 3)
+    {
+        if (i != id)
+        {
+            fprintf(fpnew, "%s %s %f\n", worker.name, worker.role, worker.payment);
+        }
+        i++;
+    }
+
+    fclose(fp);
+    fclose(fpnew);
+    remove("files\\workers.txt");
+    rename("files\\temp.txt", "files\\workers.txt");
+    return check;
+}
