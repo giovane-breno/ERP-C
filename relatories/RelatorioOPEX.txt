@@ -25,11 +25,11 @@
 * TOTAL DOS SERVICOS: R$ 1601,00 
 
 * SALARIOS
-  Funcionarios: R$ 384084,00 
+  Funcionarios: R$ 350326,00 
 
 * IMPOSTOS
   Valor: R$ 333,00| 
 
 * TOTAL OPEX:
-  R$ 387251,50 
+  R$ 353493,50 
 

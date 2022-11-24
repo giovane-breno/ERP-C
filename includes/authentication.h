@@ -58,10 +58,13 @@ bool login_account(char *email, char *password)
             {
                 free(temp_email);
                 free(temp_password);
+                fclose(fp);
                 return true;
             }
         }
     }
+
+    fclose(fp);
 
     free(temp_email);
     free(temp_password);

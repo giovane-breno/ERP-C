@@ -744,14 +744,14 @@ bool delete_user()
         }
         i++;
     }
-    fclose(fp);
     fclose(fpnew);
-
-    remove("files\\logins.txt");
-    rename("files\\temp.txt", "files\\logins.txt");
+    fclose(fp);
 
     free(user.email);
     free(user.password);
+
+    remove("files\\logins.txt");
+    rename("files\\temp.txt", "files\\logins.txt");
 
     return check;
 }
