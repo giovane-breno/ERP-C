@@ -1018,3 +1018,35 @@ void delete_workers_form()
         }
     }
 }
+
+void delete_items_form()
+{
+    if (delete_item() == true)
+    {
+        int res;
+        system("cls");
+        puts("\nVoce deseja cadastrar um novo item?");
+        puts("[1] - Sim | [2] - Nao\n");
+        scanf("%d", &res);
+        if (res == 1)
+        {
+            register_item_form();
+        }
+    }
+}
+
+void delete_categories_form()
+{
+    if (delete_category() == true)
+    {
+        int res;
+        system("cls");
+        puts("\nVoce deseja cadastrar uma nova categoria?");
+        puts("[1] - Sim | [2] - Nao\n");
+        scanf("%d", &res);
+        if (res == 1)
+        {
+            register_category_form();
+        }
+    }
+}

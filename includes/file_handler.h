@@ -129,7 +129,8 @@ bool create_file(char *filename, char *content, char *method)
 char *getCategory(long int id)
 {
     int counter = 1;
-    char *category = malloc(256);
+    char *category = malloc(sizeof(char) * MAX_CATEGORY_NAME);
+
     FILE *fp = fopen("files\\categories.txt", "r");
     if (!fp)
     {
@@ -854,5 +855,96 @@ bool delete_workers()
 
     free(worker.name);
     free(worker.role);
+    return check;
+}
+
+bool delete_item()
+{
+    struct Storage item;
+
+    item.supplier = malloc(sizeof(char) * MAX_STORAGE_SUPPLIER);
+    item.brand = malloc(sizeof(char) * MAX_STORAGE_BRAND);
+    item.model = malloc(sizeof(char) * MAX_STORAGE_MODEL);
+
+    FILE *fp = fopen("files\\items.txt", "r");
+    FILE *fpnew = fopen("files\\temp.txt", "w+");
+    long int id;
+    int i = 1;
+    int counter = 1;
+    bool check = true;
+
+    while (fscanf(fp, "%hd %s %s %s %d %f", &item.category, item.supplier, item.brand, item.model, &item.amount, &item.price) == 6)
+    {
+        printf("ID: %d | %s %s %s\n", counter, item.supplier, item.brand, item.model);
+        counter++;
+    }
+    fclose(fp);
+
+    printf("\nID a Deletar: ");
+    scanf("%ld", &id);
+    if (id >= counter || id <= 0)
+        check = false;
+
+    fp = fopen("files\\items.txt", "r");
+    while (fscanf(fp, "%hd %s %s %s %d %f", &item.category, item.supplier, item.brand, item.model, &item.amount, &item.price) == 6)
+    {
+        if (i != id)
+        {
+            fprintf(fpnew, "%hd %s %s %s %d %f", item.category, item.supplier, item.brand, item.model, item.amount, item.price);
+        }
+        i++;
+    }
+
+    fclose(fp);
+    fclose(fpnew);
+    remove("files\\items.txt");
+    rename("files\\temp.txt", "files\\items.txt");
+
+    free(item.supplier);
+    free(item.brand);
+    free(item.model);
+    return check;
+}
+
+bool delete_category()
+{
+
+    char *category = malloc(sizeof(char) * MAX_CATEGORY_NAME);
+
+    FILE *fp = fopen("files\\categories.txt", "r");
+    FILE *fpnew = fopen("files\\temp.txt", "w+");
+    long int id;
+    int i = 1;
+    int counter = 1;
+    bool check = true;
+
+    while (fscanf(fp, "%s", category) != EOF)
+    {
+        printf("ID: %d | %s \n", counter, category);
+        counter++;
+    }
+    fclose(fp);
+
+    printf("\nID a Deletar: ");
+    scanf("%ld", &id);
+    if (id >= counter || id <= 0)
+        check = false;
+
+    fp = fopen("files\\categories.txt", "r");
+    while (fscanf(fp, "%s", category) != EOF)
+    {
+        if (i != id)
+        {
+            fprintf(fpnew, "%s", category);
+        }
+        i++;
+    }
+
+    fclose(fp);
+    fclose(fpnew);
+    remove("files\\categories.txt");
+    rename("files\\temp.txt", "files\\categories.txt");
+
+    free(category);
     return check;
 }
