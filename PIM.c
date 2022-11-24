@@ -52,14 +52,14 @@ int main()
 void login()
 {
     system("cls");
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
     authentication_text(1);
 
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         system("cls");
 
         switch (option)
@@ -93,14 +93,14 @@ void login()
 
 void main_menu() /* TELA INICIAL */
 {
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
     system("cls");
     main_menu_text(1);
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         system("cls");
         switch (option)
         {
@@ -130,14 +130,13 @@ void main_menu() /* TELA INICIAL */
 
 void storage_screen() /* TELA INICIAL - > [1] CADASTROS - > [1] ESTOQUE */
 {
-    int option = 0;
-    int end_loop = 0;
-
+    short int option = 0;
+    
     system("cls");
     register_options_text(3);
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1: /* CADASTRAR CATEGORIA */
@@ -164,14 +163,14 @@ void storage_screen() /* TELA INICIAL - > [1] CADASTROS - > [1] ESTOQUE */
 
 void infra_screen() /* TELA INICIAL - > [1] CADASTROS - > [2] INFRAESTRUTURA */
 {
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
     system("cls");
     register_options_text(1);
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1:
@@ -193,14 +192,14 @@ void infra_screen() /* TELA INICIAL - > [1] CADASTROS - > [2] INFRAESTRUTURA */
 
 void human_register_screen() /* TELA INICIAL - > [1] CADASTROS - >  [3] RECURSOS HUMANOS */
 {
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
     system("cls");
     register_options_text(2);
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1:
@@ -232,14 +231,14 @@ void human_register_screen() /* TELA INICIAL - > [1] CADASTROS - >  [3] RECURSOS
 
 void register_screen() /* TELA INICIAL - > [1] CADASTROS */
 {
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
     system("cls");
     main_menu_text(2);
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1: /* ESTOQUE */
@@ -274,12 +273,12 @@ void query_screen() /* TELA INICIAL - > [2] CONSULTAR */
     system("cls");
     main_menu_text(3);
 
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1: /* ESTOQUE */
@@ -314,12 +313,12 @@ void query_storage_screen() /* TELA INICIAL - > [2] CONSULTAR - >  [1] ESTOQUE *
     system("cls");
     query_human_text(3);
 
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1: /* VISUALIZAR INFRAESTRUTURA */
@@ -345,12 +344,12 @@ void query_infra_screen() /* TELA INICIAL - > [2] CONSULTAR - >  [2] INFRAESTRUT
     system("cls");
     query_human_text(2);
 
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1: /* VISUALIZAR INFRAESTRUTURA */
@@ -376,12 +375,12 @@ void query_human_screen() /* TELA INICIAL - > [2] CONSULTAR - >  [3] RECURSOS HU
     system("cls");
     query_human_text(1);
 
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1: /* CONSULTAR CLIENTES*/
@@ -420,12 +419,12 @@ void management_screen() /* TELA INICIAL - > [3] GERENCIAMENTO */
     system("cls");
     main_menu_text(4);
 
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1: /* GERENCIAR DADOS */
@@ -461,12 +460,12 @@ void edit_data_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [1] EDITAR DAD
     system("cls");
     edit_data_text(1);
 
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1: /* FUNCIONARIOS */
@@ -504,12 +503,12 @@ void relatories_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [2] VISUALIZA
     system("cls");
     relatories_text(1);
 
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1: /* Relatório CAPEX */
@@ -544,12 +543,12 @@ void admin_config_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [3] CONFIGU
     system("cls");
     admin_config_text(1);
 
-    int option = 0;
-    int end_loop = 0;
+    short int option = 0;
+    
 
-    while (!end_loop)
+    while (true)
     {
-        scanf("%i", &option);
+        scanf("%hd", &option);
         switch (option)
         {
         case 1: /* ATIVAR / DESATIVAR REGISTRO */

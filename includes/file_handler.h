@@ -94,7 +94,7 @@ void check_register_status()
  * @param method deve ser um metodo de manipulação de arquivo.
  * @returns True / False
  */
-bool create_file(char filename[25], char content[256], char method[2])
+bool create_file(char *filename, char *content, char *method)
 {
     bool status = false;
     FILE *fp = fopen(filename, method);
@@ -119,32 +119,6 @@ bool create_file(char filename[25], char content[256], char method[2])
  * @param content deve ser um array de caracteres.
  * @returns True / False
  */
-int read_file(char filename[25], char content[256])
-{
-    int status = 0;
-    FILE *fp = fopen(filename, "r");
-    char c[100];
-    if (!fp)
-    {
-        printf("Erro na abertura do arquivo!");
-        exit(1);
-    }
-    else
-    {
-        while (fgets(c, sizeof(c), fp))
-        {
-            if (strstr(c, content))
-            {
-                status = 1;
-                break;
-            }
-        }
-    }
-
-    fclose(fp);
-
-    return status;
-}
 
 /**
  * Função para recuperar a categoria de um item.
@@ -152,7 +126,7 @@ int read_file(char filename[25], char content[256])
  * @param id deve ser um int
  * @returns {Array}
  */
-char *getCategory(int id)
+char *getCategory(long int id)
 {
     int counter = 1;
     char *category = malloc(256);
@@ -183,7 +157,7 @@ char *getCategory(int id)
  * @param id deve ser um int
  * @returns {Array}
  */
-char *getName(int id)
+char *getName(long int id)
 {
     int counter = 1;
     char *name = malloc(256);
@@ -214,7 +188,7 @@ char *getName(int id)
  *
  * @param filename deve ser um diretorio.
  */
-void query_users_file(char filename[25])
+void query_users_file(char *filename)
 {
     FILE *fp = fopen(filename, "r");
     char name[256];
@@ -225,9 +199,9 @@ void query_users_file(char filename[25])
 
     while (fscanf(fp, "%s %*s", name) == 1)
     {
-        {
-            printf("Usuario: %s\n", name);
-        }
+        add_whitespace(name);
+
+        printf("Usuario: %s\n", name);
     }
 
     fclose(fp);
@@ -238,7 +212,7 @@ void query_users_file(char filename[25])
  *
  * @param filename deve ser um diretorio.
  */
-void query_infra_files(char filename[25])
+void query_infra_files(char *filename)
 {
     struct Infrastructure infrastructure;
 
@@ -250,6 +224,12 @@ void query_infra_files(char filename[25])
     else
     {
         fscanf(fp, "%s %f\n%s %f\n%s %f\n%s %f\n%s %f\n%f\n%f", infrastructure.rent_adress, &infrastructure.rent_price, infrastructure.water_sender, &infrastructure.water_value, infrastructure.energy_sender, &infrastructure.energy_value, infrastructure.cleaning_sender, &infrastructure.cleaning_value, infrastructure.net_sender, &infrastructure.net_value, &infrastructure.tax, &infrastructure.total_value);
+
+        add_whitespace(infrastructure.rent_adress);
+        add_whitespace(infrastructure.water_sender);
+        add_whitespace(infrastructure.energy_sender);
+        add_whitespace(infrastructure.cleaning_sender);
+        add_whitespace(infrastructure.net_sender);
 
         puts("\n* ALUGUEL");
         printf("Endereco: %s", infrastructure.rent_adress);
@@ -282,7 +262,7 @@ void query_infra_files(char filename[25])
  *
  * @param filename deve ser um diretorio.
  */
-void query_storage_files(char filename[25], int minimalist)
+void query_storage_files(char *filename, bool minimalist)
 {
 
     struct Storage item;
@@ -293,9 +273,9 @@ void query_storage_files(char filename[25], int minimalist)
     }
     else
     {
-        if (minimalist == 0)
+        if (minimalist == false)
         {
-            while (fscanf(fp, "%d %s %s %s %d %f", &item.category, item.supplier, item.brand, item.model, &item.amount, &item.price) == 6)
+            while (fscanf(fp, "%hd %s %s %s %d %f", &item.category, item.supplier, item.brand, item.model, &item.amount, &item.price) == 6)
             {
 
                 add_whitespace(item.supplier);
@@ -315,7 +295,7 @@ void query_storage_files(char filename[25], int minimalist)
         else
         {
             float total = 0;
-            while (fscanf(fp, "%d %*s %*s %*s %d %f", &item.category, &item.amount, &item.price) == 3)
+            while (fscanf(fp, "%hd %*s %*s %*s %d %f", &item.category, &item.amount, &item.price) == 3)
             {
                 printf("* %s\n", getCategory(item.category));
                 printf("R$ %0.2f\n\n", (item.amount * item.price));
@@ -334,7 +314,7 @@ void query_storage_files(char filename[25], int minimalist)
  *
  * @param filename deve ser um diretorio.
  */
-void file_capex(char filename[25])
+void file_capex(char *filename)
 {
     struct Storage item;
     FILE *fp = fopen(filename, "r");
@@ -351,7 +331,7 @@ void file_capex(char filename[25])
         fprintf(fp1, "|                 RELATÓRIO CAPEX                      |\n");
         fprintf(fp1, "|------------------------------------------------------|\n\n");
 
-        while (fscanf(fp, "%d %s %s %s %d %f", &item.category, item.supplier, item.brand, item.model, &item.amount, &item.price) == 6)
+        while (fscanf(fp, "%hd %s %s %s %d %f", &item.category, item.supplier, item.brand, item.model, &item.amount, &item.price) == 6)
         {
 
             add_whitespace(item.supplier);
@@ -384,7 +364,7 @@ void file_capex(char filename[25])
  *
  * @param filename deve ser um diretorio.
  */
-void file_opex(char filename[25])
+void file_opex(char *filename)
 {
     struct Infrastructure infrastructure;
     float payment = sum_payment();
@@ -453,14 +433,14 @@ void file_opex(char filename[25])
  * @param minimized deve ser true ou false.
  */
 
-void query_customers_file(char filename[25], bool minimized)
+void query_customers_file(char *filename, bool minimized)
 {
     char name[256];
-    int age;
+    short int age;
     char cpf[60];
     char cep[60];
 
-    int gender;
+    short int gender;
 
     FILE *fp = fopen(filename, "r");
     if (!fp)
@@ -473,8 +453,11 @@ void query_customers_file(char filename[25], bool minimized)
         {
             int counter = 1;
 
-            while (fscanf(fp, "%s %d %d %s %s", name, &age, &gender, cpf, cep) == 5)
+            while (fscanf(fp, "%s %hd %hd %s %s", name, &age, &gender, cpf, cep) == 5)
             {
+                add_whitespace(name);
+                add_whitespace(cpf);
+                add_whitespace(cep);
 
                 printf("Consulta: %d\n\n", counter);
                 printf("Nome: %s\n", name);
@@ -510,7 +493,7 @@ void query_customers_file(char filename[25], bool minimized)
  * @param filename deve ser um diretorio.
  * @param id deve ser o id de um usuario.
  */
-void query_p_files(char filename[25], int id)
+void query_p_files(char *filename, long int id)
 {
     struct Profiles profile;
     bool found = false;
@@ -521,13 +504,13 @@ void query_p_files(char filename[25], int id)
     }
     else
     {
-        while (fscanf(fp, "%d %d %d %s %d", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
+        while (fscanf(fp, "%ld %hd %hd %s %hd", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
         {
             if (profile.customer_id == id)
             {
                 add_whitespace(profile.reason_of_buying);
 
-                printf("\nID: %d | %s\n", id, getName(profile.customer_id));
+                printf("\nID: %ld | %s\n", id, getName(profile.customer_id));
                 printf("\nTipo de Encomenda: ");
                 (profile.domestic_or_commercial == 1) ? printf("Particular") : printf("Comercial");
                 printf("\nMetodo de Entrega: ");
@@ -552,7 +535,7 @@ void query_p_files(char filename[25], int id)
  *
  * @param filename deve ser um diretorio.
  */
-void query_workers_file(char filename[25])
+void query_workers_file(char *filename)
 {
     char name[256];
     char role[256];
@@ -567,6 +550,8 @@ void query_workers_file(char filename[25])
 
     while (fscanf(fp, "%s %s %f", name, role, &payment) == 3)
     {
+        add_whitespace(name);
+        add_whitespace(role);
 
         printf("Consulta: %d\n\n", counter);
         printf("Nome: %s\n", name);
@@ -585,7 +570,7 @@ void query_workers_file(char filename[25])
  * @param filename deve ser um diretorio.
  * @param minimized deve ser true ou false.
  */
-void query_cat_files(char filename[20], bool minimized)
+void query_cat_files(char *filename, bool minimized)
 {
     char category[256];
 
@@ -614,30 +599,31 @@ void query_cat_files(char filename[20], bool minimized)
 bool edit_customer()
 {
     struct Customers customer;
-    
+
     FILE *fp = fopen("files\\customers.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
-    int id;
+    long int id;
     int i = 1;
     int counter = 1;
     bool check = true;
-    while (fscanf(fp, "%s %d %d %s %s", customer.name, &customer.age, &customer.gender, customer.cpf, customer.cep) == 5)
+    while (fscanf(fp, "%s %hd %hd %s %s", customer.name, &customer.age, &customer.gender, customer.cpf, customer.cep) == 5)
     {
         printf("ID: %d | %s\n", counter, customer.name);
         counter++;
     }
     fclose(fp);
     puts("Digite o id do user que voce quer substituir:\n");
-    scanf("%d", &id);
-    if (id >= counter || id <= 0){
+    scanf("%ld", &id);
+    if (id >= counter || id <= 0)
+    {
         check = false;
     }
     fp = fopen("files\\customers.txt.txt", "r");
-    while (fscanf(fp, "%s %d %d %s %s", customer.name, &customer.age, &customer.gender, customer.cpf, customer.cep) == 5)
+    while (fscanf(fp, "%s %hd %hd %s %s", customer.name, &customer.age, &customer.gender, customer.cpf, customer.cep) == 5)
     {
         if (i != id)
         {
-            fprintf(fpnew, "%s %d %d %s %s\n", customer.name, customer.age, customer.gender, customer.cpf, customer.cep);
+            fprintf(fpnew, "%s %hd %hd %s %s\n", customer.name, customer.age, customer.gender, customer.cpf, customer.cep);
         }
         i++;
     }
@@ -649,12 +635,13 @@ bool edit_customer()
     return check;
 }
 
-bool edit_user(){
+bool edit_user()
+{
     struct Users user;
-    
+
     FILE *fp = fopen("files\\logins.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
-    int id;
+    long int id;
     int i = 1;
     int counter = 1;
     bool check = true;
@@ -666,8 +653,9 @@ bool edit_user(){
     }
     fclose(fp);
     puts("Digite o id do user que voce quer substituir:\n");
-    scanf("%d", &id);
-    if (id >= counter || id <= 0){
+    scanf("%ld", &id);
+    if (id >= counter || id <= 0)
+    {
         check = false;
     }
     fp = fopen("files\\logins.txt", "r");
@@ -687,32 +675,34 @@ bool edit_user(){
     return check;
 }
 
-bool edit_profiles(){
+bool edit_profiles()
+{
     struct Profiles profile;
-    
+
     FILE *fp = fopen("files\\profiles.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
-    int id;
+    long int id;
     int i = 1;
     int counter = 1;
     bool check = true;
-    while (fscanf(fp, "%d %d %d %s %d", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
+    while (fscanf(fp, "%ld %hd %hd %s %hd", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
     {
         printf("ID: %d | %s\n", counter, getName(profile.customer_id));
         counter++;
     }
     fclose(fp);
     puts("Digite o id do user que voce quer substituir:\n");
-    scanf("%d", &id);
-    if (id >= counter || id <= 0){
+    scanf("%ld", &id);
+    if (id >= counter || id <= 0)
+    {
         check = false;
     }
     fp = fopen("files\\profiles.txt", "r");
-    while (fscanf(fp, "%d %d %d %s %d", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
+    while (fscanf(fp, "%ld %hd %hd %s %hd", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
     {
         if (i != id)
         {
-            fprintf(fpnew, "%d %d %d %s %d", profile.customer_id, profile.domestic_or_commercial, profile.pickup_or_delivery, profile.reason_of_buying, profile.active);
+            fprintf(fpnew, "%ld %hd %hd %s %hd", profile.customer_id, profile.domestic_or_commercial, profile.pickup_or_delivery, profile.reason_of_buying, profile.active);
         }
         i++;
     }
@@ -723,12 +713,13 @@ bool edit_profiles(){
     return check;
 }
 
-bool edit_workers(){
+bool edit_workers()
+{
     struct Workers worker;
-    
+
     FILE *fp = fopen("files\\workers.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
-    int id;
+    long int id;
     int i = 1;
     int counter = 1;
     bool check = true;
@@ -740,8 +731,9 @@ bool edit_workers(){
     }
     fclose(fp);
     puts("Digite o id do user que voce quer substituir:\n");
-    scanf("%d", &id);
-    if (id >= counter || id <= 0){
+    scanf("%ld", &id);
+    if (id >= counter || id <= 0)
+    {
         check = false;
     }
     fp = fopen("files\\workers.txt", "r");

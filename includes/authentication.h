@@ -6,30 +6,58 @@
  *
  * @param email deve ser uma string.
  * @param password deve ser uma string.
- * 
- * @return Chama a função de criação de arquivo com a variavel concatenada.
+ *
+ * @return Adiciona o registro no final do arquivo logins.txt
  */
-bool register_account(char email[256], char password[256])
+bool register_account(char *email, char *password)
 {
-    char user_account[256] = "";
-    sprintf(user_account, "%s %s", email, encrypt(password));
-    fflush(stdin);
-    create_file("files\\logins.txt", user_account, "a");
+    bool status = false;
+    FILE *fp = fopen("files\\logins.txt", "a");
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+    else
+    {
+        fprintf(fp, "%s %s\n", email, encrypt(password));
+        status = true;
+    }
+    fclose(fp);
 
-    return true;
+    return status;
 }
 
 /**
- * Concatena o email e senha.
+ * Compara o email e senha digitada por um usuario com os do arquivo de dados criptografados.
  *
  * @param email deve ser uma string.
  * @param password deve ser uma string.
- * 
- * @return Chama a função de leitura de arquivo com a variavel concatenada.
+ *
+ * @return Faz a leitura do arquivo e compara os dados enviados..
  */
-int login_account(char email[256], char password[256]){
-    char user_account[256] = "";
-    sprintf(user_account, "%s %s", email, encrypt(password));
-    fflush(stdin);
-    return read_file("files\\logins.txt", user_account);
+bool login_account(char *email, char *password)
+{
+    char *temp_email = malloc(strlen(email) + 1);
+    char *temp_password = malloc(strlen(password) + 1);
+
+    FILE *fp = fopen("files\\logins.txt", "r");
+
+    if (!fp)
+    {
+        printf("Erro na abertura do arquivo!");
+    }
+    else
+    {
+        while (fscanf(fp, "%s %s", temp_email, temp_password) == 2)
+        {
+            if ((strcmp(temp_email, email) == 0) && (strcmp(temp_password, encrypt(password)) == 0))
+            {
+                return true;
+            }
+        }
+    }
+
+    free(temp_email);
+    free(temp_password);
+    return false;
 }

@@ -21,12 +21,15 @@ void wait_for_input(char message[256])
  * @param var deve ser uma string.
  * @return Manipulação por meio do ponteiro da variavel formal.
  */
-void remove_whitespace(char var[256]){
+void remove_whitespace(char *var)
+{
     char *ptr = var;
     while (*ptr)
     {
         if (*ptr == ' ')
             *ptr = '_';
+        if (*ptr == '\n')
+             *ptr = '\0';
         ptr++;
     }
 }
@@ -37,7 +40,8 @@ void remove_whitespace(char var[256]){
  * @param var deve ser uma string.
  * @return Manipulação por meio do ponteiro da variavel formal.
  */
-void add_whitespace(char var[256]){
+void add_whitespace(char *var)
+{
     char *ptr = var;
     while (*ptr)
     {
