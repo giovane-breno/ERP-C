@@ -3,17 +3,17 @@
  * Adiciona 3 valores da tabela ASCII em cada caractere.
  *  
  * @param str deve ser uma string.
- * @return variavel descriptografada.
+ * @return variavel criptografada.
  */
 char *encrypt(char str[256])
 {
     for (int i = 0; (i < 100 && str[i] != '\0'); i++)
-        str[i] = str[i] + 3; // the key for encryption is 3 that is added to ASCII value
+        str[i] = str[i] + 3; // Adiciona 3 na tabela ASCII.
     return str;
 }
 
 /**
- * Função para somar o aluguel e imposto de dentro do arquivo infrastructure.txt.
+ * Descriptografa uma string.
  * Subtrai 3 valores da tabela ASCII em cada caractere.
  *  
  * @param str deve ser uma string.
@@ -22,6 +22,6 @@ char *encrypt(char str[256])
 char *decrypt(char str[256])
 {
     for (int i = 0; (i < 100 && str[i] != '\0'); i++)
-        str[i] = str[i] - 3; // the key for encryption is 3 that is subtracted to ASCII value
+        str[i] = str[i] - 3; // Reduz 3 na tabela ASCII.
     return str;
 }
