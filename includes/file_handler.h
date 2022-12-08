@@ -143,6 +143,7 @@ char *getCategory(long int id)
             if (counter == id)
             {
                 fclose(fp);
+                add_whitespace(category);
                 return category;
             }
             counter++;
@@ -485,8 +486,10 @@ void query_customers_file(char *filename, bool minimized)
     customer.name = malloc(sizeof(char) * MAX_CUSTOMER_NAME);
     customer.cpf = malloc(sizeof(char) * MAX_CUSTOMER_CPF);
     customer.cep = malloc(sizeof(char) * MAX_CUSTOMER_CEP);
-
     FILE *fp = fopen(filename, "r");
+
+    bool not_empty = false;
+
     if (!fp)
     {
         printf("Erro na abertura do arquivo!");
@@ -512,7 +515,13 @@ void query_customers_file(char *filename, bool minimized)
                 printf("CEP: %s\n", customer.cep);
                 puts("-----------------------------------------------------------");
 
+                not_empty = true;
                 counter++;
+            }
+
+            if (not_empty == false)
+            {
+                puts("Nao foram encontrados clientes nos registros, cadastre um previamente.");
             }
         }
         else
@@ -524,6 +533,11 @@ void query_customers_file(char *filename, bool minimized)
                 add_whitespace(customer.name);
                 printf("ID: %d | %s\n", counter, customer.name);
                 counter++;
+                not_empty = true;
+            }
+            if (not_empty == false)
+            {
+                puts("Nao foram encontrados clientes nos registros, cadastre um previamente.");
             }
         }
     }
@@ -546,7 +560,7 @@ void query_p_files(char *filename, long int id)
     struct Profiles profile;
     profile.reason_of_buying = malloc(sizeof(char) * MAX_PROFILE_REASON);
 
-    bool found = false;
+    bool not_empty = false;
     FILE *fp = fopen(filename, "r");
     if (!fp)
     {
@@ -568,13 +582,13 @@ void query_p_files(char *filename, long int id)
                 printf("\nMotivo de Compra: %s", profile.reason_of_buying);
                 printf("\nCliente Ativo? ");
                 (profile.active == 1) ? printf("Sim\n") : printf("Nao\n");
-                found = true;
+                not_empty = true;
             }
         }
 
-        if (found == false)
+        if (not_empty == false)
         {
-            printf("\nPerfil de cliente nao encontrado!\n");
+            puts("Nao foi encontrado um perfil para esse cliente, cadastre um previamente.");
         }
     }
     fclose(fp);
@@ -592,6 +606,7 @@ void query_workers_file(char *filename)
     worker.name = malloc(sizeof(char) * MAX_WORKER_NAME);
     worker.role = malloc(sizeof(char) * MAX_WORKER_ROLE);
 
+    bool not_empty = false;
     int counter = 1;
 
     FILE *fp = fopen(filename, "r");
@@ -611,7 +626,13 @@ void query_workers_file(char *filename)
         printf("Salario: %0.2f\n", worker.payment);
         puts("-----------------------------------------------------------");
 
+        not_empty = true;
         counter++;
+    }
+
+    if (not_empty == false)
+    {
+        puts("Nao foram encontrados funcionarios nos registros, cadastre um previamente.");
     }
     fclose(fp);
 
@@ -628,8 +649,9 @@ void query_workers_file(char *filename)
 void query_cat_files(char *filename, bool minimized)
 {
     char *category = malloc(sizeof(char) * MAX_CATEGORY_NAME);
-
     FILE *fp = fopen(filename, "r");
+    bool not_empty = false;
+
     if (!fp)
     {
         printf("Erro na abertura do arquivo!");
@@ -641,10 +663,16 @@ void query_cat_files(char *filename, bool minimized)
 
         while (fscanf(fp, "%s", category) == 1)
         {
-
+            add_whitespace(category);
             printf("ID: %d | %s\n", counter, category);
 
+            not_empty = true;
             counter++;
+        }
+
+        if (not_empty == false)
+        {
+            puts("Nao foram encontradas categorias nos registros, cadastre uma previamente.");
         }
     }
 
@@ -660,6 +688,14 @@ void query_cat_files(char *filename, bool minimized)
 bool delete_customer()
 {
     struct Customers customer;
+    struct Profiles profile;
+
+    long int id;
+    int i = 1;
+    int counter = 1;
+    bool check = true;
+    bool not_empty = false;
+    bool is_empty_profile = true;
 
     customer.name = malloc(sizeof(char) * MAX_CUSTOMER_NAME);
     customer.cpf = malloc(sizeof(char) * MAX_CUSTOMER_CPF);
@@ -667,35 +703,61 @@ bool delete_customer()
 
     FILE *fp = fopen("files\\customers.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
-    long int id;
-    int i = 1;
-    int counter = 1;
-    bool check = true;
-    while (fscanf(fp, "%s %hd %hd %s %s", customer.name, &customer.age, &customer.gender, customer.cpf, customer.cep) == 5)
+    FILE *fpi = fopen("files\\profiles.txt", "r");
+
+    while (fscanf(fp, "%s %*d %*d %*s %*s", customer.name) == 1)
     {
+        add_whitespace(customer.name);
         printf("ID: %d | %s\n", counter, customer.name);
         counter++;
+        not_empty = true;
     }
-    fclose(fp);
-    printf("\nID a Deletar: ");
-    scanf("%ld", &id);
-    if (id >= counter || id <= 0)
-        check = false;
-
-    fp = fopen("files\\customers.txt", "r");
-    while (fscanf(fp, "%s %hd %hd %s %s", customer.name, &customer.age, &customer.gender, customer.cpf, customer.cep) == 5)
+    if (not_empty == false)
     {
-        if (i != id)
-        {
-            fprintf(fpnew, "%s %hd %hd %s %s\n", customer.name, customer.age, customer.gender, customer.cpf, customer.cep);
-        }
-        i++;
+        puts("Nao foram encontrados clientes nos registros, cadastre um previamente.");
     }
+    do
+    {
+        printf("\n[0] - Voltar");
+        printf("\nID a Deletar: ");
+        scanf("%ld", &id);
+    } while (id >= counter);
 
-    fclose(fp);
-    fclose(fpnew);
-    remove("files\\customers.txt");
-    rename("files\\temp.txt", "files\\customers.txt");
+    while (fscanf(fpi, "%ld %*d %*d %*s %*d", &profile.customer_id) == 1)
+    {
+        if (profile.customer_id == id)
+        {
+            is_empty_profile = false;
+            break;
+        }
+    }
+    fclose(fpi);
+
+    if (is_empty_profile == true)
+    {
+        fp = fopen("files\\customers.txt", "r");
+        while (fscanf(fp, "%s %hd %hd %s %s", customer.name, &customer.age, &customer.gender, customer.cpf, customer.cep) == 5)
+        {
+            if (i != id)
+            {
+                fprintf(fpnew, "%s %hd %hd %s %s\n", customer.name, customer.age, customer.gender, customer.cpf, customer.cep);
+            }
+            i++;
+        }
+
+        fclose(fp);
+        fclose(fpnew);
+        remove("files\\customers.txt");
+        rename("files\\temp.txt", "files\\customers.txt");
+    }
+    else
+    {
+        fclose(fp);
+        fclose(fpnew);
+
+        check = false;
+        remove("files\\temp.txt");
+    }
 
     free(customer.name);
     free(customer.cpf);
@@ -722,18 +784,29 @@ bool delete_user()
     int i = 1;
     int counter = 1;
     bool check = true;
+    bool not_empty = false;
 
-    while (fscanf(fp, "%s %s", user.email, user.password) == 2)
+    while (fscanf(fp, "%s %*s", user.email) == 1)
     {
+        add_whitespace(user.email);
         printf("ID: %d | %s\n", counter, user.email);
         counter++;
+        not_empty = true;
+    }
+    if (not_empty == false)
+    {
+        puts("Nao foram encontrados usuarios nos registros, cadastre um previamente.");
     }
     fclose(fp);
 
-    printf("\nID a Deletar: ");
-    scanf("%ld", &id);
-    if (id >= counter || id <= 0)
-        check = false;
+    do
+    {
+        printf("\n[0] - Voltar");
+        printf("\nID a Deletar: ");
+        scanf("%ld", &id);
+        system("cls");
+
+    } while (id >= counter);
 
     fp = fopen("files\\logins.txt", "r");
     while (fscanf(fp, "%s %s", user.email, user.password) == 2)
@@ -774,19 +847,29 @@ bool delete_profiles()
     long int id;
     int i = 1;
     int counter = 1;
+    bool not_empty = false;
 
     bool check = true;
-    while (fscanf(fp, "%ld %hd %hd %s %hd", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
+    while (fscanf(fp, "%ld %*d %*d %*s %*d", &profile.customer_id) == 1)
     {
         printf("ID: %d | %s\n", counter, getName(profile.customer_id));
         counter++;
+        not_empty = true;
+    }
+    if (not_empty == false)
+    {
+        puts("Nao foram encontrados perfis de usuarios nos registros, cadastre um previamente.");
     }
     fclose(fp);
 
-    printf("\nID a Deletar: ");
-    scanf("%ld", &id);
-    if (id >= counter || id <= 0)
-        check = false;
+    do
+    {
+        printf("\n[0] - Voltar");
+        printf("\nID a Deletar: ");
+        scanf("%ld", &id);
+        system("cls");
+
+    } while (id >= counter);
 
     fp = fopen("files\\profiles.txt", "r");
     while (fscanf(fp, "%ld %hd %hd %s %hd", &profile.customer_id, &profile.domestic_or_commercial, &profile.pickup_or_delivery, profile.reason_of_buying, &profile.active) == 5)
@@ -825,18 +908,29 @@ bool delete_workers()
     int i = 1;
     int counter = 1;
     bool check = true;
+    bool not_empty = false;
 
-    while (fscanf(fp, "%s %s %f", worker.name, worker.role, &worker.payment) == 3)
+    while (fscanf(fp, "%s %*s %*f", worker.name) == 1)
     {
+        add_whitespace(worker.name);
         printf("ID: %d | %s\n", counter, worker.name);
         counter++;
+        not_empty = true;
+    }
+    if (not_empty == false)
+    {
+        puts("Nao foram encontrados funcionarios nos registros, cadastre um previamente.");
     }
     fclose(fp);
 
-    printf("\nID a Deletar: ");
-    scanf("%ld", &id);
-    if (id >= counter || id <= 0)
-        check = false;
+    do
+    {
+        printf("\n[0] - Voltar");
+        printf("\nID a Deletar: ");
+        scanf("%ld", &id);
+        system("cls");
+
+    } while (id >= counter);
 
     fp = fopen("files\\workers.txt", "r");
     while (fscanf(fp, "%s %s %f", worker.name, worker.role, &worker.payment) == 3)
@@ -872,18 +966,33 @@ bool delete_item()
     int i = 1;
     int counter = 1;
     bool check = true;
+    bool not_empty = false;
 
-    while (fscanf(fp, "%hd %s %s %s %d %f", &item.category, item.supplier, item.brand, item.model, &item.amount, &item.price) == 6)
+    while (fscanf(fp, "%*d %s %s %s %*d %*f", item.supplier, item.brand, item.model) == 3)
     {
+        add_whitespace(item.supplier);
+        add_whitespace(item.brand);
+        add_whitespace(item.model);
+
         printf("ID: %d | %s %s %s\n", counter, item.supplier, item.brand, item.model);
+
+        not_empty = true;
         counter++;
+    }
+    if (not_empty == false)
+    {
+        puts("Nao foram encontrados itens nos registros, cadastre um previamente.");
     }
     fclose(fp);
 
-    printf("\nID a Deletar: ");
-    scanf("%ld", &id);
-    if (id >= counter || id <= 0)
-        check = false;
+    do
+    {
+        printf("\n[0] - Voltar");
+        printf("\nID a Deletar: ");
+        scanf("%ld", &id);
+        system("cls");
+
+    } while (id >= counter);
 
     fp = fopen("files\\items.txt", "r");
     while (fscanf(fp, "%hd %s %s %s %d %f", &item.category, item.supplier, item.brand, item.model, &item.amount, &item.price) == 6)
@@ -910,40 +1019,78 @@ bool delete_category()
 {
 
     char *category = malloc(sizeof(char) * MAX_CATEGORY_NAME);
+    struct Storage item;
 
     FILE *fp = fopen("files\\categories.txt", "r");
     FILE *fpnew = fopen("files\\temp.txt", "w+");
+    FILE *fpi = fopen("files\\items.txt", "r");
+
     long int id;
     int i = 1;
     int counter = 1;
     bool check = true;
+    bool not_empty = false;
+    bool is_empty_category = true;
 
     while (fscanf(fp, "%s", category) != EOF)
     {
+        add_whitespace(category);
         printf("ID: %d | %s \n", counter, category);
         counter++;
+        not_empty = true;
     }
-    fclose(fp);
 
-    printf("\nID a Deletar: ");
-    scanf("%ld", &id);
-    if (id >= counter || id <= 0)
-        check = false;
-
-    fp = fopen("files\\categories.txt", "r");
-    while (fscanf(fp, "%s", category) != EOF)
+    if (not_empty == false)
     {
-        if (i != id)
+        puts("\nNao foram encontrados categorias nos registros, cadastre uma previamente.\n");
+    }
+
+    fclose(fp);
+    do
+    {
+        printf("\n[0] - Voltar");
+        printf("\nID a Deletar: ");
+        scanf("%ld", &id);
+
+        system("cls");
+    } while (id >= counter);
+
+    while (fscanf(fpi, "%hd %*s %*s %*s %*d %*f", &item.category) == 1)
+    {
+        if (item.category == id)
         {
-            fprintf(fpnew, "%s", category);
+            is_empty_category = false;
+            break;
         }
         i++;
     }
+    fclose(fpi);
 
-    fclose(fp);
-    fclose(fpnew);
-    remove("files\\categories.txt");
-    rename("files\\temp.txt", "files\\categories.txt");
+    if (is_empty_category == true)
+    {
+        fp = fopen("files\\categories.txt", "r");
+        while (fscanf(fp, "%s", category) != EOF)
+        {
+            if (i != id)
+            {
+                fprintf(fpnew, "%s", category);
+            }
+            i++;
+        }
+        fclose(fp);
+        fclose(fpnew);
+
+        remove("files\\categories.txt");
+        rename("files\\temp.txt", "files\\categories.txt");
+    }
+    else
+    {
+        fclose(fp);
+        fclose(fpnew);
+
+        check = false;
+        remove("files\\temp.txt");
+    }
 
     free(category);
     return check;

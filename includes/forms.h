@@ -200,7 +200,7 @@ void register_profile_form()
     }
 
     remove_whitespace(profile.reason_of_buying);
-    profile_data = malloc(strlen(profile.reason_of_buying) + 1 + (sizeof(long int) * (profile.customer_id)) + (sizeof(short int) * (profile.domestic_or_commercial)) + (sizeof(short int) * profile.pickup_or_delivery));
+    profile_data = malloc(strlen(profile.reason_of_buying) + 4 + (sizeof(long int) * (profile.customer_id)) + (sizeof(short int) * (profile.domestic_or_commercial)) + (sizeof(short int) * profile.pickup_or_delivery));
 
     sprintf(profile_data, "%ld %hd %hd %s %hd", profile.customer_id, profile.domestic_or_commercial, profile.pickup_or_delivery, profile.reason_of_buying, profile.active);
     system("cls");
@@ -426,7 +426,7 @@ void register_work_form()
     remove_whitespace(worker.name);
     remove_whitespace(worker.role);
 
-    worker_data = malloc(strlen(worker.name) + 1 + strlen(worker.role) + 1 + sizeof(worker.payment));
+    worker_data = malloc(strlen(worker.name) + 1 + strlen(worker.role) + 1 + (sizeof(float) * (worker.payment)));
 
     sprintf(worker_data, "%s %s %.2f", worker.name, worker.role, worker.payment);
     system("cls");
@@ -560,7 +560,7 @@ void register_infra_form()
     remove_whitespace(infrastructure.cleaning_sender);
     remove_whitespace(infrastructure.net_sender);
 
-    infra_data = malloc(1480);
+    infra_data = malloc(strlen(infrastructure.rent_adress) + 1 + strlen(infrastructure.water_sender) + 1 + strlen(infrastructure.energy_sender) + 1 + strlen(infrastructure.cleaning_sender) + 1 + strlen(infrastructure.net_sender) + 1 + (sizeof(float) * (infrastructure.rent_price)) + (sizeof(float) * (infrastructure.water_value)) + (sizeof(float) * (infrastructure.energy_value)) + (sizeof(float) * (infrastructure.cleaning_value)) + (sizeof(float) * (infrastructure.net_value)) + (sizeof(float) * (infrastructure.tax)) + (sizeof(float) * (infrastructure.total_value)));
 
     sprintf(infra_data, "%s %0.2f\n%s %0.2f\n%s %0.2f\n%s %0.2f\n%s %0.2f\n%0.2f\n%0.2f", infrastructure.rent_adress, infrastructure.rent_price, infrastructure.water_sender, infrastructure.water_value, infrastructure.energy_sender, infrastructure.energy_value, infrastructure.cleaning_sender, infrastructure.cleaning_value, infrastructure.net_sender, infrastructure.net_value, infrastructure.tax, infrastructure.total_value);
     system("cls");
@@ -676,9 +676,7 @@ void register_customer_form()
     remove_whitespace(customer.cpf);
     remove_whitespace(customer.cep);
 
-    customer_data = malloc(strlen(customer.name) + 1 + strlen(customer.cpf) + 1 + strlen(customer.cep) + 1 + sizeof(customer.age) + sizeof(customer.gender));
-
-    // customer.name[strcspn(customer.name, "\n")] = 0;
+    customer_data = malloc(strlen(customer.name) + 1 + strlen(customer.cpf) + 1 + strlen(customer.cep) + 1 + (sizeof(short int) * (customer.age)) + (sizeof(short int) * (customer.gender)));
 
     sprintf(customer_data, "%s %hd %hd %s %s", customer.name, customer.age, customer.gender, customer.cpf, customer.cep);
     system("cls");
@@ -780,19 +778,19 @@ void register_item_form()
         fflush(stdin);
         category_text(2);
         printf("\nFornecedor: ");
-        gets(item.supplier);
+        fgets(item.supplier, MAX_STORAGE_SUPPLIER, stdin);
 
         system("cls");
         fflush(stdin);
         category_text(2);
         printf("\nMarca: ");
-        gets(item.brand);
+        fgets(item.brand, MAX_STORAGE_BRAND, stdin);
 
         system("cls");
         fflush(stdin);
         category_text(2);
         printf("\nModelo: ");
-        gets(item.model);
+        fgets(item.model, MAX_STORAGE_MODEL, stdin);
 
         system("cls");
         fflush(stdin);
@@ -813,9 +811,9 @@ void register_item_form()
             puts("\nConfirme se os dados abaixo estao corretos:");
             printf("\nCategoria: %s", getCategory(item.category));
             printf("\nFornecedor: %s", item.supplier);
-            printf("\nMarca:  %s", item.brand);
-            printf("\nModelo:  %s", item.model);
-            printf("\nQuantidade:  %d", item.amount);
+            printf("Marca:  %s", item.brand);
+            printf("Modelo:  %s", item.model);
+            printf("Quantidade:  %d", item.amount);
             printf("\nValor Unitario: R$ %0.2f", item.price);
 
             puts("\n\nCorretos?\n[1] - Sim\n[2] - Nao\n");
@@ -833,7 +831,7 @@ void register_item_form()
     remove_whitespace(item.brand);
     remove_whitespace(item.model);
 
-    item_data = malloc(strlen(item.supplier) + 1 + strlen(item.brand) + 1 + strlen(item.model) + 1 + sizeof(item.amount) + sizeof(item.category));
+    item_data = malloc(strlen(item.supplier) + 1 + strlen(item.brand) + 1 + strlen(item.model) + 1 + (sizeof(int) * (item.amount)) + (sizeof(int) * (item.category)) + (sizeof(float) * (item.price)));
 
     sprintf(item_data, "%hd %s %s %s %d %0.2f", item.category, item.supplier, item.brand, item.model, item.amount, item.price);
     system("cls");
@@ -843,7 +841,7 @@ void register_item_form()
     free(item.supplier);
     free(item.brand);
     free(item.model);
-    (status == true) ? wait_for_input("\nCategoria cadastrada com sucesso!\n") : wait_for_input("\n");
+    (status == true) ? wait_for_input("\nItem cadastrado com sucesso!\n") : wait_for_input("\n");
 }
 
 /**
@@ -969,6 +967,11 @@ void delete_customer_form()
             register_customer_form();
         }
     }
+    else
+    {
+        system("cls");
+        wait_for_input("Ha um perfil cadastrado para esse cliente, exclua-o previamente.\n");
+    }
 }
 
 void delete_users_form()
@@ -1041,12 +1044,17 @@ void delete_categories_form()
     {
         int res;
         system("cls");
-        puts("\nVoce deseja cadastrar uma nova categoria?");
+        puts("Voce deseja cadastrar uma nova categoria?");
         puts("[1] - Sim | [2] - Nao\n");
         scanf("%d", &res);
         if (res == 1)
         {
             register_category_form();
         }
+    }
+    else
+    {
+        system("cls");
+        wait_for_input("Ha itens cadastrados nessa categoria, exclua-o previamente.\n");
     }
 }
