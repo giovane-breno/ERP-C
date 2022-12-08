@@ -1042,7 +1042,7 @@ bool delete_category()
 
     if (not_empty == false)
     {
-        puts("\nNao foram encontrados categorias nos registros, cadastre uma previamente.\n");
+        puts("Nao foram enncontrados categorias nos registros, cadastre uma previamente.\n");
     }
 
     fclose(fp);
