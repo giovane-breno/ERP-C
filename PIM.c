@@ -1,6 +1,6 @@
 /* *******************************************************************
  * Universidade Paulista (UNIP)
- * Análise e Desevolvimento de Sistemas - Data de Entrega:
+ * Análise e Desenvolvimento de Sistemas - Data de Entrega: 25/11/2022
  *
  * Autores do Projeto: Giovane Breno Pereira Barbosa [N8713B-5]
  *                     Levi Custódio Kodaria Leão
@@ -9,7 +9,7 @@
  *                     Giovana Chiquinni Primon
  * Turma: DS2R48
  * PROJETO INTEGRADO MULTIDISCIPLINAR
- * Observação: <colocar se houver>
+ * Observação:
  *
  * PIM.c
  * ******************************************************************/
@@ -37,9 +37,12 @@ void query_human_screen();
 void query_storage_screen();
 void query_infra_screen();
 void query_human_screen();
-void edit_data_screen();
+void manage_data_screen();
+void human_delete_data_screen();
+void items_delete_data_screen();
 void relatories_screen();
 void admin_config_screen();
+
 /* DECLARAÇÃO PRÉVIA DAS FUNÇÕES VOID PARA EVITAR ERROS */
 
 int main()
@@ -53,7 +56,6 @@ void login()
 {
     system("cls");
     short int option = 0;
-    
 
     authentication_text(1);
 
@@ -94,7 +96,6 @@ void login()
 void main_menu() /* TELA INICIAL */
 {
     short int option = 0;
-    
 
     system("cls");
     main_menu_text(1);
@@ -131,7 +132,7 @@ void main_menu() /* TELA INICIAL */
 void storage_screen() /* TELA INICIAL - > [1] CADASTROS - > [1] ESTOQUE */
 {
     short int option = 0;
-    
+
     system("cls");
     register_options_text(3);
     while (true)
@@ -164,7 +165,6 @@ void storage_screen() /* TELA INICIAL - > [1] CADASTROS - > [1] ESTOQUE */
 void infra_screen() /* TELA INICIAL - > [1] CADASTROS - > [2] INFRAESTRUTURA */
 {
     short int option = 0;
-    
 
     system("cls");
     register_options_text(1);
@@ -193,7 +193,6 @@ void infra_screen() /* TELA INICIAL - > [1] CADASTROS - > [2] INFRAESTRUTURA */
 void human_register_screen() /* TELA INICIAL - > [1] CADASTROS - >  [3] RECURSOS HUMANOS */
 {
     short int option = 0;
-    
 
     system("cls");
     register_options_text(2);
@@ -232,7 +231,6 @@ void human_register_screen() /* TELA INICIAL - > [1] CADASTROS - >  [3] RECURSOS
 void register_screen() /* TELA INICIAL - > [1] CADASTROS */
 {
     short int option = 0;
-    
 
     system("cls");
     main_menu_text(2);
@@ -274,7 +272,6 @@ void query_screen() /* TELA INICIAL - > [2] CONSULTAR */
     main_menu_text(3);
 
     short int option = 0;
-    
 
     while (true)
     {
@@ -314,7 +311,6 @@ void query_storage_screen() /* TELA INICIAL - > [2] CONSULTAR - >  [1] ESTOQUE *
     query_human_text(3);
 
     short int option = 0;
-    
 
     while (true)
     {
@@ -345,7 +341,6 @@ void query_infra_screen() /* TELA INICIAL - > [2] CONSULTAR - >  [2] INFRAESTRUT
     query_human_text(2);
 
     short int option = 0;
-    
 
     while (true)
     {
@@ -376,7 +371,6 @@ void query_human_screen() /* TELA INICIAL - > [2] CONSULTAR - >  [3] RECURSOS HU
     query_human_text(1);
 
     short int option = 0;
-    
 
     while (true)
     {
@@ -420,7 +414,6 @@ void management_screen() /* TELA INICIAL - > [3] GERENCIAMENTO */
     main_menu_text(4);
 
     short int option = 0;
-    
 
     while (true)
     {
@@ -429,7 +422,7 @@ void management_screen() /* TELA INICIAL - > [3] GERENCIAMENTO */
         {
         case 1: /* GERENCIAR DADOS */
             system("cls");
-            edit_data_screen();
+            manage_data_screen();
 
             management_screen(); /* RECURSIVIDADE - CHAMANDO A PROPRIA FUNCAO PARA RECUPERAR O LACO DE REPETIÇÃO*/
         case 2:                  /* VISUALIZAR RELATORIOS */
@@ -454,14 +447,84 @@ void management_screen() /* TELA INICIAL - > [3] GERENCIAMENTO */
     }
 }
 
-void edit_data_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [1] EDITAR DADOS */
+void manage_data_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [1] EDITAR DADOS */
+{
+
+    system("cls");
+    edit_data_text(2);
+
+    short int option = 0;
+
+    while (true)
+    {
+        scanf("%hd", &option);
+        switch (option)
+        {
+        case 1: /* ITENS */
+            system("cls");
+            items_delete_data_screen();
+
+            manage_data_screen();
+            break;
+        case 2: /* RECURSOS HUMANOS */
+            system("cls");
+            human_delete_data_screen();
+
+            manage_data_screen();
+        case 3:
+            management_screen(); /* RETORNA A TELA DE GERENCIAMENTO */
+            break;
+        default:
+            system("cls");
+            edit_data_text(2);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void items_delete_data_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [1] EDITAR DADOS -> [1] ITEMS */
+{
+    system("cls");
+    edit_data_text(3);
+
+    short int option = 0;
+
+    while (true)
+    {
+        scanf("%hd", &option);
+        switch (option)
+        {
+        case 1: /* ITENS */
+            system("cls");
+            delete_items_form();
+
+            items_delete_data_screen();
+            break;
+        case 2: /* CATEGORIAS */
+            system("cls");
+            delete_categories_form();
+
+            items_delete_data_screen();
+        case 3:
+            manage_data_screen(); /* RETORNA A TELA DE GERENCIAMENTO */
+            break;
+        default:
+            system("cls");
+            edit_data_text(3);
+            printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
+            break;
+        }
+    }
+}
+
+void human_delete_data_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [1] EDITAR DADOS -> [1] RECURSOS HUMANOS */
 {
 
     system("cls");
     edit_data_text(1);
 
     short int option = 0;
-    
 
     while (true)
     {
@@ -470,26 +533,30 @@ void edit_data_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [1] EDITAR DAD
         {
         case 1: /* FUNCIONARIOS */
             system("cls");
-            edit_workers_form();
-            edit_data_screen();
+            delete_workers_form();
+
+            human_delete_data_screen();
             break;
         case 2: /* CLIENTES */
             system("cls");
-            edit_customer_form();
-            edit_data_screen();
+            delete_customer_form();
+
+            human_delete_data_screen();
         case 3: /* PERFIS DE USUARIOS */
             system("cls");
-            edit_profiles_form();
-            edit_data_screen();
+            delete_profiles_form();
+
+            human_delete_data_screen();
             break;
         case 4: /* USUARIOS */
             system("cls");
-            edit_users_form();
-            edit_data_screen();
+            delete_users_form();
+
+            human_delete_data_screen();
         case 5:
-            management_screen(); /* RETORNA A TELA DE GERENCIAMENTO */
+            manage_data_screen(); /* RETORNA A TELA DE GERENCIAMENTO */
             break;
-        default: 
+        default:
             system("cls");
             edit_data_text(1);
             printf("OBS:\n* OPCAO INVALIDA, DIGITE NOVAMENTE!\n");
@@ -504,7 +571,6 @@ void relatories_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [2] VISUALIZA
     relatories_text(1);
 
     short int option = 0;
-    
 
     while (true)
     {
@@ -544,7 +610,6 @@ void admin_config_screen() /* TELA INICIAL - > [3] GERENCIAMENTO - > [3] CONFIGU
     admin_config_text(1);
 
     short int option = 0;
-    
 
     while (true)
     {

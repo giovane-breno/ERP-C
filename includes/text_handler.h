@@ -281,7 +281,7 @@ void edit_data_text(int type)
     {
     case 1:
         printf("|-----------------------------------------------------------|\n");
-        printf("|                      [EDITAR DADOS]                       |\n");
+        printf("|                     [DELETAR DADOS]                       |\n");
         printf("|-----------------------------------------------------------|\n");
         printf("|                                                           |\n");
         printf("|                [1] - Funcionarios                         |\n");
@@ -289,6 +289,28 @@ void edit_data_text(int type)
         printf("|                [3] - Perfis de Usuarios                   |\n");
         printf("|                [4] - Logins                               |\n");
         printf("|                [5] - Voltar                               |\n");
+        printf("|                                                           |\n");
+        printf("|-----------------------------------------------------------|\n");
+        break;
+    case 2:
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                     [GERENCIAR DADOS]                     |\n");
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                                                           |\n");
+        printf("|                [1] - Estoque                              |\n");
+        printf("|                [2] - Recursos Humanos                     |\n");
+        printf("|                [3] - Voltar                               |\n");
+        printf("|                                                           |\n");
+        printf("|-----------------------------------------------------------|\n");
+        break;
+    case 3:
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                     [DELETAR DADOS]                       |\n");
+        printf("|-----------------------------------------------------------|\n");
+        printf("|                                                           |\n");
+        printf("|                [1] - Itens                                |\n");
+        printf("|                [2] - Categorias                           |\n");
+        printf("|                [3] - Voltar                               |\n");
         printf("|                                                           |\n");
         printf("|-----------------------------------------------------------|\n");
         break;

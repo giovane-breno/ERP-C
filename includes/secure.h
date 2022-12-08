@@ -1,7 +1,7 @@
 /**
  * Criptografa uma string.
  * Adiciona 3 valores da tabela ASCII em cada caractere.
- *  
+ *
  * @param str deve ser uma string.
  * @return variavel criptografada.
  */
@@ -15,7 +15,7 @@ char *encrypt(char str[256])
 /**
  * Descriptografa uma string.
  * Subtrai 3 valores da tabela ASCII em cada caractere.
- *  
+ *
  * @param str deve ser uma string.
  * @return str descriptografada
  */

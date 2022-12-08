@@ -1,8 +1,1 @@
-Perino Senior 2500,000000
-Lopes_Lopes Gerente_Senior 30023,00
-Pedro_Gomes 3211_a 1233,00
-Pedro_Aquino 3 2,00
-Joao_GOmesss Senior_Expriente 350004,00
-Joao_Gomes
- Linux_Developer
- 322,00
+Joao_Gomes Linux_Developer 322,000000

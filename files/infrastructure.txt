@@ -1,12 +1,7 @@
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
- 31231,00
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
- 3213123,00
-aaaaaaaaaaaaaaaaaaaaaaaaaaa
- 12333333504,00
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
- 321,00
-rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
- 123,00
-3,00
-12336578560,00
+Rua_das_araras_numero_500_234231-123_sim_sim 1233,50
+SABESP_EMPRESA_DE_SANEMANETO_BASICO_E_AGUA_LTDA 1233,00
+EDP_ELETRICAS_DO_VALE_DO_PARAIBA_123153-123 233,00
+MIL_CLEAN_SERVICOS_DE_LIMPEZA_TERCEIRIZADOS 123,00
+NET_VIVO_PROCON_AAAAA 12,00
+333,00
+3167,50
