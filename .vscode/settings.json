@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "forms.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "conio.h": "c",
+        "stdlib.h": "c",
+        "locale.h": "c"
     }
 }
