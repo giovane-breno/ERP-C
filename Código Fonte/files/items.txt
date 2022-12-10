@@ -1,0 +1,4 @@
+1 Madeira_Madeira Madeira_Talhada Branca 3 250,30
+3 Costureiras_Brasil_S/A Avental_Forrado Branco_Forrado_Couro 25 350,00
+1 Madeira_Madeira Madeira_Refinada Balcao_Branco 2 1599,99
+2 Electrolux Electrolux Batedeira_Eletrica 1 299,00

@@ -1,0 +1,7 @@
+Avenida_Andromeda,_Jardim_Satelite 1330,64
+Companhia_de_Saneamento_Basico_do_Estado_de_Sao_Paulo 33,00
+EDP_Bandeirante 150,00
+Milclean_Com‚rcio_e_Servi‡os_Ltda 1900,00
+Claro_S/A 50,00
+900,00
+4363,64

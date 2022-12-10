@@ -1,0 +1,35 @@
+|------------------------------------------------------|
+|                 RELATÃ“RIO OPEX                       |
+|------------------------------------------------------|
+
+* ALUGUEL
+  Endereco: Avenida Andromeda, Jardim Satelite
+  Valor: R$ 1330,64 
+
+* AGUA E SANEAMENTO
+  Distribuidora: Companhia de Saneamento Basico do Estado de Sao Paulo
+  Valor: R$ 33,00 
+
+* DISTRIBUICAO DE ENERGIA
+  Distribuidora:  EDP Bandeirante
+  Valor: R$ 150,00 
+
+* SERVICO DE LIMPEZA
+  Distribuidora: Milclean Com‚rcio e Servi‡os Ltda
+  Valor: R$ 1900,00 
+
+* SERVICO DE INTERNET
+  Distribuidora:  Claro S/A
+  Valor: R$ 50,00 
+
+* TOTAL DOS SERVICOS: R$ 2133,00 
+
+* SALARIOS
+  Funcionarios: R$ 2499,00 
+
+* IMPOSTOS
+  Valor: R$ 900,00| 
+
+* TOTAL OPEX:
+  R$ 6862,64 
+

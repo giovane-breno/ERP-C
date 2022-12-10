@@ -1,0 +1,39 @@
+|------------------------------------------------------|
+|                 RELATÓRIO CAPEX                      |
+|------------------------------------------------------|
+
+* Moveis
+  Fornecedor: Madeira Madeira
+  Marca: Madeira Talhada
+  Modelo: Branca
+  Quantidade: 3
+  Valor Unitario: R$ 250,30
+  Valor Total: R$ 750,90
+
+* Roupas
+  Fornecedor: Costureiras Brasil S/A
+  Marca: Avental Forrado
+  Modelo: Branco Forrado Couro
+  Quantidade: 25
+  Valor Unitario: R$ 350,00
+  Valor Total: R$ 8750,00
+
+* Moveis
+  Fornecedor: Madeira Madeira
+  Marca: Madeira Refinada
+  Modelo: Balcao Branco
+  Quantidade: 2
+  Valor Unitario: R$ 1599,99
+  Valor Total: R$ 3199,98
+
+* Eletronicos
+  Fornecedor: Electrolux
+  Marca: Electrolux
+  Modelo: Batedeira Eletrica
+  Quantidade: 1
+  Valor Unitario: R$ 299,00
+  Valor Total: R$ 299,00
+
+* TOTAL CAPEX:
+  R$ 12999,88 
+

@@ -1,7 +1,0 @@
-Endereco_Exemplo 100,00
-Distribuidora_Exemplo 100,00
-Energia_Exemplo 100,00
-Servico_de_Limpeza_Exemplo 100,00
-Internet_Exemplo 100,00
-100,00
-600,00
