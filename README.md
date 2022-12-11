@@ -26,7 +26,7 @@ Após isso será possível clicar em Compilar e Executar.
 
 <h3>EXECUTANDO APENAS O PROJETO:</h3>
 
-Abra a pasta "Executavel".
+Abra a pasta "Executavel"
 Execute o arquivo "Software - Alta Patente.exe".
 
 
