@@ -2,11 +2,11 @@ ______________________________________________________________
  Universidade Paulista (UNIP)
  Análise e Desenvolvimento de Sistemas - Data de Entrega: 09/12/2022
 
- Autores do Projeto: Allan Pereira Lopes [N843330]<br>
-                     Giovane Breno Pereira Barbosa [N8713B-5]<br>
-                     Giovana Chiquinni Primon [N9716G2]<br>
-                     Levi Custódio Kodaria Leão [N870230]<br>
-                     Matheus Felix Barbosa [G505115]
+ Autores do Projeto: Allan Pereira Lopes<br>
+                     Giovane Breno Pereira Barbosa<br>
+                     Giovana Chiquinni Primon<br>
+                     Levi Custódio Kodaria Leão<br>
+                     Matheus Felix Barbosa
                      
                      
  Turma: DS2R48<br>
